@@ -1,0 +1,65 @@
+{
+    "localMasthead": {
+        "title": "PRIDE 3",
+        "search": {
+            "btnText": "Search",
+            "action": "search.php",
+            "method": "post",
+            "inputName": "q"
+        },
+        "tabs": [
+            {
+                "selected": false,
+                "title": "Home",
+                "href": "#",
+                "tooltip": "Home page"
+            },
+            {
+                "selected": false,
+                "title": "PRIDE A",
+                "href": "#",
+                "tooltip": "PRIDE A"
+            },
+            {
+                "selected": false,
+                "title": "PRIDE R",
+                "href": "#",
+                "tooltip": "PRIDE R"
+            },
+            {
+                "selected": false,
+                "title": "PRIDE Q",
+                "href": "#",
+                "tooltip": "PRIDE Q"
+            },
+            {
+                "selected": true,
+                "title": "PRIDE W",
+                "href": "#",
+                "tooltip": "PRIDE W"
+            },
+            {
+                "selected": false,
+                "title": "Help",
+                "href": "#",
+                "tooltip": "Help"
+            }
+        ]
+    },
+    "globalFooter": true,
+    "globalTemplate": {
+        "javascriptList": [
+            {
+                "url": "PrideWidgets/PrideWidgets.nocache.js"
+            }
+        ],
+        "placeHolder": "pridew",
+        "title": "EMBL-EBI [PRIDE] PrideW",
+        "optionalBottomStuff": true,
+        "cssList": [
+            {
+                "url": "static/css/pridew.css"
+            }
+        ]
+    }
+}

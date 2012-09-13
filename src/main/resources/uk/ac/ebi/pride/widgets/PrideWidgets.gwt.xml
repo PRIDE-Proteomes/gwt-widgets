@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <!-- Inherit all the Pride Widget modules to be visible         -->
+  <inherits name="uk.ac.ebi.pride.widgets.client.protein.ProteinViewer" />
+
+</module>
