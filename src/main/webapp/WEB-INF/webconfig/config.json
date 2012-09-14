@@ -50,7 +50,7 @@
     "globalTemplate": {
         "javascriptList": [
             {
-                "url": "PrideWidgets/PrideWidgets.nocache.js"
+                "url": "PrideWidgetsTest/PrideWidgetsTest.nocache.js"
             }
         ],
         "placeHolder": "pridew",

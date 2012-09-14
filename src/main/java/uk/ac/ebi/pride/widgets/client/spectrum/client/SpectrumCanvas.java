@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.spectrum;
+package uk.ac.ebi.pride.widgets.client.spectrum.client;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;

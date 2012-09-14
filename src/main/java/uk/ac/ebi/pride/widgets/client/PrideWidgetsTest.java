@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class PrideWidgets implements EntryPoint {
+public class PrideWidgetsTest implements EntryPoint {
     // IMPORTANT! ATTENTION!
     // Do NOT use the class name for the place holder ( but it is case sensitive :D )
     private static final String PLACE_HOLDER = "pridew";

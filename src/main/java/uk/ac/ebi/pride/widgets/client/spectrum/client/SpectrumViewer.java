@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.spectrum;
+package uk.ac.ebi.pride.widgets.client.spectrum.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.Style;
