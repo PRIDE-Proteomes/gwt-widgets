@@ -1,6 +1,6 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.options;
+package uk.ac.ebi.pride.widgets.biojs.sequence.options;
 
-import uk.ac.ebi.pride.widgets.client.biojs.common.Parameters;
+import uk.ac.ebi.pride.widgets.biojs.common.Parameters;
 
 import java.util.ArrayList;
 import java.util.List;

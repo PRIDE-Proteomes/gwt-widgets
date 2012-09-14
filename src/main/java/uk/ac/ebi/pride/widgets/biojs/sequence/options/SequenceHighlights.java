@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.options;
+package uk.ac.ebi.pride.widgets.biojs.sequence.options;
 
 import java.util.ArrayList;
 import java.util.List;

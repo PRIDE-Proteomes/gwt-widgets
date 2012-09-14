@@ -6,5 +6,5 @@
   <script src="http://www.ebi.ac.uk/~jgomez/biojs/biojs/dependencies/jquery/jquery-ui-1.8.2.custom.min.js"></script>
   <script src="http://www.ebi.ac.uk/~jgomez/biojs/biojs/Biojs.Sequence.js"></script>
 
-  <inherits name="uk.ac.ebi.pride.widgets.client.biojs.sequence.BioJSSequenceViewer" />
+  <inherits name="uk.ac.ebi.pride.widgets.biojs.sequence.BioJSSequenceViewer" />
 </module>

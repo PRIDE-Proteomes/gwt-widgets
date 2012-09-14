@@ -1,15 +1,15 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.client;
+package uk.ac.ebi.pride.widgets.biojs.sequence.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import uk.ac.ebi.pride.widgets.client.biojs.common.BioJsObject;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.events.SequenceAnnotationClickedEvent;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.events.SequenceSelectionEvent;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceAnnotation;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceParameters;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceRegion;
+import uk.ac.ebi.pride.widgets.biojs.common.BioJsObject;
+import uk.ac.ebi.pride.widgets.biojs.sequence.events.SequenceAnnotationClickedEvent;
+import uk.ac.ebi.pride.widgets.biojs.sequence.events.SequenceSelectionEvent;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceAnnotation;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceParameters;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceRegion;
 
 public class BioJsSequenceWrapper extends JavaScriptObject implements BioJsSequenceInterface, BioJsObject {
 
@@ -17,14 +17,14 @@ public class BioJsSequenceWrapper extends JavaScriptObject implements BioJsSeque
 
     public static native BioJsSequenceWrapper create(SequenceParameters parameters) /*-{
         var toJSON = $wnd.jQuery.parseJSON;
-        var params = toJSON(parameters.@uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceParameters::getJSON()());
+        var params = toJSON(parameters.@uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceParameters::getJSON()());
         return new $wnd.Biojs.Sequence(params);
     }-*/;
 
     @Override
     public final native int addHighlight(SequenceRegion region)/*-{
         var toJSON = $wnd.jQuery.parseJSON;
-        var r = toJSON(region.@uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceRegion::getJSON()());
+        var r = toJSON(region.@uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceRegion::getJSON()());
         return this.addHighlight(r);
     }-*/;
 
@@ -50,14 +50,14 @@ public class BioJsSequenceWrapper extends JavaScriptObject implements BioJsSeque
         //Selection Change Event
         var _onSelectionChange = function(e){
             var start = e.start; var end = e.end;
-            @uk.ac.ebi.pride.widgets.client.biojs.sequence.client.BioJsSequenceWrapper::_onSelectionChange(Luk/ac/ebi/pride/widgets/client/biojs/sequence/client/BioJsSequenceWrapper;II)(_this, start, end);
+            @uk.ac.ebi.pride.widgets.biojs.sequence.client.BioJsSequenceWrapper::_onSelectionChange(Luk/ac/ebi/pride/widgets/biojs/sequence/client/BioJsSequenceWrapper;II)(_this, start, end);
         };
         this.onSelectionChange(_onSelectionChange);
 
         //Selection Changed Event
         var _onSelectionChanged = function(e){
             var start = e.start; var end = e.end;
-            @uk.ac.ebi.pride.widgets.client.biojs.sequence.client.BioJsSequenceWrapper::_onSelectionChanged(Luk/ac/ebi/pride/widgets/client/biojs/sequence/client/BioJsSequenceWrapper;II)(_this, start, end);
+            @uk.ac.ebi.pride.widgets.biojs.sequence.client.BioJsSequenceWrapper::_onSelectionChanged(Luk/ac/ebi/pride/widgets/biojs/sequence/client/BioJsSequenceWrapper;II)(_this, start, end);
 
         };
         this.onSelectionChanged(_onSelectionChanged);
@@ -65,7 +65,7 @@ public class BioJsSequenceWrapper extends JavaScriptObject implements BioJsSeque
         //Annotation Clicked Event
         var _onAnnotationClicked = function(e){
             var name = e.name; var pos = e.pos;
-            @uk.ac.ebi.pride.widgets.client.biojs.sequence.client.BioJsSequenceWrapper::_onAnnotationClicked(Luk/ac/ebi/pride/widgets/client/biojs/sequence/client/BioJsSequenceWrapper;Ljava/lang/String;I)(_this, name, pos);
+            @uk.ac.ebi.pride.widgets.biojs.sequence.client.BioJsSequenceWrapper::_onAnnotationClicked(Luk/ac/ebi/pride/widgets/biojs/sequence/client/BioJsSequenceWrapper;Ljava/lang/String;I)(_this, name, pos);
         };
         this.onAnnotationClicked(_onAnnotationClicked);
     }-*/;
@@ -109,7 +109,7 @@ public class BioJsSequenceWrapper extends JavaScriptObject implements BioJsSeque
     @Override
     public final native void addAnnotation(SequenceAnnotation annotation)/*-{
         var toJSON = $wnd.jQuery.parseJSON;
-        var a = toJSON(annotation.@uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceAnnotation::getJSON()());
+        var a = toJSON(annotation.@uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceAnnotation::getJSON()());
         this.addAnnotation(a);
     }-*/;
 

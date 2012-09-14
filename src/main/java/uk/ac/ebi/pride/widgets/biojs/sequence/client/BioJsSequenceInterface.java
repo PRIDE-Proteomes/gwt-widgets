@@ -1,11 +1,11 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.client;
+package uk.ac.ebi.pride.widgets.biojs.sequence.client;
 
 
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceAnnotation;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceRegion;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceAnnotation;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceRegion;
 
 @SuppressWarnings("UnusedDeclaration")
 public interface BioJsSequenceInterface {

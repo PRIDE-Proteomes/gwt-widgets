@@ -1,11 +1,11 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.client;
+package uk.ac.ebi.pride.widgets.biojs.sequence.client;
 
 
-import uk.ac.ebi.pride.widgets.client.biojs.common.BioJsPanel;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.*;
+import uk.ac.ebi.pride.widgets.biojs.common.BioJsPanel;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceAnnotationClickedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangeEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.handlers.SequenceSelectionChangedEventHandler;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.*;
 
 import java.util.ArrayList;
 

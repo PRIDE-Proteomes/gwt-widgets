@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.biojs.common;
+package uk.ac.ebi.pride.widgets.biojs.common;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 

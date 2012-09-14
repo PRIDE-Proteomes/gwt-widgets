@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.biojs.sequence.options;
+package uk.ac.ebi.pride.widgets.biojs.sequence.options;
 
 public class SequenceAnnotationRegion extends SequenceRegion {
     private String color;

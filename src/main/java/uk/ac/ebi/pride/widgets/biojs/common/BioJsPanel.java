@@ -1,8 +1,8 @@
-package uk.ac.ebi.pride.widgets.client.biojs.common;
+package uk.ac.ebi.pride.widgets.biojs.common;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import uk.ac.ebi.pride.widgets.client.biojs.sequence.options.SequenceParameters;
+import uk.ac.ebi.pride.widgets.biojs.sequence.options.SequenceParameters;
 
 public abstract class BioJsPanel extends HTMLPanel {
     protected SequenceParameters parameters;
