@@ -24,10 +24,10 @@ import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
 import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.RegionUtils;
 
-
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("UnusedDeclaration")
 public class ProteinViewer extends Composite implements HasHandlers {
     HandlerManager handlerManager;
 
@@ -36,7 +36,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
     final Timer timer;
     private Canvas canvas;
 
-    private List<Drawable> components = new ArrayList<Drawable>();
+    private List<Drawable> components = new LinkedList<Drawable>();
 
     // mouse positions relative to canvas
     int mouseX = -100; int lastMouseX = -200; //Do not assign the same value at the beginning

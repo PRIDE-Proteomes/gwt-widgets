@@ -7,4 +7,6 @@
   <script src="http://www.ebi.ac.uk/~jgomez/biojs/biojs/Biojs.Sequence.js"></script>
 
   <inherits name="uk.ac.ebi.pride.widgets.biojs.sequence.BioJSSequenceViewer" />
+
+  <source path="common" />
 </module>

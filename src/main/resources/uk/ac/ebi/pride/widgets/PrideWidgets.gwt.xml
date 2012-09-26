@@ -6,5 +6,5 @@
   <!-- Inherit all the Pride Widget modules to be visible         -->
   <inherits name="uk.ac.ebi.pride.widgets.client.protein.ProteinViewer" />
   <inherits name="uk.ac.ebi.pride.widgets.client.spectrum.SpectrumViewer" />
-
+  <inherits name="uk.ac.ebi.pride.widgets.client.sequence.SequenceViewer" />
 </module>
