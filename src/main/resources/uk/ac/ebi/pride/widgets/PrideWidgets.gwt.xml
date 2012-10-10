@@ -2,7 +2,6 @@
 <module>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-  <inherits name="com.google.web.bindery.autobean.AutoBean"/>
 
   <!-- Inherit all the Pride Widget modules to be visible         -->
   <inherits name="uk.ac.ebi.pride.widgets.client.protein.ProteinViewer" />
