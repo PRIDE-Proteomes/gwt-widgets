@@ -4,11 +4,22 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import uk.ac.ebi.pride.widgets.client.sequence.data.Protein;
+import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
+import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinPositionHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionResetEvent;
+import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionSelectionEvent;
+import uk.ac.ebi.pride.widgets.client.sequence.handlers.ProteinPositionHighlightedHandler;
+import uk.ac.ebi.pride.widgets.client.sequence.handlers.ProteinRegionHighlightedHandler;
+import uk.ac.ebi.pride.widgets.client.sequence.handlers.ProteinRegionResetHandler;
+import uk.ac.ebi.pride.widgets.client.sequence.handlers.ProteinRegionSelectedHandler;
+import uk.ac.ebi.pride.widgets.client.sequence.model.ProteinSummary;
 import uk.ac.ebi.pride.widgets.client.sequence.model.Sequence;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
@@ -17,17 +28,19 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-//@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings("UnusedDeclaration")
 public class SequenceViewer extends Composite implements HasHandlers {
     private HandlerManager handlerManager;
 
     //timer refresh rate, in milliseconds
     private static final int REFRESH_RATE = 40;
-    private final Timer timer;
-    private Canvas canvas;
+    private int width, height;
+
+    private Canvas peptidesCanvas;
     private Canvas selectionCanvas;
+    private Canvas mainCanvas;
     private Canvas positionCanvas;
-    private AbsolutePanel canvasHolder;
+    private Canvas modificationCanvas;
 
     private Sequence sequence;
 
@@ -36,44 +49,86 @@ public class SequenceViewer extends Composite implements HasHandlers {
     int mouseY = -100; int lastMouseY = -200; //Do not assign the same value at the beginning
     boolean mouseDown = false;
 
-    public SequenceViewer(SequenceType sequenceType, Protein protein) {
+    public SequenceViewer(SequenceType sequenceType, ProteinHandler proteinHandler) {
         this.handlerManager = new HandlerManager(this);
-        this.canvas = Canvas.createIfSupported();
-        this.positionCanvas = Canvas.createIfSupported();
+        this.peptidesCanvas = Canvas.createIfSupported();
         this.selectionCanvas = Canvas.createIfSupported();
+        this.mainCanvas = Canvas.createIfSupported();
+        this.modificationCanvas = Canvas.createIfSupported();
+        this.positionCanvas = Canvas.createIfSupported();
 
-        this.sequence = new Sequence(sequenceType, protein);
-        setCanvasProperties(this.canvas);
-        setCanvasProperties(this.selectionCanvas);
-        setCanvasProperties(this.positionCanvas);
+        ProteinSummary proteinSummary = new ProteinSummary(proteinHandler);
+        this.sequence = new Sequence(sequenceType, proteinSummary, this.handlerManager);
+        this.width = CanvasProperties.getCanvasProperties().getMaxWidth();
+        this.height = CanvasProperties.getCanvasProperties().getMaxHeight();
+        setCanvasProperties(this.peptidesCanvas, this.width, this.height);
+        setCanvasProperties(this.selectionCanvas, this.width, this.height);
+        setCanvasProperties(this.mainCanvas, this.width, this.height);
+        setCanvasProperties(this.modificationCanvas, this.width, this.height);
+        setCanvasProperties(this.positionCanvas, this.width, this.height);
         CanvasProperties.getCanvasProperties().reset();
 
+        initCanvas();
+
         this.setMousePosition(mouseX, mouseY);
+        this.drawPeptides();
         this.draw();
+        this.drawModification(null);
+
+        initHandlers();
 
         // setup timer
-        timer = new Timer() {
+        Timer timer = new Timer() {
             @Override
             public void run() {
                 doUpdate();
             }
         };
         timer.scheduleRepeating(REFRESH_RATE);
-
-        initHandlers();
-
-        canvasHolder = new AbsolutePanel();
-
-        initCanvas();
     }
 
     private void initCanvas(){
-        canvasHolder.add(canvas);
-        int left = canvasHolder.getWidgetLeft(canvas);
-        int top = canvasHolder.getWidgetTop(canvas);
-        canvasHolder.add(selectionCanvas, left, top);
-        canvasHolder.add(positionCanvas, left, top);
+        AbsolutePanel canvasHolder = new AbsolutePanel();
+        canvasHolder.add(this.peptidesCanvas);
+        canvasHolder.add(this.selectionCanvas, 0, 0);
+        canvasHolder.add(this.mainCanvas, 0, 0);
+        canvasHolder.add(this.modificationCanvas, 0, 0);
+        canvasHolder.add(this.positionCanvas, 0, 0);
         initWidget(canvasHolder);
+    }
+
+    public HandlerRegistration addProteinPositionHighlightedHandler(ProteinPositionHighlightedHandler handler){
+        return handlerManager.addHandler(ProteinPositionHighlightedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addProteinRegionHighlightedHandler(ProteinRegionHighlightedHandler handler){
+        return handlerManager.addHandler(ProteinRegionHighlightedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addProteinRegionResetHandler(ProteinRegionResetHandler handler){
+        return handlerManager.addHandler(ProteinRegionResetEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addProteinRegionSelectedHandler(ProteinRegionSelectedHandler handler) {
+        return handlerManager.addHandler(ProteinRegionSelectionEvent.TYPE, handler);
+    }
+
+    public void resetSelection(){
+        this.sequence.resetSelection();
+        drawSelection();
+    }
+
+    public void selectRegion(int start, int end){
+        this.sequence.selectRegion(start, end);
+        drawSelection();
+    }
+
+    public void filterModification(PrideModificationHandler prideModification){
+        this.drawModification(prideModification);
+    }
+
+    public void resetModification(){
+        this.drawModification(null);
     }
 
     protected void doUpdate(){
@@ -141,48 +196,44 @@ public class SequenceViewer extends Composite implements HasHandlers {
     }
 
     protected void draw() {
-        Context2d ctx = this.canvas.getContext2d();
-        ctx.setFont("normal 10px courier new");
-
+        Context2d ctx = this.mainCanvas.getContext2d();
         //Clean the canvas
-        int width = ctx.getCanvas().getWidth();
-        int height = ctx.getCanvas().getHeight();
-        ctx.clearRect(0, 0, width, height);
-
-        //Draw all the lines
-        ctx.setFillStyle("#000000");
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the sequence
         sequence.draw(ctx);
+    }
+
+    protected void drawPeptides() {
+        Context2d ctx = this.peptidesCanvas.getContext2d();
+        //Clean the canvas
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the peptides
+        sequence.drawPeptides(ctx);
     }
 
     protected void drawSelection() {
         Context2d ctx = this.selectionCanvas.getContext2d();
-        ctx.setFont("normal 10px courier new");
-
         //Clean the canvas
-        int width = ctx.getCanvas().getWidth();
-        int height = ctx.getCanvas().getHeight();
-        ctx.clearRect(0, 0, width, height);
-
-        //Draw all the lines
-        ctx.setFillStyle("#000000");
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the selection
         sequence.drawSelection(ctx);
+    }
+
+    protected void drawModification(PrideModificationHandler prideModification){
+        Context2d ctx = this.modificationCanvas.getContext2d();
+        //Clean the canvas
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the modifications
+        sequence.drawModification(ctx, prideModification);
     }
 
     protected void drawPosition() {
         Context2d ctx = this.positionCanvas.getContext2d();
-        ctx.setFont("normal 10px courier new");
-
         //Clean the canvas
-        int width = ctx.getCanvas().getWidth();
-        int height = ctx.getCanvas().getHeight();
-        ctx.clearRect(0, 0, width, height);
-
-        //Draw all the lines
-        ctx.setFillStyle("#000000");
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the mouse position highlight
         sequence.drawPosition(ctx);
     }
-
-
 
     /*
     public void setSequenceType(SequenceType sequenceType) {
@@ -193,21 +244,9 @@ public class SequenceViewer extends Composite implements HasHandlers {
     }*/
 
     //INITIALIZE THE CANVAS taking into account the CanvasProperties
-    private void setCanvasProperties(Canvas canvas){
-        int width = CanvasProperties.getCanvasProperties().getMaxWidth();
-        int height = CanvasProperties.getCanvasProperties().getMaxHeight();
+    private void setCanvasProperties(Canvas canvas, int width, int height){
         canvas.setCoordinateSpaceWidth(width);
         canvas.setCoordinateSpaceHeight(height);
         canvas.setPixelSize(width, height);
     }
-
-    /*
-    @Override
-    protected void onLoad() {
-        super.onLoad();
-        int left = canvasHolder.getWidgetLeft(canvas);
-        int top = canvasHolder.getWidgetTop(canvas);
-        canvasHolder.add(positionCanvas, left, top);
-    }
-    */
 }

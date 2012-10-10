@@ -2,8 +2,8 @@ package uk.ac.ebi.pride.widgets.client.spectrum.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 
 
 import java.util.ArrayList;

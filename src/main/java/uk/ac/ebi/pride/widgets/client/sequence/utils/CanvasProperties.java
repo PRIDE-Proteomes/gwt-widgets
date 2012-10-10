@@ -16,10 +16,12 @@ package uk.ac.ebi.pride.widgets.client.sequence.utils;
 public class CanvasProperties {
     private static CanvasProperties canvasProperties;
 
-    public static final int X_OFFSET = 12;
-    public static final int Y_OFFSET = 24;
-    public static final int X_SPACE = 5;
-    public static final int NEW_LINE_OFFSET = 12;
+    public static final int X_OFFSET = 6;
+    public static final int Y_OFFSET = 28;
+    public static final int POSITION_WIDTH = 9;
+    public static final int POSITION_HEIGHT = 12;
+    public static final int X_SPACE = 7;
+    public static final int NEW_LINE_OFFSET = 14;
 
     private int nextPosX;
     private int nextPosY;

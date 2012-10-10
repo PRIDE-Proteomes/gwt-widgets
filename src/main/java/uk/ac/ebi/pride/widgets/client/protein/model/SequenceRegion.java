@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.shared.HandlerManager;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionHighlightEvent;
 
 public abstract class SequenceRegion implements Drawable {
@@ -14,7 +14,6 @@ public abstract class SequenceRegion implements Drawable {
     private int peptides;
     protected int length;
     private ProteinAxis pa;
-
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
@@ -50,6 +49,10 @@ public abstract class SequenceRegion implements Drawable {
 
     public int getPeptides() {
         return peptides;
+    }
+
+    public void resetSelection(){
+        this.selected = false;
     }
 
     public void setHandlerManager(HandlerManager handlerManager) {

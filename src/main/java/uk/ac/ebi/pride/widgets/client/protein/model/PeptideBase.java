@@ -2,14 +2,22 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.canvas.dom.client.FillStrokeStyle;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import com.google.gwt.event.shared.HandlerManager;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
 
 public class PeptideBase implements Drawable, Clickable {
+    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,0,175, 1)");
+
     public static final int PEPTIDE_HEIGHT = 5;
 
-    private String sequence;
+    protected HandlerManager handlerManager;
+    private PeptideHandler peptide;
     private boolean selected = false;
     private double xMin, xMax;
     private int yMin, yMax;
@@ -17,16 +25,28 @@ public class PeptideBase implements Drawable, Clickable {
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    public PeptideBase(ProteinAxis pa, int start, String sequence, int y) {
-        this.sequence = sequence;
-        this.xMin = pa.getPixelFromValue(start);
-        this.xMax = pa.getPixelFromValue(start + sequence.length());
+    public PeptideBase(ProteinAxis pa, PeptideHandler peptide, int y) {
+        this.peptide = peptide;
+        this.xMin = pa.getPixelFromValue(peptide.getSite());
+        this.xMax = pa.getPixelFromValue(peptide.getSite() + peptide.getSequence().length());
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
     }
 
+    public void setHandlerManager(HandlerManager handlerManager) {
+        this.handlerManager = handlerManager;
+    }
+
     public int getYMax() {
         return yMax;
+    }
+
+    public PeptideHandler getPeptide() {
+        return peptide;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public boolean isMouseOver(){
@@ -44,14 +64,14 @@ public class PeptideBase implements Drawable, Clickable {
 
     @Override
     public void draw(Context2d ctx) {
-        FillStrokeStyle s =  ctx.getFillStyle();
-        if(isMouseOver() || selected){
-            ctx.setFillStyle(CssColor.make("rgba(255,100,0, 1)"));
-        }else{
-            ctx.setFillStyle(CssColor.make("rgba(0,0,255, 1)"));
-        }
+        ctx.setFillStyle(peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR);
         ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), PEPTIDE_HEIGHT);
-        ctx.setFillStyle(s);
+
+        if(isMouseOver() || selected){
+            ctx.setFillStyle(PEPTIDE_SELECTED_COLOR);
+            ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), PEPTIDE_HEIGHT);
+            handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
+        }
     }
 
     @Override
@@ -60,8 +80,7 @@ public class PeptideBase implements Drawable, Clickable {
             selected = false;
         }else{
             if(!selected){
-                //handlerManager.fireEvent(new ProteinRegionSelectionEvent(getStart(), getLength(), getPeptides()));
-                System.out.println(this.sequence);
+                handlerManager.fireEvent(new PeptideSelectedEvent(this.peptide));
             }
             selected = true;
         }
@@ -69,6 +88,6 @@ public class PeptideBase implements Drawable, Clickable {
 
     @Override
     public void onMouseDown(int mouseX, int mouseY) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //TODO
     }
 }

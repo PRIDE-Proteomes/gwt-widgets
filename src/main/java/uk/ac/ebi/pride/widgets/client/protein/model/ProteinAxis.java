@@ -4,8 +4,8 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.FillStrokeStyle;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
-import uk.ac.ebi.pride.widgets.client.protein.data.Protein;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 
 
 public class ProteinAxis implements Drawable {
@@ -18,19 +18,19 @@ public class ProteinAxis implements Drawable {
     public static final int X_OFFSET = 4;
     public static final int Y_OFFSET = 20;
 
-    private Protein protein;
+    private ProteinHandler proteinHandler;
     private double delta;
 
-    public ProteinAxis(Protein protein, Canvas canvas) {
-        this.protein = protein;
+    public ProteinAxis(ProteinHandler proteinHandler, Canvas canvas) {
+        this.proteinHandler = proteinHandler;
 
         int width = canvas.getCanvasElement().getWidth() - ( 2 * X_OFFSET );
-        double length = protein.getLength();
+        double length = proteinHandler.getLength();
         this.delta = width / length;
     }
 
-    public Protein getProtein(){
-        return this.protein;
+    public ProteinHandler getProteinHandler(){
+        return this.proteinHandler;
     }
 
     protected double getPixelFromValue(double value){
@@ -46,7 +46,7 @@ public class ProteinAxis implements Drawable {
     public void draw(Context2d ctx) {
         double segmentY = SEGMENT_Y + Y_OFFSET ;
         double xMin = getPixelFromValue(0);
-        double xMax = getPixelFromValue(this.protein.getLength());
+        double xMax = getPixelFromValue(this.proteinHandler.getLength());
         FillStrokeStyle s =  ctx.getFillStyle();
 
         ctx.setStrokeStyle(CssColor.make("rgba(0,0,0, 1)"));

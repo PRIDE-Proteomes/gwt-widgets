@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.widgets.client.protein.events;
 import com.google.gwt.event.shared.GwtEvent;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionSelectedHandler;
 
+
 public class ProteinRegionSelectionEvent extends GwtEvent<ProteinRegionSelectedHandler> {
     public static Type<ProteinRegionSelectedHandler> TYPE = new Type<ProteinRegionSelectedHandler>();
 

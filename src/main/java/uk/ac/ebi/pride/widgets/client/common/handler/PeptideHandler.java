@@ -1,6 +1,6 @@
-package uk.ac.ebi.pride.widgets.client.protein.data;
+package uk.ac.ebi.pride.widgets.client.common.handler;
 
-public interface Peptide {
+public interface PeptideHandler {
 
     String getSequence();
 
@@ -8,9 +8,9 @@ public interface Peptide {
 
     Integer getEnd();
 
-    /*
     Integer getUniqueness();
 
+    /*
     Integer getPsmHits();
     */
 }

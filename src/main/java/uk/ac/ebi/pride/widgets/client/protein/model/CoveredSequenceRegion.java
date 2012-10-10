@@ -3,20 +3,23 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.FillStrokeStyle;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
 public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
+    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
     private double xMin, xMax;
     private int yMin, yMax;
+    private CssColor regionColor;
 
     public CoveredSequenceRegion(int start, int peptides, ProteinAxis pa) {
         super(start, peptides, pa);
         setBounds();
-        yMin = ProteinAxis.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
-        yMax = ProteinAxis.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
+        this.yMin = ProteinAxis.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
+        this.yMax = ProteinAxis.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
+        this.regionColor = ColorFactory.getRedBasedColor(getPeptides() * 7);
     }
 
     @Override
@@ -40,9 +43,8 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
 
     @Override
     public void draw(Context2d ctx) {
-        FillStrokeStyle s =  ctx.getFillStyle();
+        //FillStrokeStyle s =  ctx.getFillStyle();
 
-        CssColor regionColor = ColorFactory.getRedBasedColor(getPeptides() * 7);
         ctx.setFillStyle(regionColor);
         ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), yMax - yMin);
 
@@ -51,11 +53,11 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
         }
 
         if(isMouseOver() || selected){
-            ctx.setFillStyle(CssColor.make("rgba(255,255,0, .5)"));
+            ctx.setFillStyle(REGION_SELECTED_COLOR);
             ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), yMax - yMin);
         }
 
-        ctx.setFillStyle(s);
+        //ctx.setFillStyle(s);
     }
 
     @Override

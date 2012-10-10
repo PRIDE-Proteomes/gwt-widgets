@@ -13,7 +13,8 @@
     <properties>
         <!-- Convenience property to set the GWT version -->
         <!-- <gwtVersion>2.4.0</gwtVersion> -->
-        <gwtVersion>2.5.0-rc1</gwtVersion>
+        <!-- <gwtVersion>2.5.0-rc1</gwtVersion> -->
+        <gwtVersion>2.5.0-rc2</gwtVersion>
         <!-- This GWT  app needs at least java 1.6 -->
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -66,22 +67,37 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <!-- Generate compiled stuff in the folder used for developing mode -->
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- Here we exclude the packages and files that we do NOT want to add to the jar file -->
+                        <!-- This excludes are either for deprecated modules or test components -->
+                        <exclude>**/biojs/**</exclude>
+                        <exclude>**/test/**</exclude>
+                        <exclude>**/servlets/**</exclude>
+                        <exclude>**/PrideWidgetsTest.*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 
             <!-- GWT Maven Plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtVersion}</version>
+                <!--<version>${gwtVersion}</version>-->
                 <executions>
                     <execution>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>resources</goal>
+                            <!-- Compile is not needed because other projects using the jar will do it -->
+                            <!--<goal>compile</goal>-->
                             <goal>test</goal>
                             <goal>generateAsync</goal>
                         </goals>
@@ -120,17 +136,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -139,7 +144,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtVersion}</version>
+                <!--<version>${gwtVersion}</version>-->
                 <reportSets>
                     <reportSet>
                         <reports>

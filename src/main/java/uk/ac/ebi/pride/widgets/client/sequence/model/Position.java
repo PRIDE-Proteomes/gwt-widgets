@@ -2,61 +2,84 @@ package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
-import uk.ac.ebi.pride.widgets.client.sequence.data.Protein;
+import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class Position implements Drawable, DrawablePosition, DrawableSelection, Clickable {
-    private static final int WIDTH = 8;
-    private static final int HEIGHT = 10;
-    private static final CssColor HIGHLIGHT_COLOR = CssColor.make("rgba(255,255,0, .5)");
+public class Position implements DrawableLayers, Clickable {
+    public static final String AMINO_ACID_FONT = "normal 11px sans-serif";
+    public static final CssColor AMINO_ACID_COLOR = CssColor.make("rgba(0,0,0, 1)");
+    public static final CssColor AMINO_ACID_SELECTED_COLOR = CssColor.make("rgba(255,0,0, 1)");
 
-    private static int regionStart = -1;
-    private static int regionEnd = -1;
-    private static boolean mouseDown = false;
+    public static final String AMINO_ACID_MODIFIED_FONT = "bold 11px sans-serif";
+    public static final CssColor AMINO_ACID_MODIFIED_COLOR = CssColor.make("rgba(204,51,0, 1)"); //#CC3300
+    public static final CssColor AMINO_ACID_MODIFIED_SELECTED_COLOR = CssColor.make("rgba(255,0,255, 1)");
+    public static final CssColor AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
-    //private Protein protein;
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,0,175, .5)");
+
+    public static final CssColor HIGHLIGHT_COLOR = CssColor.make("rgba(255,255,0, 0.5)");
+
+    CanvasSelection canvasSelection;
+
     private String aminoAcid;
     private int position;
+    private boolean isInPeptide;
+    private boolean isNonUniquePeptide;
+    private boolean isModified;
+    private List<PrideModificationHandler> prideModifications;
+
     private String tooltip;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
     private int x, y, xText, yText;
+    private int yC;
     private int xMax, yMin;
 
-    public Position(Protein protein, int position) {
-        //this.protein = protein;
-        this.aminoAcid = protein.getSequence().substring(position, position + 1);
+    public Position(ProteinSummary proteinSummary, CanvasSelection canvasSelection, int position) {
+        this.canvasSelection = canvasSelection;
+        this.aminoAcid = proteinSummary.getSequence().substring(position, position + 1);
         this.position = position + 1;
+
+        this.isNonUniquePeptide = proteinSummary.getNonUniquePeptidesPositions().contains(this.position);
+        boolean uniquePeptide = proteinSummary.getUniquePeptidesPositions().contains(this.position);
+        this.isInPeptide = isNonUniquePeptide || uniquePeptide;
+
+        this.isModified = proteinSummary.getModificationPositions().contains(this.position);
+        this.prideModifications = proteinSummary.getPrideModifications(this.position);
+
         this.tooltip = String.valueOf(this.position);
+        if(isModified){
+            this.tooltip += "<br/>" + getModificationTooltip(this.prideModifications);
+        }
 
         CanvasProperties canvasProperties = CanvasProperties.getCanvasProperties();
         this.x = canvasProperties.getNextPosX();
         this.y = canvasProperties.getNextPosY();
-        this.xMax = this.x + WIDTH;
-        this.yMin = y - HEIGHT;
-        this.xText = x + 1;
+        this.xMax = this.x + CanvasProperties.POSITION_WIDTH;
+        this.yMin = y - CanvasProperties.POSITION_HEIGHT;
+        this.xText = this.x + CanvasProperties.POSITION_WIDTH / 2; // x + 1;
         this.yText = y - 2;
-        canvasProperties.reserveHorizontalSpace(WIDTH);
+        //this.xC = this.xText + CanvasProperties.POSITION_WIDTH / 2;
+        this.yC = this.y - CanvasProperties.POSITION_HEIGHT / 2;
+
+        canvasProperties.reserveHorizontalSpace(CanvasProperties.POSITION_WIDTH);
     }
 
     public boolean isMouseOver(){
         return (x<=mouseX & xMax>mouseX & yMin<=mouseY & y>=mouseY);
-    }
-
-    public static void setRegionStart(int regionStart) {
-        Position.regionStart = regionStart;
-    }
-
-    public static void setRegionEnd(int regionEnd) {
-        Position.regionEnd = regionEnd;
     }
 
     @Override
@@ -67,21 +90,48 @@ public class Position implements Drawable, DrawablePosition, DrawableSelection, 
 
     @Override
     public void draw(Context2d ctx) {
-        if(this.position >= 10 && this.position <=20){
-            ctx.setFillStyle("#00AF00");
-            ctx.fillRect(x, yMin, WIDTH, HEIGHT);
-        }
-        ctx.setFillStyle("#000000");
         ctx.fillText(this.aminoAcid, xText, yText);
     }
 
     @Override
+    public void drawPeptides(Context2d ctx) {
+        if(isInPeptide){
+            ctx.setFillStyle(isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR);
+            ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
+        }
+    }
+
+    @Override
     public void drawSelection(Context2d ctx) {
+        int regionStart = this.canvasSelection.getRegionStart();
+        int regionEnd = this.canvasSelection.getRegionEnd();
         if(this.position >= regionStart & this.position <= regionEnd){
-            ctx.setFillStyle(HIGHLIGHT_COLOR);
-            ctx.fillRect(x, yMin, WIDTH, HEIGHT);
-            //ctx.setFillStyle("#000000");
-            //ctx.fillText(this.aminoAcid, xText, yText);
+            ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
+        }
+    }
+
+    @Override
+    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
+        if(isModified){
+            if(prideModification!=null){
+                boolean modificationMatches = false;
+                int i=0;
+                while(i<prideModifications.size() && !modificationMatches){
+                    PrideModificationHandler modification = prideModifications.get(i++);
+                    modificationMatches = ( modificationMatches | ( modification.getId() == prideModification.getId() ) );
+                }
+                if(modificationMatches){
+                    ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
+                    ctx.beginPath();
+                    ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
+                }
+            }
+            ctx.fillText(this.aminoAcid, xText, yText);
+
+
         }
     }
 
@@ -89,30 +139,59 @@ public class Position implements Drawable, DrawablePosition, DrawableSelection, 
     public void drawPosition(Context2d ctx) {
         if(isMouseOver()){
             Tooltip.getTooltip().show(ctx.getCanvas(), xMax, y, tooltip);
+
             ctx.setFillStyle(HIGHLIGHT_COLOR);
-            ctx.fillRect(x, yMin, WIDTH, HEIGHT);
-            ctx.setFillStyle("#0000FF");
+            ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
+
+            ctx.setFillStyle(isModified? AMINO_ACID_MODIFIED_SELECTED_COLOR : AMINO_ACID_SELECTED_COLOR);
+            ctx.setFont( isModified ? AMINO_ACID_MODIFIED_FONT: AMINO_ACID_FONT);
+            ctx.setTextAlign(Context2d.TextAlign.CENTER);
             ctx.fillText(this.aminoAcid, xText, yText);
-            if(mouseDown) regionEnd = this.position;
+
+            if(this.canvasSelection.isMouseDown()){
+                this.canvasSelection.setRegionEnd(this.position);
+            }else{
+                this.canvasSelection.setRegionStart(this.position);
+                this.canvasSelection.setRegionEnd(this.position);
+            }
         }
     }
 
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
-        mouseDown = false;
+        this.canvasSelection.setMouseDown(false);
         if(isMouseOver()){
-            System.out.println("Region Selected: [" + regionStart + ", " + regionEnd + "]");
-            regionEnd = this.position;
+            for (PrideModificationHandler prideModification : prideModifications) {
+                System.out.println(prideModification.getName());
+            }
+            this.canvasSelection.setRegionEnd(this.position);
         }
     }
 
     @Override
     public void onMouseDown(int mouseX, int mouseY) {
-        mouseDown = true;
+        this.canvasSelection.setMouseDown(true);
         if(isMouseOver()){
-            regionStart = this.position;
-            regionEnd = this.position;
-            System.out.println("Mouse down " + this.position);
+            this.canvasSelection.setRegionStart(this.position);
+            this.canvasSelection.setRegionEnd(this.position);
         }
+    }
+
+    private String getModificationTooltip(List<PrideModificationHandler> prideModifications){
+        @SuppressWarnings("Convert2Diamond")
+        Map<String, Integer> count = new HashMap<String, Integer>();
+        for (PrideModificationHandler prideModification : prideModifications) {
+            int n = count.containsKey(prideModification.getName()) ? count.get(prideModification.getName()) : 0;
+            count.put(prideModification.getName(), n + 1);
+        }
+        StringBuilder sb = new StringBuilder("Modifications:");
+        for (String modificationName : count.keySet()) {
+            sb.append("<br/>&nbsp;&nbsp;&nbsp;&gt&nbsp;");
+            sb.append(count.get(modificationName));
+            sb.append(" ");
+            sb.append(modificationName);
+            sb.append(" found");
+        }
+        return sb.toString();
     }
 }

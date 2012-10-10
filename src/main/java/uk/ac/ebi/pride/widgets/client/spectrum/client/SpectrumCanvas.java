@@ -3,8 +3,8 @@ package uk.ac.ebi.pride.widgets.client.spectrum.client;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.FillStrokeStyle;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.spectrum.model.*;
 
 

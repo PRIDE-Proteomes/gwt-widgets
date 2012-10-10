@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
 

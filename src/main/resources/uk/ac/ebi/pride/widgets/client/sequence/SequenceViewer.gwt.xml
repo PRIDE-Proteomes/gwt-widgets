@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name="uk.ac.ebi.pride.widgets.client.common.WidgetsCommon" />
+
+
+  <source path="client" />
+  <source path="data" />
+  <source path="events" />
+  <source path="handlers" />
+  <source path="model" />
+  <source path="type" />
+  <source path="utils" />
+</module>

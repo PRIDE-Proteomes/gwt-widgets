@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.protein.utils;
 
-import uk.ac.ebi.pride.widgets.client.protein.data.Peptide;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceBorder;
 import uk.ac.ebi.pride.widgets.client.protein.model.NonCoveredSequenceRegion;
 import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
@@ -15,13 +15,13 @@ public abstract class RegionUtils {
 
         //initialize an array with an empty peptide set per position
         List<Set<String>> aux = new LinkedList<Set<String>>();
-        for(int i=0; i<pa.getProtein().getLength(); ++i){aux.add(new HashSet<String>());}
+        for(int i=0; i<pa.getProteinHandler().getLength(); ++i){aux.add(new HashSet<String>());}
 
         //for every peptide we add the sequence in every position were the peptide already is
         //[(ABC, AB),(ABC, AB),(AB), ... ]
-        for (Peptide peptide : pa.getProtein().getPeptides()) {
-            String seq = peptide.getSequence();
-            int start = peptide.getSite() - 1;
+        for (PeptideHandler peptideHandler : pa.getProteinHandler().getPeptides()) {
+            String seq = peptideHandler.getSequence();
+            int start = peptideHandler.getSite() - 1;
             int end = start + seq.length();
             for(int i=start; i<end; ++i){aux.get(i).add(seq);}
         }

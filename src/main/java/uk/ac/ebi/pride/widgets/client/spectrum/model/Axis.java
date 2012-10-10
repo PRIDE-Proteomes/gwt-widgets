@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.spectrum.model;
 
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 
 public abstract class Axis implements Drawable {
     final static String AXIS_COLOR = "black";

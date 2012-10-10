@@ -10,11 +10,16 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
-import uk.ac.ebi.pride.widgets.client.common.Clickable;
-import uk.ac.ebi.pride.widgets.client.common.Drawable;
-import uk.ac.ebi.pride.widgets.client.protein.data.Protein;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
+import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionHighlightEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
+import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideHighlightedHandler;
+import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideSelectedHandler;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionHighlightedHandler;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionSelectedHandler;
 import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceBorder;
@@ -42,19 +47,19 @@ public class ProteinViewer extends Composite implements HasHandlers {
     int mouseX = -100; int lastMouseX = -200; //Do not assign the same value at the beginning
     int mouseY = -100; int lastMouseY = -200; //Do not assign the same value at the beginning
 
-    public ProteinViewer(Protein protein) {
-        this(protein, true);
+    public ProteinViewer(ProteinHandler proteinHandler) {
+        this(proteinHandler, true);
     }
 
-    public ProteinViewer(Protein protein, boolean regionBorder) {
-        this(900, 90, protein, regionBorder);
+    public ProteinViewer(ProteinHandler proteinHandler, boolean regionBorder) {
+        this(900, 90, proteinHandler, regionBorder);
     }
 
-    public ProteinViewer(int width, int height, Protein protein) {
-        this(width, height, protein, true);
+    public ProteinViewer(int width, int height, ProteinHandler proteinHandler) {
+        this(width, height, proteinHandler, true);
     }
 
-    public ProteinViewer(int width, int height, Protein protein, boolean regionBorder) {
+    public ProteinViewer(int width, int height, ProteinHandler proteinHandler, boolean regionBorder) {
         this.canvas = Canvas.createIfSupported();
         this.canvas.setPixelSize(width, height);
         this.canvas.setCoordinateSpaceWidth(width);
@@ -62,7 +67,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
         this.handlerManager = new HandlerManager(this);
 
-        ProteinAxis pa = new ProteinAxis(protein, this.canvas);
+        ProteinAxis pa = new ProteinAxis(proteinHandler, this.canvas);
         components.add(pa);
 
         List<SequenceRegion> sequenceRegions = RegionUtils.getSequenceRegions(pa);
@@ -79,9 +84,10 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
 
         int heightAux = height;
-        for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(pa, protein)) {
+        for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(pa, proteinHandler)) {
             int yMax = peptideBase.getYMax();
             if(yMax > heightAux) heightAux = yMax;
+            peptideBase.setHandlerManager(this.handlerManager);
             components.add(peptideBase);
         }
 
@@ -111,6 +117,37 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     public HandlerRegistration addProteinRegionSelectedHandler(ProteinRegionSelectedHandler handler) {
         return handlerManager.addHandler(ProteinRegionSelectionEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addPeptideHighlightedHandler(PeptideHighlightedHandler handler){
+        return handlerManager.addHandler(PeptideHighlightedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addPeptideSelectedHandler(PeptideSelectedHandler handler){
+        return handlerManager.addHandler(PeptideSelectedEvent.TYPE, handler);
+    }
+
+    public void setSelectedPeptide(PeptideHandler peptide){
+        int site = peptide.getSite();
+        String sequence = peptide.getSequence();
+        for (Drawable component : components) {
+            if(component instanceof PeptideBase){
+                PeptideBase peptideBase = (PeptideBase) component;
+                PeptideHandler peptideAux = peptideBase.getPeptide();
+                peptideBase.setSelected(peptideAux.getSite().equals(site) && peptideAux.getSequence().equals(sequence));
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetSelection(){
+        for (Drawable component : components) {
+            if(component instanceof SequenceRegion){
+                SequenceRegion region = (SequenceRegion) component;
+                region.resetSelection();
+            }
+        }
+        doUpdate(true);
     }
 
     protected void doUpdate(){

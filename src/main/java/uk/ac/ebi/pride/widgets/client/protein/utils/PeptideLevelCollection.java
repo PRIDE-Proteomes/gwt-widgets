@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.protein.utils;
 
-import uk.ac.ebi.pride.widgets.client.protein.data.Peptide;
-import uk.ac.ebi.pride.widgets.client.protein.data.Protein;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,17 +12,17 @@ public class PeptideLevelCollection {
     private int proteinLength;
     private int currentLevel;
 
-    public PeptideLevelCollection(Protein protein) {
+    public PeptideLevelCollection(ProteinHandler proteinHandler) {
         this.peptideLevels = new LinkedList<PeptideLevel>();
-        this.proteinLength = protein.getLength();
-        initialize(protein);
+        this.proteinLength = proteinHandler.getLength();
+        initialize(proteinHandler);
     }
 
-    private void initialize(Protein protein){
+    private void initialize(ProteinHandler proteinHandler){
         this.currentLevel = 0;
-        for (Peptide peptide : protein.getPeptides()) {
+        for (PeptideHandler peptideHandler : proteinHandler.getPeptides()) {
             PeptideLevel peptideLevel = getOrCreatePeptideLevel();
-            while (!peptideLevel.addPeptide(peptide)){
+            while (!peptideLevel.addPeptide(peptideHandler)){
                 peptideLevel = getOrCreatePeptideLevel();
             }
             this.currentLevel = 0;

@@ -40,7 +40,7 @@ public class ProteinRegionHighlightEvent extends GwtEvent<ProteinRegionHighlight
 
     @Override
     public String toString() {
-        return "ProteinRegionHighlightEvent{" +
+        return "ProteinRegionHighlightedEvent{" +
                 "start=" + start +
                 ", length=" + length +
                 ", value=" + value +
