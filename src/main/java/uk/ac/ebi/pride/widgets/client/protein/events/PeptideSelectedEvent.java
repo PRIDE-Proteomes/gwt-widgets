@@ -7,13 +7,16 @@ import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideSelectedHandler;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class PeptideSelectedEvent extends GwtEvent<PeptideSelectedHandler> {
+    @SuppressWarnings("Convert2Diamond")
     public static Type<PeptideSelectedHandler> TYPE = new GwtEvent.Type<PeptideSelectedHandler>();
 
     PeptideHandler peptide;
 
     public PeptideSelectedEvent(PeptideHandler peptide) {
         this.peptide = peptide;
+        System.out.println(getClass() + " --> " + toString());
     }
 
     public PeptideHandler getPeptide() {
@@ -28,5 +31,15 @@ public class PeptideSelectedEvent extends GwtEvent<PeptideSelectedHandler> {
     @Override
     protected void dispatch(PeptideSelectedHandler handler) {
         handler.onProteinRegionHighlighted(this);
+    }
+
+    @Override
+    public String toString() {
+        return "PeptideSelectedEvent{" +
+                "peptide=" + peptide.getSequence() +
+                ", uniqueness=" + peptide.getUniqueness() +
+                ", start=" + peptide.getSite() +
+                ", end=" + peptide.getEnd() +
+                '}';
     }
 }

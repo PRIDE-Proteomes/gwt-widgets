@@ -7,7 +7,6 @@ import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 
-
 public class ProteinAxis implements Drawable {
 
     private static final double SEGMENT_WIDTH = 1;
@@ -33,7 +32,7 @@ public class ProteinAxis implements Drawable {
         return this.proteinHandler;
     }
 
-    protected double getPixelFromValue(double value){
+    public final double getPixelFromValue(double value){
         return (this.delta * value) + X_OFFSET;
     }
 

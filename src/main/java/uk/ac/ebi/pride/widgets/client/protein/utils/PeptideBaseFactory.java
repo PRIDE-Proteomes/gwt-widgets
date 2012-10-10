@@ -15,7 +15,7 @@ public abstract class PeptideBaseFactory {
     public static List<PeptideBase> getPeptideBaseList(ProteinAxis pa, ProteinHandler proteinHandler){
         List<PeptideBase> list = new LinkedList<PeptideBase>();
 
-        PeptideLevelCollection plc = new PeptideLevelCollection(proteinHandler);
+        PeptideLevelCollection plc = new PeptideLevelCollection(proteinHandler, pa);
         int y = PEPTIDES_Y;
         for (PeptideLevel peptideLevel : plc.getPeptideLevels()) {
             y += PeptideBase.PEPTIDE_HEIGHT + PEPTIDE_VERTICAL_OFFSET;

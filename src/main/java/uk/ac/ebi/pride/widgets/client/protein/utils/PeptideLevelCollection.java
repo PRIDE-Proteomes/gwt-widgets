@@ -2,18 +2,20 @@ package uk.ac.ebi.pride.widgets.client.protein.utils;
 
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
+import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class PeptideLevelCollection {
-
+    private ProteinAxis pa;
     private List<PeptideLevel> peptideLevels;
     private int proteinLength;
     private int currentLevel;
 
-    public PeptideLevelCollection(ProteinHandler proteinHandler) {
+    public PeptideLevelCollection(ProteinHandler proteinHandler, ProteinAxis pa) {
         this.peptideLevels = new LinkedList<PeptideLevel>();
+        this.pa = pa;
         this.proteinLength = proteinHandler.getLength();
         initialize(proteinHandler);
     }
@@ -36,7 +38,7 @@ public class PeptideLevelCollection {
     private PeptideLevel getOrCreatePeptideLevel(){
         PeptideLevel peptideLevel;
         if(peptideLevels.isEmpty() || peptideLevels.size() == this.currentLevel){
-            peptideLevel = new PeptideLevel(this.proteinLength);
+            peptideLevel = new PeptideLevel(this.proteinLength, this.pa);
             peptideLevels.add(peptideLevel);
         }else{
             peptideLevel = peptideLevels.get(this.currentLevel);
