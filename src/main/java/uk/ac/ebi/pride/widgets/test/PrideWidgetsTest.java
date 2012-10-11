@@ -3,14 +3,18 @@ package uk.ac.ebi.pride.widgets.test;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.protein.client.ProteinViewer;
 import uk.ac.ebi.pride.widgets.client.sequence.client.SequenceViewer;
 import uk.ac.ebi.pride.widgets.client.sequence.type.Pride;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
+import uk.ac.ebi.pride.widgets.client.table.client.SingleSelectionTable;
+import uk.ac.ebi.pride.widgets.client.table.events.SingleSelectionChangeEvent;
+import uk.ac.ebi.pride.widgets.client.table.events.TableResetEvent;
+import uk.ac.ebi.pride.widgets.client.table.handlers.SingleSelectionChangeHandler;
+import uk.ac.ebi.pride.widgets.client.table.handlers.TableResetHandler;
 import uk.ac.ebi.pride.widgets.test.data.factory.ModelFactory;
 import uk.ac.ebi.pride.widgets.test.data.factory.ModelFactoryException;
 import uk.ac.ebi.pride.widgets.test.data.model.Peptide;
@@ -20,7 +24,7 @@ import uk.ac.ebi.pride.widgets.test.data.proxy.ProteinProxy;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class PrideWidgetsTest implements EntryPoint, RequestCallback {
+public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSelectionChangeHandler<Peptide>, TableResetHandler {
     // IMPORTANT! ATTENTION!
     // Do NOT use the class name for the place holder ( but it is case sensitive :D )
     private static final String PLACE_HOLDER = "pridew";
@@ -49,7 +53,7 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback {
     @Override
     public void onResponseReceived(Request request, Response response) {
         try {
-            Protein protein = ModelFactory.getModelObject(Protein.class, response.getText());
+            final Protein protein = ModelFactory.getModelObject(Protein.class, response.getText());
             //PeptideHandler end is used very often in the webapp, and make sense to keep it calculated
             for (Peptide peptide : protein.getPeptides()) {
                 int end = peptide.getSite() + peptide.getSequence().length() - 1;
@@ -59,16 +63,65 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback {
 
             VerticalPanel vp = new VerticalPanel();
             vp.add(new HTMLPanel("Pride GWT Widgets"));
-            if(protein!=null){
-                ProteinProxy proteinProxy = new ProteinProxy(protein);
 
-                vp.add(new ProteinViewer(proteinProxy));
+            @SuppressWarnings("Convert2Diamond")
+            final SingleSelectionTable<Peptide> table = new SingleSelectionTable<Peptide>();
+            table.setList(protein.getPeptides());
+            table.addSingleSelectionChangeHandler(this);
+            table.addTableResetHandler(this);
+            // Create sequence column.
+            table.addColumn(new TextColumn<Peptide>() {
+                @Override
+                public String getValue(Peptide peptide) {
+                    return peptide.getSequence();
+                }
+            });
 
-                SequenceType sequenceType = new Pride();
-                vp.add(new SequenceViewer(sequenceType, proteinProxy));
-            }else{
-                vp.add(new Label("Protein is NULL"));
-            }
+            // Create site column.
+            table.addColumn(new TextColumn<Peptide>() {
+                @Override
+                public String getValue(Peptide peptide) {
+                    return peptide.getSite().toString();
+                }
+            });
+
+            // Create psmHits column.
+            table.addColumn(new TextColumn<Peptide>() {
+                @Override
+                public String getValue(Peptide peptide) {
+                    return peptide.getPsmHits().toString();
+                }
+            });
+
+            //ResizeLayoutPanel tableContainer = new ResizeLayoutPanel();
+            table.setHeight("150px");
+            //tableContainer.add(table);
+            table.setPageSize(protein.getPeptides().size());
+            Timer timer = new Timer() {
+                @Override
+                public void run() {
+                    table.setSelectedItem(protein.getPeptides().get(protein.getPeptides().size()-1));
+                }
+            };
+            timer.schedule(5000);
+            Timer timer1 = new Timer() {
+                @Override
+                public void run() {
+                    table.resetSelection(true);
+                }
+            };
+            timer1.schedule(7000);
+
+
+            vp.add(table);
+
+            ProteinProxy proteinProxy = new ProteinProxy(protein);
+
+            vp.add(new ProteinViewer(proteinProxy));
+
+            SequenceType sequenceType = new Pride();
+            vp.add(new SequenceViewer(sequenceType, proteinProxy));
+
 
             RootPanel.get(PLACE_HOLDER).add(vp);
         } catch (ModelFactoryException e) {
@@ -79,5 +132,15 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback {
     @Override
     public void onError(Request request, Throwable exception) {
         //TODO
+    }
+
+    @Override
+    public void onSelectionChange(SingleSelectionChangeEvent<Peptide> event) {
+        System.out.println(event.getItem().getSequence());
+    }
+
+    @Override
+    public void onPrideTableReset(TableResetEvent eventTable) {
+        System.out.println("Table selection reset :)");
     }
 }

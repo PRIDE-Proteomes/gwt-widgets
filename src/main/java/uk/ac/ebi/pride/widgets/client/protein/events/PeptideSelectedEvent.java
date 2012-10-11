@@ -16,7 +16,7 @@ public class PeptideSelectedEvent extends GwtEvent<PeptideSelectedHandler> {
 
     public PeptideSelectedEvent(PeptideHandler peptide) {
         this.peptide = peptide;
-        System.out.println(getClass() + " --> " + toString());
+        //System.out.println(getClass() + " --> " + toString());
     }
 
     public PeptideHandler getPeptide() {
