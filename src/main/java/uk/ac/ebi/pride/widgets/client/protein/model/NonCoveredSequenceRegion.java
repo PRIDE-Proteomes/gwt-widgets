@@ -1,13 +1,14 @@
 package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 import java.util.Set;
 
 public class NonCoveredSequenceRegion extends SequenceRegion {
 
-    public NonCoveredSequenceRegion(int start, ProteinAxis pa) {
-        super(start, pa);
+    public NonCoveredSequenceRegion(int start, CanvasProperties canvasProperties) {
+        super(start, canvasProperties);
     }
 
     @Override

@@ -1,28 +1,25 @@
 package uk.ac.ebi.pride.widgets.client.protein.utils;
 
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
-import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
-import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class PeptideLevelCollection {
-    private ProteinAxis pa;
+    private CanvasProperties canvasProperties;
     private List<PeptideLevel> peptideLevels;
-    private int proteinLength;
     private int currentLevel;
 
-    public PeptideLevelCollection(ProteinHandler proteinHandler, ProteinAxis pa) {
+    public PeptideLevelCollection(CanvasProperties canvasProperties) {
+        this.canvasProperties = canvasProperties;
+        //noinspection Convert2Diamond
         this.peptideLevels = new LinkedList<PeptideLevel>();
-        this.pa = pa;
-        this.proteinLength = proteinHandler.getLength();
-        initialize(proteinHandler);
+        initialize();
     }
 
-    private void initialize(ProteinHandler proteinHandler){
+    private void initialize(){
         this.currentLevel = 0;
-        for (PeptideHandler peptideHandler : proteinHandler.getPeptides()) {
+        for (PeptideHandler peptideHandler : canvasProperties.getProteinHandler().getPeptides()) {
             PeptideLevel peptideLevel = getOrCreatePeptideLevel();
             while (!peptideLevel.addPeptide(peptideHandler)){
                 peptideLevel = getOrCreatePeptideLevel();
@@ -38,7 +35,7 @@ public class PeptideLevelCollection {
     private PeptideLevel getOrCreatePeptideLevel(){
         PeptideLevel peptideLevel;
         if(peptideLevels.isEmpty() || peptideLevels.size() == this.currentLevel){
-            peptideLevel = new PeptideLevel(this.proteinLength, this.pa);
+            peptideLevel = new PeptideLevel(this.canvasProperties);
             peptideLevels.add(peptideLevel);
         }else{
             peptideLevel = peptideLevels.get(this.currentLevel);

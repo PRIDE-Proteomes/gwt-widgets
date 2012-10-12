@@ -8,6 +8,7 @@ import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 public class PeptideBase implements Drawable, Clickable {
     public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
@@ -18,17 +19,20 @@ public class PeptideBase implements Drawable, Clickable {
 
     protected HandlerManager handlerManager;
     private PeptideHandler peptide;
+    private CssColor peptideColor;
     private boolean selected = false;
-    private double xMin, xMax;
+    private double xMin, xMax, width;
     private int yMin, yMax;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    public PeptideBase(ProteinAxis pa, PeptideHandler peptide, int y) {
+    public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y) {
         this.peptide = peptide;
-        this.xMin = pa.getPixelFromValue(peptide.getSite());
-        this.xMax = pa.getPixelFromValue(peptide.getSite() + peptide.getSequence().length());
+        this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
+        this.xMin = canvasProperties.getPixelFromValue(peptide.getSite());
+        this.xMax = canvasProperties.getPixelFromValue(peptide.getSite() + peptide.getSequence().length());
+        this.width = Math.ceil(xMax - xMin);
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
     }
@@ -64,12 +68,12 @@ public class PeptideBase implements Drawable, Clickable {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR);
-        ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), PEPTIDE_HEIGHT);
+        ctx.setFillStyle(this.peptideColor);
+        ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
 
         if(isMouseOver() || selected){
             ctx.setFillStyle(PEPTIDE_SELECTED_COLOR);
-            ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), PEPTIDE_HEIGHT);
+            ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
             handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
         }
     }

@@ -3,23 +3,22 @@ package uk.ac.ebi.pride.widgets.client.protein.utils;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceBorder;
 import uk.ac.ebi.pride.widgets.client.protein.model.NonCoveredSequenceRegion;
-import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
 
 import java.util.*;
 
 public abstract class RegionUtils {
 
-    public static List<SequenceRegion> getSequenceRegions(ProteinAxis pa){
+    public static List<SequenceRegion> getSequenceRegions(CanvasProperties canvasProperties){
         List<SequenceRegion> regions = new ArrayList<SequenceRegion>();
 
         //initialize an array with an empty peptide set per position
         List<Set<String>> aux = new LinkedList<Set<String>>();
-        for(int i=0; i<pa.getProteinHandler().getLength(); ++i){aux.add(new HashSet<String>());}
+        for(int i=0; i<canvasProperties.getProteinLength(); ++i){aux.add(new HashSet<String>());}
 
         //for every peptide we add the sequence in every position were the peptide already is
         //[(ABC, AB),(ABC, AB),(AB), ... ]
-        for (PeptideHandler peptideHandler : pa.getProteinHandler().getPeptides()) {
+        for (PeptideHandler peptideHandler : canvasProperties.getProteinHandler().getPeptides()) {
             String seq = peptideHandler.getSequence();
             int start = peptideHandler.getSite() - 1;
             int end = start + seq.length();
@@ -35,7 +34,7 @@ public abstract class RegionUtils {
                 region = regions.get(regions.size() - 1);
                 region.increaseLength();
             }else{
-                region = SequenceRegionFactory.createSequenceRegion(i + 1, peptideSet.size(), pa);
+                region = SequenceRegionFactory.createSequenceRegion(i + 1, peptideSet.size(), canvasProperties);
                 regions.add(region);
             }
             lastSet = peptideSet;
@@ -44,7 +43,7 @@ public abstract class RegionUtils {
         return regions;
     }
 
-    public static List<CoveredSequenceBorder> getCoveredSequenceBorder(List<SequenceRegion> regions){
+    public static List<CoveredSequenceBorder> getCoveredSequenceBorder(List<SequenceRegion> regions, CanvasProperties canvasProperties){
         List<CoveredSequenceBorder> borders = new ArrayList<CoveredSequenceBorder>();
 
         boolean newBorder = true;
@@ -55,7 +54,7 @@ public abstract class RegionUtils {
                 if(newBorder){
                     int start = region.getStart();
                     int length = region.getLength();
-                    CoveredSequenceBorder border = new CoveredSequenceBorder(start, length, region.getProteinSegment());
+                    CoveredSequenceBorder border = new CoveredSequenceBorder(start, length, canvasProperties);
                     borders.add(border);
                 }else{
                     CoveredSequenceBorder border = borders.get(borders.size()-1);

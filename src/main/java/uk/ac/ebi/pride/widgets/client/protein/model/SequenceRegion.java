@@ -4,6 +4,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionHighlightEvent;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 public abstract class SequenceRegion implements Drawable {
     protected HandlerManager handlerManager;
@@ -13,22 +14,22 @@ public abstract class SequenceRegion implements Drawable {
     private int start;
     private int peptides;
     protected int length;
-    private ProteinAxis pa;
+    private CanvasProperties canvasProperties;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    protected SequenceRegion(int start, ProteinAxis pa) {
-        this(start, -1, pa);
+    protected SequenceRegion(int start, CanvasProperties canvasProperties) {
+        this(start, -1, canvasProperties);
     }
-    protected SequenceRegion(int start, int peptides, ProteinAxis pa) {
+    protected SequenceRegion(int start, int peptides, CanvasProperties canvasProperties) {
         this.highlighted = false;
         this.selected = false;
 
         this.start = start;
         this.peptides = peptides;
         this.length = 1;
-        this.pa = pa;
+        this.canvasProperties = canvasProperties;
     }
 
     public void increaseLength() {
@@ -41,10 +42,6 @@ public abstract class SequenceRegion implements Drawable {
 
     public int getLength() {
         return this.length;
-    }
-
-    public ProteinAxis getProteinSegment() {
-        return pa;
     }
 
     public int getPeptides() {
@@ -62,7 +59,7 @@ public abstract class SequenceRegion implements Drawable {
     public abstract boolean isMouseOver();
 
     public double getPixelFromValue(double value){
-        return pa.getPixelFromValue(value);
+        return this.canvasProperties.getPixelFromValue(value);
     }
 
     @Override

@@ -1,23 +1,22 @@
 package uk.ac.ebi.pride.widgets.client.protein.utils;
 
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
-import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PeptideLevel {
-    private ProteinAxis pa;
+    private CanvasProperties canvasProperties;
     int correction;
     Set<PeptideHandler> peptideHandlers;
     boolean[] availablePositions;
 
-    public PeptideLevel(int proteinLength, ProteinAxis pa) {
+    public PeptideLevel(CanvasProperties canvasProperties) {
+        this.canvasProperties = canvasProperties;
         //noinspection Convert2Diamond
         this.peptideHandlers = new HashSet<PeptideHandler>();
-        this.pa = pa;
-        correction = (int) Math.floor(pa.getPixelFromValue(0));
-        int end = (int) Math.ceil(pa.getPixelFromValue(proteinLength + 1));
+        correction = (int) Math.floor(canvasProperties.getPixelFromValue(0));
+        int end = (int) Math.ceil(canvasProperties.getPixelFromValue(canvasProperties.getProteinLength()+ 1));
         int length = end - correction + 1;
         availablePositions = new boolean[length];
         for(int i=0; i<length; ++i){
@@ -26,8 +25,8 @@ public class PeptideLevel {
     }
 
     public boolean addPeptide(PeptideHandler peptideHandler){
-        int start = (int) Math.floor(pa.getPixelFromValue(peptideHandler.getSite())) - correction;
-        int end = (int) Math.ceil(pa.getPixelFromValue(peptideHandler.getEnd())) - correction;
+        int start = (int) Math.floor(this.canvasProperties.getPixelFromValue(peptideHandler.getSite())) - correction;
+        int end = (int) Math.ceil(this.canvasProperties.getPixelFromValue(peptideHandler.getEnd())) - correction;
         if(spaceAvailable(start, end)){
             reserveSpace(start, end);
             peptideHandlers.add(peptideHandler);

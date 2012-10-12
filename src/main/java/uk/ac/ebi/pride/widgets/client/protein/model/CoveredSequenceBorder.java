@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 public class CoveredSequenceBorder extends SequenceRegion {
     public static final CssColor BORDER_COLOR = CssColor.make("rgba(0,0,0, 1)");
@@ -11,12 +12,12 @@ public class CoveredSequenceBorder extends SequenceRegion {
     private double xMin, xMax;
     private int yMin, yMax;
 
-    public CoveredSequenceBorder(int start, int length, ProteinAxis pa) {
-        super(start, pa);
+    public CoveredSequenceBorder(int start, int length, CanvasProperties canvasProperties) {
+        super(start, canvasProperties);
         this.length = length;
         setBounds();
-        yMin = pa.Y_OFFSET;
-        yMax = pa.Y_OFFSET + pa.BOXES_HEIGHT;
+        yMin = CanvasProperties.Y_OFFSET;
+        yMax = CanvasProperties.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;
     }
 
     public void increaseLength(int length) {

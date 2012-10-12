@@ -7,10 +7,10 @@ import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
 
 public abstract class SequenceRegionFactory {
 
-    public static SequenceRegion createSequenceRegion(int start, int peptides, ProteinAxis ps){
+    public static SequenceRegion createSequenceRegion(int start, int peptides, CanvasProperties canvasProperties){
         if(peptides==0)
-            return new NonCoveredSequenceRegion(start, ps);
+            return new NonCoveredSequenceRegion(start, canvasProperties);
         else
-            return new CoveredSequenceRegion(start, peptides, ps);
+            return new CoveredSequenceRegion(start, peptides, canvasProperties);
     }
 }

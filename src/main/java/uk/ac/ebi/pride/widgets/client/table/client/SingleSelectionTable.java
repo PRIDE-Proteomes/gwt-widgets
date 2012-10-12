@@ -39,25 +39,23 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
             //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
             getSelectionModel().setSelected(this.selectedItem, false);
             //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-            //getKeyboardSelectedElement().blur();
-
-            this.selectedItem = null;
-            if(fireEvent){
-                fireEvent(new TableResetEvent());
-            }
+            getKeyboardSelectedElement().blur();
         }
     }
 
     public void setSelectedItem(T selectedItem) {
-        setSelectedItem(selectedItem, false);
+        if(selectedItem!=null && !selectedItem.equals(this.selectedItem)){
+            getSelectionModel().setSelected(selectedItem, true);
+            if(this.selectedItem!=selectedItem){
+                this.selectedItem = selectedItem;
+                fireEvent(new SingleSelectionChangeEvent<T>(this.selectedItem));
+            }
+        }
     }
 
-    public void setSelectedItem(T selectedItem, boolean focusOnSelection) {
-        if(selectedItem!=null && !selectedItem.equals(this.selectedItem)){
-            if(focusOnSelection){
-                getRowElement(getVisibleItems().indexOf(selectedItem)).scrollIntoView();
-            }
-            getSelectionModel().setSelected(selectedItem, true);
+    public void scrollIntoSelectedItem(){
+        if(this.selectedItem!=null){
+            getRowElement(getVisibleItems().indexOf(this.selectedItem)).scrollIntoView();
         }
     }
 
@@ -68,6 +66,9 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
         if(this.selectedItem!=null){
             //noinspection Convert2Diamond
             fireEvent(new SingleSelectionChangeEvent<T>(this.selectedItem));
+        }else{
+            fireEvent(new TableResetEvent());
         }
+
     }
 }

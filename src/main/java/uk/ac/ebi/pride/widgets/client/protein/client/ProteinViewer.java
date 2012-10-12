@@ -26,6 +26,7 @@ import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceBorder;
 import uk.ac.ebi.pride.widgets.client.protein.model.PeptideBase;
 import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.RegionUtils;
 
@@ -68,24 +69,26 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
         this.handlerManager = new HandlerManager(this);
 
-        ProteinAxis pa = new ProteinAxis(proteinHandler, this.canvas);
+        CanvasProperties canvasProperties = new CanvasProperties(proteinHandler, this.canvas);
+
+        ProteinAxis pa = new ProteinAxis(canvasProperties);
         components.add(pa);
 
-        List<SequenceRegion> sequenceRegions = RegionUtils.getSequenceRegions(pa);
+        List<SequenceRegion> sequenceRegions = RegionUtils.getSequenceRegions(canvasProperties);
         for (SequenceRegion sr : sequenceRegions) {
             sr.setHandlerManager(this.handlerManager);
             components.add(sr);
         }
 
         if(regionBorder){
-            List<CoveredSequenceBorder> borders = RegionUtils.getCoveredSequenceBorder(sequenceRegions);
+            List<CoveredSequenceBorder> borders = RegionUtils.getCoveredSequenceBorder(sequenceRegions, canvasProperties);
             for (CoveredSequenceBorder border : borders) {
                 components.add(border);
             }
         }
 
         int heightAux = height;
-        for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(pa, proteinHandler)) {
+        for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(canvasProperties)) {
             int yMax = peptideBase.getYMax();
             if(yMax > heightAux) heightAux = yMax;
             peptideBase.setHandlerManager(this.handlerManager);

@@ -1,11 +1,10 @@
 package uk.ac.ebi.pride.widgets.client.protein.model;
 
-import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 public class ProteinAxis implements Drawable {
 
@@ -17,23 +16,14 @@ public class ProteinAxis implements Drawable {
     public static final int X_OFFSET = 4;
     public static final int Y_OFFSET = 20;
 
-    private ProteinHandler proteinHandler;
-    private double delta;
+    private double segmentY;
+    private double xMin, xMax;
 
-    public ProteinAxis(ProteinHandler proteinHandler, Canvas canvas) {
-        this.proteinHandler = proteinHandler;
-
-        int width = canvas.getCanvasElement().getWidth() - ( 2 * X_OFFSET );
-        double length = proteinHandler.getLength();
-        this.delta = width / length;
-    }
-
-    public ProteinHandler getProteinHandler(){
-        return this.proteinHandler;
-    }
-
-    public final double getPixelFromValue(double value){
-        return (this.delta * value) + X_OFFSET;
+    public ProteinAxis(CanvasProperties canvasProperties) {
+        int length = canvasProperties.getProteinLength();
+        this.segmentY = SEGMENT_Y + Y_OFFSET ;
+        this.xMin = canvasProperties.getPixelFromValue(0);
+        this.xMax = canvasProperties.getPixelFromValue(length);
     }
 
     @Override
@@ -43,9 +33,6 @@ public class ProteinAxis implements Drawable {
 
     @Override
     public void draw(Context2d ctx) {
-        double segmentY = SEGMENT_Y + Y_OFFSET ;
-        double xMin = getPixelFromValue(0);
-        double xMax = getPixelFromValue(this.proteinHandler.getLength());
         FillStrokeStyle s =  ctx.getFillStyle();
 
         ctx.setStrokeStyle(CssColor.make("rgba(0,0,0, 1)"));

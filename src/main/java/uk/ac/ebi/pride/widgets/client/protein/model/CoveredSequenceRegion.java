@@ -2,23 +2,24 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
+import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
 public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
-    private double xMin, xMax;
-    private int yMin, yMax;
+    private double xMin, xMax, width;
+    private int yMin, yMax, height;
     private CssColor regionColor;
 
-    public CoveredSequenceRegion(int start, int peptides, ProteinAxis pa) {
-        super(start, peptides, pa);
+    public CoveredSequenceRegion(int start, int peptides, CanvasProperties canvasProperties) {
+        super(start, peptides, canvasProperties);
         setBounds();
         this.yMin = ProteinAxis.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
         this.yMax = ProteinAxis.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
+        this.height = yMax - yMin;
         this.regionColor = ColorFactory.getRedBasedColor(getPeptides() * 7);
     }
 
@@ -31,6 +32,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     private void setBounds(){
         xMin = getPixelFromValue(getStart());
         xMax = getPixelFromValue(getStart() + getLength());
+        width = Math.ceil(xMax - xMin);
     }
 
     @Override
@@ -43,10 +45,8 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
 
     @Override
     public void draw(Context2d ctx) {
-        //FillStrokeStyle s =  ctx.getFillStyle();
-
         ctx.setFillStyle(regionColor);
-        ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), yMax - yMin);
+        ctx.fillRect(xMin, yMin, width, height);
 
         if(isMouseOver()){
             showRegionTooltip(ctx);
@@ -54,10 +54,8 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
 
         if(isMouseOver() || selected){
             ctx.setFillStyle(REGION_SELECTED_COLOR);
-            ctx.fillRect(xMin, yMin, Math.ceil(xMax - xMin), yMax - yMin);
+            ctx.fillRect(xMin, yMin, width, height);
         }
-
-        //ctx.setFillStyle(s);
     }
 
     @Override
