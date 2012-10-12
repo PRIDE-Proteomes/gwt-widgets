@@ -41,6 +41,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
     final Timer timer;
     private Canvas canvas;
 
+    @SuppressWarnings("Convert2Diamond")
     private List<Drawable> components = new LinkedList<Drawable>();
 
     // mouse positions relative to canvas
@@ -135,6 +136,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
                 PeptideBase peptideBase = (PeptideBase) component;
                 PeptideHandler peptideAux = peptideBase.getPeptide();
                 peptideBase.setSelected(peptideAux.getSite().equals(site) && peptideAux.getSequence().equals(sequence));
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetPeptideSelection(){
+        for (Drawable component : components) {
+            if(component instanceof PeptideBase){
+                PeptideBase peptideBase = (PeptideBase) component;
+                peptideBase.setSelected(false);
             }
         }
         doUpdate(true);

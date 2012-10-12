@@ -4,7 +4,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.protein.client.ProteinViewer;
 import uk.ac.ebi.pride.widgets.client.sequence.client.SequenceViewer;
@@ -97,21 +96,6 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
             table.setHeight("150px");
             //tableContainer.add(table);
             table.setPageSize(protein.getPeptides().size());
-            Timer timer = new Timer() {
-                @Override
-                public void run() {
-                    table.setSelectedItem(protein.getPeptides().get(protein.getPeptides().size()-1));
-                }
-            };
-            timer.schedule(5000);
-            Timer timer1 = new Timer() {
-                @Override
-                public void run() {
-                    table.resetSelection(true);
-                }
-            };
-            timer1.schedule(7000);
-
 
             vp.add(table);
 
@@ -140,7 +124,7 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
     }
 
     @Override
-    public void onPrideTableReset(TableResetEvent eventTable) {
+    public void onTableReset(TableResetEvent eventTable) {
         System.out.println("Table selection reset :)");
     }
 }

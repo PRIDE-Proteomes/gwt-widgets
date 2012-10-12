@@ -36,13 +36,27 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
 
     public void resetSelection(boolean fireEvent){
         if(this.selectedItem != null){
+            //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
             getSelectionModel().setSelected(this.selectedItem, false);
+            //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+            //getKeyboardSelectedElement().blur();
+
+            this.selectedItem = null;
+            if(fireEvent){
+                fireEvent(new TableResetEvent());
+            }
         }
     }
 
     public void setSelectedItem(T selectedItem) {
+        setSelectedItem(selectedItem, false);
+    }
+
+    public void setSelectedItem(T selectedItem, boolean focusOnSelection) {
         if(selectedItem!=null && !selectedItem.equals(this.selectedItem)){
-            getRowElement(getVisibleItems().indexOf(selectedItem)).scrollIntoView();
+            if(focusOnSelection){
+                getRowElement(getVisibleItems().indexOf(selectedItem)).scrollIntoView();
+            }
             getSelectionModel().setSelected(selectedItem, true);
         }
     }
@@ -51,10 +65,9 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
     public void onSelectionChange(SelectionChangeEvent event) {
         SingleSelectionModel<T> selectionModel = (SingleSelectionModel<T>) getSelectionModel();
         this.selectedItem = selectionModel.getSelectedObject();
-        if(this.selectedItem!=null)
+        if(this.selectedItem!=null){
             //noinspection Convert2Diamond
             fireEvent(new SingleSelectionChangeEvent<T>(this.selectedItem));
-        else
-            fireEvent(new TableResetEvent());
+        }
     }
 }

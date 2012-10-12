@@ -17,6 +17,6 @@ public class TableResetEvent extends GwtEvent<TableResetHandler> {
 
     @Override
     protected void dispatch(TableResetHandler handler) {
-        handler.onPrideTableReset(this);
+        handler.onTableReset(this);
     }
 }

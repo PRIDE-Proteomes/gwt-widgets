@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.table.events.TableResetEvent;
  */
 public interface TableResetHandler extends EventHandler {
 
-    public void onPrideTableReset(TableResetEvent eventTable);
+    public void onTableReset(TableResetEvent eventTable);
 
 }
