@@ -60,6 +60,20 @@ public class Position implements DrawableLayers, Clickable {
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
 
+        /* MODIFICATION ADJUSTMENTS */
+        if(this.position == 1){
+            //Modifications in position 0 are assigned to the position 1
+            this.isModified = this.isModified || proteinSummary.getModificationPositions().contains(0);
+            this.prideModifications.addAll(proteinSummary.getPrideModifications(0));
+
+        }else if(this.position == proteinSummary.getLength()){
+            //Modifications in position length+1 are assigned to position length
+            int aux = proteinSummary.getLength()+1;
+            this.isModified = this.isModified || proteinSummary.getModificationPositions().contains(aux);
+            this.prideModifications.addAll(proteinSummary.getPrideModifications(aux));
+        }
+        /* MODIFICATION ADJUSTMENTS */
+
         this.tooltip = String.valueOf(this.position);
         if(isModified){
             this.tooltip += "<br/>" + getModificationTooltip(this.prideModifications);
