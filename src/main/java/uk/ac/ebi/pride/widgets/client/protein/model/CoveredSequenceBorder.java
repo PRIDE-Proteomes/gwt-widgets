@@ -17,7 +17,7 @@ public class CoveredSequenceBorder extends SequenceRegion {
         this.length = length;
         setBounds();
         yMin = CanvasProperties.Y_OFFSET;
-        yMax = CanvasProperties.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;
+        yMax = CanvasProperties.Y_OFFSET + CoveredSequenceRegion.BOXES_HEIGHT;
     }
 
     public void increaseLength(int length) {

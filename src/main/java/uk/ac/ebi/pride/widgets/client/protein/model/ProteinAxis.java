@@ -11,17 +11,14 @@ public class ProteinAxis implements Drawable {
     private static final double SEGMENT_WIDTH = 1;
     public static final double SEGMENT_Y = 25;
     private static final double SEGMENT_TICK_HEIGHT = 5;
-    public static final int BOXES_HEIGHT = 50;
 
-    public static final int X_OFFSET = 4;
-    public static final int Y_OFFSET = 20;
 
     private double segmentY;
     private double xMin, xMax;
 
     public ProteinAxis(CanvasProperties canvasProperties) {
         int length = canvasProperties.getProteinLength();
-        this.segmentY = SEGMENT_Y + Y_OFFSET ;
+        this.segmentY = SEGMENT_Y + CanvasProperties.Y_OFFSET ;
         this.xMin = canvasProperties.getPixelFromValue(0);
         this.xMax = canvasProperties.getPixelFromValue(length);
     }

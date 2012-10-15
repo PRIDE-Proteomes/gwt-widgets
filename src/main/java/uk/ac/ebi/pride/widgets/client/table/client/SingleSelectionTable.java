@@ -48,6 +48,7 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
             getSelectionModel().setSelected(selectedItem, true);
             if(this.selectedItem!=selectedItem){
                 this.selectedItem = selectedItem;
+                //noinspection Convert2Diamond
                 fireEvent(new SingleSelectionChangeEvent<T>(this.selectedItem));
             }
         }

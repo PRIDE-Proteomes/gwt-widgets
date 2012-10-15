@@ -83,6 +83,7 @@
                         <exclude>**/test/**</exclude>
                         <exclude>**/servlets/**</exclude>
                         <exclude>**/PrideWidgetsTest.*</exclude>
+                        <!--<exclude>**/*.java</exclude>-->
                     </excludes>
                 </configuration>
             </plugin>

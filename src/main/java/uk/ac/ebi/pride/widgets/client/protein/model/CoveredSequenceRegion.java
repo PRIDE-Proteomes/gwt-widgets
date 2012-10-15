@@ -8,6 +8,7 @@ import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
 public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
+    public static final int BOXES_HEIGHT = 50;
     public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
     private double xMin, xMax, width;
@@ -17,8 +18,8 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     public CoveredSequenceRegion(int start, int peptides, CanvasProperties canvasProperties) {
         super(start, peptides, canvasProperties);
         setBounds();
-        this.yMin = ProteinAxis.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
-        this.yMax = ProteinAxis.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
+        this.yMin = CanvasProperties.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
+        this.yMax = CanvasProperties.Y_OFFSET + BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
         this.height = yMax - yMin;
         this.regionColor = ColorFactory.getRedBasedColor(getPeptides() * 7);
     }
@@ -83,10 +84,10 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
 
         int posX;
         int boxWidth = width + 2 * offset;
-        if(mouseX > (ctx.getCanvas().getWidth() - boxWidth - ProteinAxis.X_OFFSET)){
-            posX = ctx.getCanvas().getWidth() - boxWidth - ProteinAxis.X_OFFSET;
-        }else if(mouseX < boxWidth / 2 + ProteinAxis.X_OFFSET){
-            posX = ProteinAxis.X_OFFSET;
+        if(mouseX > (ctx.getCanvas().getWidth() - boxWidth - CanvasProperties.X_OFFSET)){
+            posX = ctx.getCanvas().getWidth() - boxWidth - CanvasProperties.X_OFFSET;
+        }else if(mouseX < boxWidth / 2 + CanvasProperties.X_OFFSET){
+            posX = CanvasProperties.X_OFFSET;
         }else{
             posX = mouseX - (width / 2);
         }

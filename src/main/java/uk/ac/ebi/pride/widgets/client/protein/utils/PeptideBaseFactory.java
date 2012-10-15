@@ -1,14 +1,15 @@
 package uk.ac.ebi.pride.widgets.client.protein.utils;
 
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceRegion;
+import uk.ac.ebi.pride.widgets.client.protein.model.ModificationBase;
 import uk.ac.ebi.pride.widgets.client.protein.model.PeptideBase;
-import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class PeptideBaseFactory {
-    public static final int PEPTIDES_Y = ProteinAxis.Y_OFFSET + ProteinAxis.BOXES_HEIGHT;
+    public static final int PEPTIDES_Y = CanvasProperties.Y_OFFSET + CoveredSequenceRegion.BOXES_HEIGHT + ModificationBase.MODIFICATION_HEIGHT;
     public static final int PEPTIDE_VERTICAL_OFFSET = 5;
 
     public static List<PeptideBase> getPeptideBaseList(CanvasProperties canvasProperties){

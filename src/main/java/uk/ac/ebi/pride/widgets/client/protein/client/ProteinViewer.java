@@ -11,6 +11,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
@@ -22,10 +23,7 @@ import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideHighlightedHandler
 import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideSelectedHandler;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionHighlightedHandler;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionSelectedHandler;
-import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceBorder;
-import uk.ac.ebi.pride.widgets.client.protein.model.PeptideBase;
-import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAxis;
-import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
+import uk.ac.ebi.pride.widgets.client.protein.model.*;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.RegionUtils;
@@ -70,6 +68,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.handlerManager = new HandlerManager(this);
 
         CanvasProperties canvasProperties = new CanvasProperties(proteinHandler, this.canvas);
+        ProteinSummary proteinSummary = new ProteinSummary(proteinHandler);
 
         ProteinAxis pa = new ProteinAxis(canvasProperties);
         components.add(pa);
@@ -87,6 +86,11 @@ public class ProteinViewer extends Composite implements HasHandlers {
             }
         }
 
+        for (Integer position : proteinSummary.getModificationPositions()) {
+            List<PrideModificationHandler> modifications = proteinSummary.getPrideModifications(position);
+            components.add(new ModificationBase(position, modifications, canvasProperties));
+        }
+
         int heightAux = height;
         for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(canvasProperties)) {
             int yMax = peptideBase.getYMax();
@@ -96,7 +100,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
 
         if(heightAux > height){
-            heightAux += ProteinAxis.Y_OFFSET;
+            heightAux += CanvasProperties.Y_OFFSET;
             this.canvas.getCanvasElement().setHeight(heightAux);
             this.canvas.setPixelSize(width, heightAux);
         }
