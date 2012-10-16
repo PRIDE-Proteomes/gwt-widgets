@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
  */
 public interface PeptideSelectedHandler extends EventHandler {
 
-    public void onProteinRegionHighlighted(PeptideSelectedEvent e);
+    public void onPeptideSelected(PeptideSelectedEvent e);
 
 }

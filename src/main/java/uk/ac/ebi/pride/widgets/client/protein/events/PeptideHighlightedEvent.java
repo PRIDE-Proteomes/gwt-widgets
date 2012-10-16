@@ -7,7 +7,9 @@ import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideHighlightedHandler
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class PeptideHighlightedEvent extends GwtEvent<PeptideHighlightedHandler> {
+    @SuppressWarnings("Convert2Diamond")
     public static Type<PeptideHighlightedHandler> TYPE = new GwtEvent.Type<PeptideHighlightedHandler>();
 
     PeptideHandler peptide;
@@ -27,6 +29,6 @@ public class PeptideHighlightedEvent extends GwtEvent<PeptideHighlightedHandler>
 
     @Override
     protected void dispatch(PeptideHighlightedHandler handler) {
-        handler.onProteinRegionHighlighted(this);
+        handler.onPeptideHighlightChanged(this);
     }
 }

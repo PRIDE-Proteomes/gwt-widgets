@@ -30,7 +30,7 @@ public class PeptideSelectedEvent extends GwtEvent<PeptideSelectedHandler> {
 
     @Override
     protected void dispatch(PeptideSelectedHandler handler) {
-        handler.onProteinRegionHighlighted(this);
+        handler.onPeptideSelected(this);
     }
 
     @Override
