@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Redrawable;
 import uk.ac.ebi.pride.widgets.client.table.events.TableResetEvent;
 import uk.ac.ebi.pride.widgets.client.table.handlers.TableResetHandler;
 import uk.ac.ebi.pride.widgets.client.table.style.TableResources;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class AbstractTable<T> extends DataGrid<T> implements SelectionChangeEvent.Handler {
+public abstract class AbstractTable<T> extends DataGrid<T> implements Redrawable, SelectionChangeEvent.Handler {
     private final ListDataProvider<T> dataProvider;
 
     public AbstractTable() {
