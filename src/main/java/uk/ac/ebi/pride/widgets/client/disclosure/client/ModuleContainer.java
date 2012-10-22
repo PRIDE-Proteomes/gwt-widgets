@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.*;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Redrawable;
 import uk.ac.ebi.pride.widgets.client.disclosure.images.DisclosureImages;
 import uk.ac.ebi.pride.widgets.client.table.client.AbstractTable;
 
@@ -83,8 +84,8 @@ public class ModuleContainer extends Composite implements OpenHandler<Disclosure
     public void onOpen(OpenEvent<DisclosurePanel> event) {
         Widget content = this.getContent();
         if(content!= null){
-            if(content instanceof AbstractTable){
-                ((AbstractTable) content).redraw();
+            if(content instanceof Redrawable){
+                ((Redrawable) content).redraw();
             }
         }
     }
