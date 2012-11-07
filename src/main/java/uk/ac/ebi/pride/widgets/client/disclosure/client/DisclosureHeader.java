@@ -35,15 +35,18 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
 
         HorizontalPanel hp = new HorizontalPanel();
         hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         hp.setSpacing(5);
 
         Label title = new Label(text);
         //noinspection GWTStyleCheck
         title.addStyleName("pq-module-header-title");
         hp.add(title);
+        hp.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_LEFT);
         //noinspection GWTStyleCheck
         message.addStyleName("pq-module-header-message");
         hp.add(message);
+        hp.setCellHorizontalAlignment(message, HasHorizontalAlignment.ALIGN_LEFT);
 
         flexTable.setWidget(0, 0, hp);
         cellFormatter.setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
@@ -51,7 +54,7 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
 
         flexTable.setWidget(0, 1, iconContainer);
         cellFormatter.setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-        cellFormatter.setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+        cellFormatter.setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT);
         cellFormatter.setWidth(0,1, closedIcon.getWidth() + "px");
 
         dp.addOpenHandler(this);

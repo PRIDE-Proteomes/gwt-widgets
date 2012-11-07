@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.shared.HandlerManager;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinPositionHighlightedEvent;
@@ -66,9 +67,21 @@ public class Sequence implements DrawableLayers, Clickable {
     public void selectRegion(int start, int end){
         CanvasSelection aux = new CanvasSelection(start, end);
         if(!this.canvasSelection.equals(aux)){
-            //resetSelection();
+            //resetRegionSelection();
             this.canvasSelection.setRegionStart(start);
             this.canvasSelection.setRegionEnd(end);
+        }
+    }
+
+    public void setVisiblePeptide(PeptideHandler peptide){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setVisiblePeptide(peptide);
+        }
+    }
+
+    public void resetPeptidesFilter(){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.resetPeptidesFilter();
         }
     }
 

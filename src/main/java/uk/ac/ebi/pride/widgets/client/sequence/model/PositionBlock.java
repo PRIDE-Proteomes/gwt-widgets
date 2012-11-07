@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
@@ -21,6 +22,18 @@ public class PositionBlock implements DrawableLayers, Clickable {
             positionList.add(new Position(proteinSummary, canvasSelection, i));
         }
         CanvasProperties.getCanvasProperties().reserveHorizontalSpace(CanvasProperties.X_SPACE);
+    }
+
+    public void setVisiblePeptide(PeptideHandler peptide){
+        for (Position position : positionList) {
+            position.setVisiblePeptide(peptide);
+        }
+    }
+
+    public void resetPeptidesFilter(){
+        for (Position position : positionList) {
+            position.resetPeptidesFilter();
+        }
     }
 
     @Override

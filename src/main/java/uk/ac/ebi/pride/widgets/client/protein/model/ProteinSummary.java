@@ -1,6 +1,5 @@
 package uk.ac.ebi.pride.widgets.client.protein.model;
 
-import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 
@@ -16,42 +15,43 @@ public class ProteinSummary {
     private int length;
 
     public Set<Integer> modificationPositions = new HashSet<Integer>();
-    public Map<Integer, List<PrideModificationHandler>> modificationType = new HashMap<Integer, List<PrideModificationHandler>>();
+    public Map<Integer, List<ProteinModificationHandler>> modificationsAtSite = new HashMap<Integer, List<ProteinModificationHandler>>();
 
     public ProteinSummary(ProteinHandler proteinHandler) {
         this.sequence = proteinHandler.getSequence();
         this.length = proteinHandler.getLength();
 
-        for (ProteinModificationHandler proteinModificationHandler : proteinHandler.getModifications()) {
-            int site = proteinModificationHandler.getSite();
-            List<PrideModificationHandler> list;
+        for (ProteinModificationHandler proteinModification: proteinHandler.getModifications()) {
+            int site = proteinModification.getSite();
+            List<ProteinModificationHandler> list;
 
-            if(modificationType.containsKey(site))
-                list = modificationType.get(site);
-            else
-                list = new LinkedList<PrideModificationHandler>();
+            if(this.modificationsAtSite.containsKey(site)){
+                list = this.modificationsAtSite.get(site);
+            }else{
+                list = new LinkedList<ProteinModificationHandler>();
+            }
 
-            list.add(proteinModificationHandler.getPrideModification());
-            modificationType.put(site, list);
-            modificationPositions.add(site);
+            list.add(proteinModification);
+            this.modificationsAtSite.put(site, list);
+            this.modificationPositions.add(site);
         }
     }
 
     public String getSequence() {
-        return sequence;
+        return this.sequence;
     }
 
     public int getLength() {
-        return length;
+        return this.length;
     }
 
     public Set<Integer> getModificationPositions() {
-        return modificationPositions;
+        return this.modificationPositions;
     }
 
-    public List<PrideModificationHandler> getPrideModifications(Integer site){
-        if(modificationType.containsKey(site))
-            return modificationType.get(site);
-        return new LinkedList<PrideModificationHandler>();
+    public List<ProteinModificationHandler> getPrideModifications(Integer site){
+        if(this.modificationsAtSite.containsKey(site))
+            return this.modificationsAtSite.get(site);
+        return new LinkedList<ProteinModificationHandler>();
     }
 }

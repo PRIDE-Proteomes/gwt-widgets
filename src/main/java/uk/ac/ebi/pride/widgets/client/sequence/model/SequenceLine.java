@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
@@ -51,6 +52,18 @@ public class SequenceLine implements DrawableLayers, Clickable {
     @SuppressWarnings("UnusedDeclaration")
     public List<PositionBlock> getPositionBlockList() {
         return positionBlockList;
+    }
+
+    public void setVisiblePeptide(PeptideHandler peptide){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.setVisiblePeptide(peptide);
+        }
+    }
+
+    public void resetPeptidesFilter(){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.resetPeptidesFilter();
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 public class PeptideBase implements Drawable, Clickable {
     public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
@@ -19,8 +20,11 @@ public class PeptideBase implements Drawable, Clickable {
 
     protected HandlerManager handlerManager;
     private PeptideHandler peptide;
+    private Tooltip tooltip = new Tooltip();
+    private String tooltipMessage;
     private CssColor peptideColor;
     private boolean selected = false;
+    private boolean mouseOver = false;
     private double xMin, xMax, width;
     private int yMin, yMax;
 
@@ -35,6 +39,8 @@ public class PeptideBase implements Drawable, Clickable {
         this.width = Math.ceil(xMax - xMin);
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
+
+        this.tooltipMessage = this.getModificationTooltip();
     }
 
     public void setHandlerManager(HandlerManager handlerManager) {
@@ -71,11 +77,25 @@ public class PeptideBase implements Drawable, Clickable {
         ctx.setFillStyle(this.peptideColor);
         ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
 
-        if(isMouseOver() || selected){
+        boolean mouseOverAux = isMouseOver();
+        if(mouseOverAux || selected){
             ctx.setFillStyle(PEPTIDE_SELECTED_COLOR);
             ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
-            handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
+
+            //Ensures only fired the first time the mouse enters in a non highlighted peptide
+            if(!selected && !this.mouseOver){
+                handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
+            }
         }
+        if(mouseOverAux){
+            this.tooltip.show(ctx.getCanvas(), (int) xMax, yMax, tooltipMessage);
+            this.tooltip.setAnimationEnabled(false);
+        }else{
+            this.tooltip.hide();
+            this.tooltip.setAnimationEnabled(true);
+        }
+
+        this.mouseOver = mouseOverAux;
     }
 
     @Override
@@ -94,4 +114,19 @@ public class PeptideBase implements Drawable, Clickable {
     public void onMouseDown(int mouseX, int mouseY) {
         //TODO
     }
+
+    private String getModificationTooltip(){
+        StringBuilder sb = new StringBuilder("Sequence: ");
+        sb.append(this.peptide.getSequence());
+        sb.append("<br/>");
+        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Uniqueness: ");
+        sb.append(this.peptide.getUniqueness());
+        sb.append("<br/>");
+        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
+        sb.append(this.peptide.getSite());
+        sb.append(";&nbsp;&nbsp;&nbsp;End: ");
+        sb.append(this.peptide.getEnd());
+        return sb.toString();
+    }
+
 }

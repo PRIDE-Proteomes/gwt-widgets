@@ -9,6 +9,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinPositionHighlightedEvent;
@@ -31,6 +32,8 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
 @SuppressWarnings("UnusedDeclaration")
 public class SequenceViewer extends Composite implements HasHandlers {
     private HandlerManager handlerManager;
+
+    private boolean peptidesVisible = true;
 
     //timer refresh rate, in milliseconds
     private static final int REFRESH_RATE = 40;
@@ -131,6 +134,26 @@ public class SequenceViewer extends Composite implements HasHandlers {
         this.drawModification(null);
     }
 
+    public void showPeptides(){
+        this.peptidesVisible = true;
+        drawPeptides();
+    }
+
+    public void hidePeptides(){
+        this.peptidesVisible = false;
+        drawPeptides();
+    }
+
+    public void setVisiblePeptide(PeptideHandler peptide){
+        this.sequence.setVisiblePeptide(peptide);
+        drawPeptides();
+    }
+
+    public void resetVisiblePeptides(){
+        this.sequence.resetPeptidesFilter();
+        drawPeptides();
+    }
+
     protected void doUpdate(){
         doUpdate(false);
     }
@@ -208,7 +231,9 @@ public class SequenceViewer extends Composite implements HasHandlers {
         //Clean the canvas
         ctx.clearRect(0, 0, this.width, this.height);
         //Draw all the peptides
-        sequence.drawPeptides(ctx);
+        if(peptidesVisible){
+            sequence.drawPeptides(ctx);
+        }
     }
 
     protected void drawSelection() {

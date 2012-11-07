@@ -12,38 +12,39 @@ import java.util.List;
 
 public class ProteinProxy implements ProteinHandler {
     Protein protein;
-    List<PeptideHandler> peptideAdapters;
+    List<PeptideHandler> peptides;
     List<ProteinModificationHandler> proteinModifications;
 
+    @SuppressWarnings("Convert2Diamond")
     public ProteinProxy(Protein protein) {
         this.protein = protein;
-        peptideAdapters = new LinkedList<PeptideHandler>();
+        this.peptides = new LinkedList<PeptideHandler>();
         for (Peptide peptide : protein.getPeptides()) {
-            peptideAdapters.add(new PeptideProxy(peptide));
+            this.peptides.add(new PeptideProxy(peptide));
         }
-        proteinModifications = new LinkedList<ProteinModificationHandler>();
+        this.proteinModifications = new LinkedList<ProteinModificationHandler>();
         for (ProteinModification proteinModification : protein.getModifications()) {
-            proteinModifications.add(new ProteinModificationProxy(proteinModification));
+            this.proteinModifications.add(new ProteinModificationProxy(proteinModification));
         }
     }
 
     @Override
     public Integer getLength() {
-        return protein.getLength();
+        return this.protein.getLength();
     }
 
     @Override
     public String getSequence() {
-        return protein.getSequence();
+        return this.protein.getSequence();
     }
 
     @Override
     public List<ProteinModificationHandler> getModifications() {
-        return proteinModifications;
+        return this.proteinModifications;
     }
 
     @Override
     public List<PeptideHandler> getPeptides() {
-        return peptideAdapters;
+        return this.peptides;
     }
 }

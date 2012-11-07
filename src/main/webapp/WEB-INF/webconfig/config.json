@@ -48,6 +48,7 @@
     },
     "globalFooter": true,
     "globalTemplate": {
+        "cssType": "fixed",
         "javascriptList": [
             {
                 "url": "PrideWidgetsTest/PrideWidgetsTest.nocache.js"

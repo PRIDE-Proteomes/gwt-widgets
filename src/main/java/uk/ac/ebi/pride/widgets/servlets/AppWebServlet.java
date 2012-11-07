@@ -29,6 +29,7 @@ public class AppWebServlet extends HttpServlet {
         response.setContentType("text/html");
 
         URL url = new URL("http://wwwdev.ebi.ac.uk/frontier/template-service/templates/services/web.html");
+        //URL url = new URL("http://localhost:9595/frontier-web-service/templates/services/web.html");
         // make post mode connection
         URLConnection urlc = url.openConnection();
         urlc.setDoOutput(true);

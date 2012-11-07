@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
@@ -35,6 +36,8 @@ public class Position implements DrawableLayers, Clickable {
     private String aminoAcid;
     private int position;
     private boolean isInPeptide;
+    private boolean isPeptideVisible;
+    private CssColor peptideColor;
     private boolean isNonUniquePeptide;
     private boolean isModified;
     private List<PrideModificationHandler> prideModifications;
@@ -56,6 +59,8 @@ public class Position implements DrawableLayers, Clickable {
         this.isNonUniquePeptide = proteinSummary.getNonUniquePeptidesPositions().contains(this.position);
         boolean uniquePeptide = proteinSummary.getUniquePeptidesPositions().contains(this.position);
         this.isInPeptide = isNonUniquePeptide || uniquePeptide;
+        this.isPeptideVisible = true;
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR;
 
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
@@ -92,6 +97,16 @@ public class Position implements DrawableLayers, Clickable {
         canvasProperties.reserveHorizontalSpace(CanvasProperties.POSITION_WIDTH);
     }
 
+    public void setVisiblePeptide(PeptideHandler peptide){
+        this.isPeptideVisible = (this.position>=peptide.getSite() && this.position<=peptide.getEnd());
+        this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
+    }
+
+    public void resetPeptidesFilter(){
+        this.isPeptideVisible = true;
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR;
+    }
+
     public boolean isMouseOver(){
         return (x<=mouseX & xMax>mouseX & yMin<=mouseY & y>=mouseY);
     }
@@ -109,8 +124,8 @@ public class Position implements DrawableLayers, Clickable {
 
     @Override
     public void drawPeptides(Context2d ctx) {
-        if(isInPeptide){
-            ctx.setFillStyle(isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR);
+        if(isInPeptide && isPeptideVisible){
+            ctx.setFillStyle(this.peptideColor);
             ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
         }
     }
@@ -175,9 +190,6 @@ public class Position implements DrawableLayers, Clickable {
     public void onMouseUp(int mouseX, int mouseY) {
         this.canvasSelection.setMouseDown(false);
         if(isMouseOver()){
-            for (PrideModificationHandler prideModification : prideModifications) {
-                System.out.println(prideModification.getName());
-            }
             this.canvasSelection.setRegionEnd(this.position);
         }
     }
@@ -200,7 +212,7 @@ public class Position implements DrawableLayers, Clickable {
         }
         StringBuilder sb = new StringBuilder("Modifications:");
         for (String modificationName : count.keySet()) {
-            sb.append("<br/>&nbsp;&nbsp;&nbsp;&gt&nbsp;");
+            sb.append("<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
             sb.append(count.get(modificationName));
             sb.append(" ");
             sb.append(modificationName);

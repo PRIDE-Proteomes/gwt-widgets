@@ -12,17 +12,12 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
-import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionHighlightEvent;
-import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideHighlightedHandler;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.PeptideSelectedHandler;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionHighlightedHandler;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionSelectedHandler;
+import uk.ac.ebi.pride.widgets.client.protein.events.*;
+import uk.ac.ebi.pride.widgets.client.protein.handlers.*;
 import uk.ac.ebi.pride.widgets.client.protein.model.*;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
@@ -87,8 +82,10 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
 
         for (Integer position : proteinSummary.getModificationPositions()) {
-            List<PrideModificationHandler> modifications = proteinSummary.getPrideModifications(position);
-            components.add(new ModificationBase(position, modifications, canvasProperties));
+            List<ProteinModificationHandler> modifications = proteinSummary.getPrideModifications(position);
+            ModificationBase mb = new ModificationBase(position, modifications, canvasProperties);
+            mb.setHandlerManager(this.handlerManager);
+            components.add(mb);
         }
 
         int heightAux = height;
@@ -135,6 +132,14 @@ public class ProteinViewer extends Composite implements HasHandlers {
         return handlerManager.addHandler(PeptideSelectedEvent.TYPE, handler);
     }
 
+    public HandlerRegistration addModificationHighlightedHandler(ModificationHighlightedHandler handler){
+        return handlerManager.addHandler(ModificationHighlightedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addModificationSelectedHandler(ModificationSelectedHandler handler){
+        return handlerManager.addHandler(ModificationSelectedEvent.TYPE, handler);
+    }
+
     public void setSelectedPeptide(PeptideHandler peptide){
         int site = peptide.getSite();
         String sequence = peptide.getSequence();
@@ -158,7 +163,49 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void resetSelection(){
+    public void selectModificationsBetween(int start, int end){
+        for (Drawable component : components) {
+            if(component instanceof ModificationBase){
+                ModificationBase modificationBase = (ModificationBase) component;
+                int pos = modificationBase.getPosition();
+                boolean inRange = (pos>=start && pos<=end);
+                modificationBase.setSelected(inRange);
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetModificationSelection(){
+        for (Drawable component : components) {
+            if(component instanceof ModificationBase){
+                ModificationBase modificationBase = (ModificationBase) component;
+                modificationBase.setSelected(false);
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void setHighlightedModifications(PrideModificationHandler modification){
+        for (Drawable component : components) {
+            if(component instanceof ModificationBase){
+                ModificationBase modificationBase = (ModificationBase) component;
+                modificationBase.setHighlighted(modificationBase.containModification(modification));
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetModificationHighlight(){
+        for (Drawable component : components) {
+            if(component instanceof ModificationBase){
+                ModificationBase modificationBase = (ModificationBase) component;
+                modificationBase.setHighlighted(false);
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetRegionSelection(){
         for (Drawable component : components) {
             if(component instanceof SequenceRegion){
                 SequenceRegion region = (SequenceRegion) component;
@@ -264,6 +311,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
                         ((Clickable) component).onMouseDown(mouseX, mouseY);
                     }
                 }
+                doUpdate(true);
             }
         });
     }

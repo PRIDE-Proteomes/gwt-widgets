@@ -1,0 +1,80 @@
+/** Add css rules here for your application. */
+
+body{
+    font-size: x-small;
+}
+table{
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    border-collapse: separate !important;
+    font-weight: bold;
+}
+th, td{
+    border: 0px;
+    margin: 0px;
+}
+.gwt-Label-protein{
+    font-size: 215%;
+    font-weight: bold;
+}
+.gwt-ScrollPanel-Peptides{
+    height: 200px;
+}
+.gwt-ScrollPanel-Psm{
+    height: 125px;
+}
+.gwt-ScrollPanel-Samples{
+    height: 150px;
+}
+.gwt-ScrollPanel-Modifications{
+    height: 150px;
+}
+.pq-peptide-unique{
+    font-weight: bold !important;
+}
+
+.pq-module-header {
+
+}
+.pq-module-header-title {
+    /*width: 10px;*/
+}
+.pq-module-header-message{
+    color: #00008b;
+    font-size: small;
+    font-weight: normal;
+}
+
+.pq-module-body {
+    border-style:solid;
+    border-color:#ffffff;
+    border-width: 1px;
+}
+.pq-module-body:hover {
+    border-style:solid;
+    border-color: #9acd32;
+    border-width: 1px;
+    border-radius: 15px;
+}
+gwt-DisclosurePanel-protein-sequence{
+
+}
+
+.gwt-Anchor:visited {color: #cc9fd9;}
+.gwt-Anchor:hover {
+    cursor: pointer;
+}
+.gwt-Label-error{
+    font-size: 18px;
+}
+
+.gwt-VerticalPanel-error{
+    background-color: #f5f5f5;
+    border: 1px;
+    color: red;
+    -moz-border-radius:15px !important;
+    -khtml-border-radius:15px !important;
+    -webkit-border-radius:15px !important;
+    border-radius:15px !important;
+}
