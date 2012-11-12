@@ -24,7 +24,7 @@ public class CanvasSelection {
     }
 
     public int getRegionStart() {
-        return regionStart;
+        return regionStart < regionEnd ? regionStart : regionEnd;
     }
 
     public void setRegionStart(int regionStart) {
@@ -32,7 +32,7 @@ public class CanvasSelection {
     }
 
     public int getRegionEnd() {
-        return regionEnd;
+        return regionEnd > regionStart ? regionEnd : regionStart;
     }
 
     public void setRegionEnd(int regionEnd) {
@@ -65,6 +65,7 @@ public class CanvasSelection {
         CanvasSelection that = (CanvasSelection) o;
 
         if (regionEnd != that.regionEnd) return false;
+        //noinspection RedundantIfStatement
         if (regionStart != that.regionStart) return false;
 
         return true;

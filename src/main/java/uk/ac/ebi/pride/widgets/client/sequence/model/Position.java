@@ -132,9 +132,7 @@ public class Position implements DrawableLayers, Clickable {
 
     @Override
     public void drawSelection(Context2d ctx) {
-        int regionStart = this.canvasSelection.getRegionStart();
-        int regionEnd = this.canvasSelection.getRegionEnd();
-        if(this.position >= regionStart & this.position <= regionEnd){
+        if(this.isSelected()){
             ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
         }
     }
@@ -203,6 +201,18 @@ public class Position implements DrawableLayers, Clickable {
         }
     }
 
+    @Override
+    public boolean isSelected() {
+        int regionStart = this.canvasSelection.getRegionStart();
+        int regionEnd = this.canvasSelection.getRegionEnd();
+        if(regionEnd<regionStart){
+            int aux = regionStart;
+            regionStart = regionEnd;
+            regionEnd = aux;
+        }
+        return (this.position >= regionStart & this.position <= regionEnd);
+    }
+
     private String getModificationTooltip(List<PrideModificationHandler> prideModifications){
         @SuppressWarnings("Convert2Diamond")
         Map<String, Integer> count = new HashMap<String, Integer>();
@@ -212,11 +222,13 @@ public class Position implements DrawableLayers, Clickable {
         }
         StringBuilder sb = new StringBuilder("Modifications:");
         for (String modificationName : count.keySet()) {
+            int c = count.get(modificationName);
             sb.append("<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
-            sb.append(count.get(modificationName));
-            sb.append(" ");
             sb.append(modificationName);
-            sb.append(" found");
+            sb.append(":&nbsp;");
+            sb.append(c);
+            sb.append("&nbsp;observation");
+            if(c>1) sb.append("s");
         }
         return sb.toString();
     }

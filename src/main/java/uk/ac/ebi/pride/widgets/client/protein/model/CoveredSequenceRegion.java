@@ -77,6 +77,11 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
         setMousePosition(mouseX, mouseY);
     }
 
+    @Override
+    public boolean isSelected() {
+        return this.selected;
+    }
+
     private void showRegionTooltip(Context2d ctx){
         int offset = 5;
         String str = "Peptides: " + getPeptides();
@@ -110,6 +115,8 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
+        ctx.setFillStyle("#FFFFFF");
+        ctx.fill();
         ctx.setStrokeStyle("#000000");
         ctx.stroke();
     }

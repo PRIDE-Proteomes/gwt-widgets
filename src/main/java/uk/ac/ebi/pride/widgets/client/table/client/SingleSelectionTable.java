@@ -63,13 +63,13 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
     @Override
     public void onSelectionChange(SelectionChangeEvent event) {
         SingleSelectionModel<T> selectionModel = (SingleSelectionModel<T>) getSelectionModel();
-        this.selectedItem = selectionModel.getSelectedObject();
-        if(this.selectedItem!=null){
-            //noinspection Convert2Diamond
-            fireEvent(new SingleSelectionChangeEvent<T>(this.selectedItem));
-        }else{
+        T selectedAux = selectionModel.getSelectedObject();
+        if(selectedAux==null){
             fireEvent(new TableResetEvent());
+        }else if(selectedAux!=this.selectedItem){
+            //noinspection Convert2Diamond
+            fireEvent(new SingleSelectionChangeEvent<T>(selectedAux));
         }
-
+        this.selectedItem = selectedAux;
     }
 }

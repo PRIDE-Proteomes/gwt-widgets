@@ -6,14 +6,23 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 
 
 public class ProteinRegionSelectionEvent extends GwtEvent<ProteinRegionSelectedHandler> {
+    @SuppressWarnings("Convert2Diamond")
     public static Type<ProteinRegionSelectedHandler> TYPE = new Type<ProteinRegionSelectedHandler>();
 
     private Integer start;
     private Integer end;
 
     public ProteinRegionSelectionEvent(CanvasSelection canvasSelection) {
-        this.start = canvasSelection.getRegionStart();
-        this.end = canvasSelection.getRegionEnd();
+        int regionStart = canvasSelection.getRegionStart();
+        int regionEnd = canvasSelection.getRegionEnd();
+        if(regionEnd<regionStart){
+            int aux = regionStart;
+            regionStart = regionEnd;
+            regionEnd = aux;
+        }
+        this.start = regionStart;
+        this.end = regionEnd;
+
     }
 
     public Integer getStart() {

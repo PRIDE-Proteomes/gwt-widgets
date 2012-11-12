@@ -42,7 +42,7 @@ public class ModificationBase implements Clickable, Drawable {
     public ModificationBase(int position, List<ProteinModificationHandler> modifications, CanvasProperties canvasProperties) {
         this.position = position;
         this.modifications = modifications;
-        ax = canvasProperties.getPixelFromValue(position);
+        ax = canvasProperties.getPixelFromPosition(position);
         bx = ax - MODIFICATION_TICK_WIDTH / 2;
         cx = ax + MODIFICATION_TICK_WIDTH / 2;
 
@@ -83,6 +83,7 @@ public class ModificationBase implements Clickable, Drawable {
 
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
         if(!isMouseOver()){
             selected = false;
         }else{
@@ -95,8 +96,12 @@ public class ModificationBase implements Clickable, Drawable {
 
     @Override
     public void onMouseDown(int mouseX, int mouseY) {
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
+        setMousePosition(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
     }
 
     @Override
@@ -159,15 +164,19 @@ public class ModificationBase implements Clickable, Drawable {
             int n = count.containsKey(aux.getName()) ? count.get(aux.getName()) : 0;
             count.put(aux.getName(), n + 1);
         }
-        StringBuilder sb = new StringBuilder("Position: ");
+        StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
+        sb.append(MODIFICATION_COLOR.value());
+        sb.append("\">MODIFICATION</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;Position: ");
         sb.append(String.valueOf(this.position));
-        sb.append("<br/>Modifications:");
+        //sb.append("<br/>&nbsp;&nbsp;&nbsp;&nbsp;Composed of:");
         for (String modificationName : count.keySet()) {
+            int c = count.get(modificationName);
             sb.append("<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
-            sb.append(count.get(modificationName));
-            sb.append(" ");
             sb.append(modificationName);
-            sb.append(" found");
+            sb.append(":&nbsp;");
+            sb.append(c);
+            sb.append("&nbsp;observation");
+            if(c>1) sb.append("s");
         }
         return sb.toString();
     }

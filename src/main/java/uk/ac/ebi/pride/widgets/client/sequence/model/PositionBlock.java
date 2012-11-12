@@ -91,4 +91,18 @@ public class PositionBlock implements DrawableLayers, Clickable {
             position.onMouseDown(mouseX, mouseY);
         }
     }
+
+    @Override
+    public boolean isMouseOver() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelected() {
+        boolean isSelected = false;
+        for(Position position : positionList){
+            isSelected = isSelected || position.isSelected();
+        }
+        return isSelected;
+    }
 }

@@ -21,8 +21,12 @@ public class CanvasProperties {
         this.delta = width / length;
     }
 
-    public final double getPixelFromValue(double value){
-        return (this.delta * value) + X_OFFSET;
+    public final double getPixelFromPosition(double position){
+        return (this.delta * position) + X_OFFSET;
+    }
+
+    public final int getPositionFromPixel(double pixel){
+        return (int) Math.floor((pixel - X_OFFSET) / this.delta);
     }
 
     public ProteinHandler getProteinHandler() {

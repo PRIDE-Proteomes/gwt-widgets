@@ -34,7 +34,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
     static final int REFRESH_RATE = 25;
     final Timer timer;
     private Canvas canvas;
+    private boolean objectSelected = false;
 
+    private Background background;
     @SuppressWarnings("Convert2Diamond")
     private List<Drawable> components = new LinkedList<Drawable>();
 
@@ -65,8 +67,11 @@ public class ProteinViewer extends Composite implements HasHandlers {
         CanvasProperties canvasProperties = new CanvasProperties(proteinHandler, this.canvas);
         ProteinSummary proteinSummary = new ProteinSummary(proteinHandler);
 
+        this.background = new Background(canvasProperties);
+        this.background.setHandlerManager(this.handlerManager);
+
         ProteinAxis pa = new ProteinAxis(canvasProperties);
-        components.add(pa);
+        this.components.add(pa);
 
         List<SequenceRegion> sequenceRegions = RegionUtils.getSequenceRegions(canvasProperties);
         for (SequenceRegion sr : sequenceRegions) {
@@ -138,6 +143,24 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     public HandlerRegistration addModificationSelectedHandler(ModificationSelectedHandler handler){
         return handlerManager.addHandler(ModificationSelectedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addBackgroundSelectedHandler(BackgroundSelectedHandler handler){
+        return handlerManager.addHandler(BackgroundSelectedEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addBackgroundHighlightedHandler(BackgroundHighlightedHandler handler){
+        return handlerManager.addHandler(BackgroundHighlightEvent.TYPE, handler);
+    }
+
+    public void setSelectedArea(int start, int end){
+        this.background.setSelectedArea(start, end);
+        doUpdate(true);
+    }
+
+    public void resetSelectedArea(){
+        this.background.resetSelectedArea();
+        doUpdate(true);
     }
 
     public void setSelectedPeptide(PeptideHandler peptide){
@@ -232,6 +255,8 @@ public class ProteinViewer extends Composite implements HasHandlers {
     protected void setMousePosition(int mouseX, int mouseY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
+
+        this.background.setMousePosition(mouseX, mouseY);
         for (Drawable component : this.components) {
             component.setMousePosition(mouseX, mouseY);
         }
@@ -246,9 +271,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
         int height = ctx.getCanvas().getHeight();
         ctx.fillRect(0, 0, width, height);
 
+        this.background.draw(ctx);
         //Draw all the components
+        this.objectSelected = false;
         for (Drawable component : this.components) {
             component.draw(ctx);
+            //Is necessary to keep track of any object selected
+            if(component instanceof Clickable){
+                boolean selected = ((Clickable) component).isSelected();
+                this.objectSelected = this.objectSelected || selected;
+            }
         }
     }
 
@@ -272,46 +304,59 @@ public class ProteinViewer extends Composite implements HasHandlers {
             }
         });
 
-        /*
         canvas.addMouseDownHandler(new MouseDownHandler() {
             @Override
             public void onMouseDown(MouseDownEvent event) {
-                for (Drawable component : components) {
-                    if(component instanceof Clickable){
-                        mouseX = event.getRelativeX(canvas.getElement());
-                        mouseY = event.getRelativeY(canvas.getElement());
-                        ((Clickable) component).onMouseDown(mouseX, mouseY);
-                        doUpdate(true);
+                mouseX = event.getRelativeX(canvas.getElement());
+                mouseY = event.getRelativeY(canvas.getElement());
+
+                boolean objectSelected = false;
+                if(!background.selectionInProgress()){
+                    for (Drawable component : components) {
+                        if(component instanceof Clickable){
+                            Clickable c = (Clickable) component;
+                            c.onMouseDown(mouseX, mouseY);
+                            objectSelected = objectSelected || c.isMouseOver();
+                        }
                     }
                 }
+                if(!objectSelected){
+                    background.onMouseDown(mouseX, mouseY);
+                }
+
+                doUpdate(true);
             }
-        });*/
+        });
 
         canvas.addMouseUpHandler(new MouseUpHandler() {
             @Override
             public void onMouseUp(MouseUpEvent event) {
                 mouseX = event.getRelativeX(canvas.getElement());
                 mouseY = event.getRelativeY(canvas.getElement());
-                for (Drawable component : components) {
-                    if(component instanceof Clickable){
-                        ((Clickable) component).onMouseUp(mouseX, mouseY);
-                    }
-                }
-                doUpdate(true);
-            }
-        });
 
-        canvas.addMouseDownHandler(new MouseDownHandler() {
-            @Override
-            public void onMouseDown(MouseDownEvent event) {
-                mouseX = event.getRelativeX(canvas.getElement());
-                mouseY = event.getRelativeY(canvas.getElement());
+                //IMPORTANT: for the background, after onMouseUp, selectionInProgress will be always false!
+                boolean allowSelection = !background.selectionInProgress();
+                background.onMouseUp(mouseX, mouseY);
+
+                int mouseXAux = allowSelection ? mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
+                int mouseYAux = allowSelection ? mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
                 for (Drawable component : components) {
                     if(component instanceof Clickable){
-                        ((Clickable) component).onMouseDown(mouseX, mouseY);
+                        Clickable c = (Clickable) component;
+                        c.onMouseUp(mouseXAux, mouseYAux);
                     }
                 }
+
+                //NOTE: IMPORTANT! doUpdate will change the value of objectSelected
+                boolean selectedAux = objectSelected;
+
                 doUpdate(true);
+
+                //If there is NOT object selected the background has been clicked
+                if(!objectSelected){
+                    //we notify if there has been a "deselection" and if the background properties
+                    handlerManager.fireEvent(new BackgroundSelectedEvent(selectedAux, background));
+                }
             }
         });
     }

@@ -127,4 +127,18 @@ public class SequenceLine implements DrawableLayers, Clickable {
             positionBlock.onMouseDown(mouseX, mouseY);
         }
     }
+
+    @Override
+    public boolean isMouseOver() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelected() {
+        boolean isSelected = false;
+        for (PositionBlock positionBlock : positionBlockList) {
+            isSelected = isSelected || positionBlock.isSelected();
+        }
+        return isSelected;
+    }
 }

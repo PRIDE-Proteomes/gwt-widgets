@@ -18,6 +18,7 @@ public class SpectrumCanvas implements Drawable, Clickable {
 
     final CssColor redrawColor = CssColor.make("rgba(255,255,255, 1)");
 
+    @SuppressWarnings("Convert2Diamond")
     private List<Drawable> components = new ArrayList<Drawable>();
 
     private int height;
@@ -64,6 +65,7 @@ public class SpectrumCanvas implements Drawable, Clickable {
             Double maxMz = spectrum.getMaxMZ();
             xMax = xMax==null || maxMz>xMax?maxMz:xMax;
         }
+        //noinspection ConstantConditions
         return new Rank(xMin, xMax);
     }
 
@@ -73,6 +75,7 @@ public class SpectrumCanvas implements Drawable, Clickable {
             Double maxIntensity = spectrum.getMaxIntensity();
             yMax = yMax==null || maxIntensity>yMax?maxIntensity:yMax;
         }
+        //noinspection ConstantConditions
         return new Rank(0, yMax, 6);
     }
 
@@ -149,6 +152,16 @@ public class SpectrumCanvas implements Drawable, Clickable {
         mouseDownX = mouseX;
         mouseDownY = mouseY;
         spectrumDrawer.onMouseDown(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return false;
     }
 
     public void resetZoom(){

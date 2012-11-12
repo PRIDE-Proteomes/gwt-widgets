@@ -6,8 +6,6 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.protein.client.ProteinViewer;
-import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.ModificationHighlightedHandler;
 import uk.ac.ebi.pride.widgets.client.sequence.client.SequenceViewer;
 import uk.ac.ebi.pride.widgets.client.sequence.type.Pride;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
@@ -104,12 +102,7 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
             ProteinProxy proteinProxy = new ProteinProxy(protein);
 
             ProteinViewer proteinViewer = new ProteinViewer(proteinProxy);
-            proteinViewer.addModificationHighlightedHandler(new ModificationHighlightedHandler() {
-                @Override
-                public void onModificationHighlighted(ModificationHighlightedEvent e) {
-                    System.out.println("Highlighted " + e.getSite());
-                }
-            });
+            proteinViewer.setSelectedArea(100, 400);
             vp.add(proteinViewer);
 
             SequenceType sequenceType = new Pride();

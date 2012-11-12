@@ -67,7 +67,7 @@ public class Sequence implements DrawableLayers, Clickable {
     public void selectRegion(int start, int end){
         CanvasSelection aux = new CanvasSelection(start, end);
         if(!this.canvasSelection.equals(aux)){
-            //resetRegionSelection();
+            this.lastRegionSelected.resetSelection();
             this.canvasSelection.setRegionStart(start);
             this.canvasSelection.setRegionEnd(end);
         }
@@ -153,6 +153,20 @@ public class Sequence implements DrawableLayers, Clickable {
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.onMouseDown(mouseX, mouseY);
         }
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelected() {
+        boolean isSelected = false;
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            isSelected = isSelected || sequenceLine.isSelected();
+        }
+        return isSelected;
     }
 
     private void checkHighlighting(){

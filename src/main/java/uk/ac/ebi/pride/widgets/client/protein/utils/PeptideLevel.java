@@ -15,8 +15,8 @@ public class PeptideLevel {
         this.canvasProperties = canvasProperties;
         //noinspection Convert2Diamond
         this.peptideHandlers = new HashSet<PeptideHandler>();
-        correction = (int) Math.floor(canvasProperties.getPixelFromValue(0));
-        int end = (int) Math.ceil(canvasProperties.getPixelFromValue(canvasProperties.getProteinLength()+ 1));
+        correction = (int) Math.floor(canvasProperties.getPixelFromPosition(0));
+        int end = (int) Math.ceil(canvasProperties.getPixelFromPosition(canvasProperties.getProteinLength() + 1));
         int length = end - correction + 1;
         availablePositions = new boolean[length];
         for(int i=0; i<length; ++i){
@@ -25,8 +25,8 @@ public class PeptideLevel {
     }
 
     public boolean addPeptide(PeptideHandler peptideHandler){
-        int start = (int) Math.floor(this.canvasProperties.getPixelFromValue(peptideHandler.getSite())) - correction;
-        int end = (int) Math.ceil(this.canvasProperties.getPixelFromValue(peptideHandler.getEnd())) - correction;
+        int start = (int) Math.floor(this.canvasProperties.getPixelFromPosition(peptideHandler.getSite())) - correction;
+        int end = (int) Math.ceil(this.canvasProperties.getPixelFromPosition(peptideHandler.getEnd())) - correction;
         if(spaceAvailable(start, end)){
             reserveSpace(start, end);
             peptideHandlers.add(peptideHandler);

@@ -9,6 +9,7 @@ import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("Convert2Diamond")
 public class SpectrumDrawer implements Drawable, Clickable {
     private static final String PEAK_DEFAULT_COLOR = "red";
     private static final String PEAK_SELECTED_COLOR = "blue";
@@ -18,6 +19,7 @@ public class SpectrumDrawer implements Drawable, Clickable {
 
     // contains the complete spectrum data
     private List<Spectrum> spectrumList = new ArrayList<Spectrum>();
+
     // contains the binned spectrum data
     private List<BinnedSpectrum> binnedSpectrumList = new ArrayList<BinnedSpectrum>();
 
@@ -83,6 +85,11 @@ public class SpectrumDrawer implements Drawable, Clickable {
     }
 
     @Override
+    public boolean isMouseOver() {
+        return false;
+    }
+
+    @Override
     public void onMouseUp(int mouseX, int mouseY) {
         setMousePosition(mouseX, mouseY);
         for (BinnedSpectrum binnedSpectrum : binnedSpectrumList) {
@@ -102,5 +109,10 @@ public class SpectrumDrawer implements Drawable, Clickable {
     @Override
     public void onMouseDown(int mouseX, int mouseY) {
         setMousePosition(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return false;
     }
 }

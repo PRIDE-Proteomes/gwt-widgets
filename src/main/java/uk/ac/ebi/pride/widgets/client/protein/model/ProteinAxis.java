@@ -19,8 +19,8 @@ public class ProteinAxis implements Drawable {
     public ProteinAxis(CanvasProperties canvasProperties) {
         int length = canvasProperties.getProteinLength();
         this.segmentY = SEGMENT_Y + CanvasProperties.Y_OFFSET ;
-        this.xMin = canvasProperties.getPixelFromValue(0);
-        this.xMax = canvasProperties.getPixelFromValue(length);
+        this.xMin = canvasProperties.getPixelFromPosition(0);
+        this.xMax = canvasProperties.getPixelFromPosition(length);
     }
 
     @Override

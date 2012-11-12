@@ -59,7 +59,7 @@ public abstract class SequenceRegion implements Drawable {
     public abstract boolean isMouseOver();
 
     public double getPixelFromValue(double value){
-        return this.canvasProperties.getPixelFromValue(value);
+        return this.canvasProperties.getPixelFromPosition(value);
     }
 
     @Override

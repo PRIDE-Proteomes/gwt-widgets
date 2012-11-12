@@ -34,8 +34,8 @@ public class PeptideBase implements Drawable, Clickable {
     public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y) {
         this.peptide = peptide;
         this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
-        this.xMin = canvasProperties.getPixelFromValue(peptide.getSite());
-        this.xMax = canvasProperties.getPixelFromValue(peptide.getSite() + peptide.getSequence().length());
+        this.xMin = canvasProperties.getPixelFromPosition(peptide.getSite());
+        this.xMax = canvasProperties.getPixelFromPosition(peptide.getSite() + peptide.getSequence().length());
         this.width = Math.ceil(xMax - xMin);
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
@@ -61,9 +61,9 @@ public class PeptideBase implements Drawable, Clickable {
 
     public boolean isMouseOver(){
         //Only for "mouse over" detection, xMin and xMax do no take into account the border :)
-        double xMinAux = xMin;// + CoveredSequenceBorder.BORDER;
-        double xMaxAux = xMax;// - CoveredSequenceBorder.BORDER;
-        return (xMinAux<mouseX && xMaxAux>mouseX) && (mouseY<=yMax && mouseY>=yMin);
+        //double xMinAux = xMin;// + CoveredSequenceBorder.BORDER;
+        //double xMaxAux = xMax;// - CoveredSequenceBorder.BORDER;
+        return (xMin<=mouseX && xMax>=mouseX) && (mouseY<=yMax && mouseY>=yMin);
     }
 
     @Override
@@ -100,6 +100,7 @@ public class PeptideBase implements Drawable, Clickable {
 
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
         if(!isMouseOver()){
             selected = false;
         }else{
@@ -112,15 +113,26 @@ public class PeptideBase implements Drawable, Clickable {
 
     @Override
     public void onMouseDown(int mouseX, int mouseY) {
-        //TODO
+        setMousePosition(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
     }
 
     private String getModificationTooltip(){
-        StringBuilder sb = new StringBuilder("Sequence: ");
-        sb.append(this.peptide.getSequence());
+        StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
+        if(this.peptide.getUniqueness()>1){
+            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
+            sb.append("\">NON UNIQUE PEPTIDE</span>");
+        }else{
+            sb.append(UNIQUE_PEPTIDE_COLOR.value());
+            sb.append("\">UNIQUE PEPTIDE</span>");
+        }
         sb.append("<br/>");
-        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Uniqueness: ");
-        sb.append(this.peptide.getUniqueness());
+        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");
+        sb.append(this.peptide.getSequence());
         sb.append("<br/>");
         sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
         sb.append(this.peptide.getSite());
