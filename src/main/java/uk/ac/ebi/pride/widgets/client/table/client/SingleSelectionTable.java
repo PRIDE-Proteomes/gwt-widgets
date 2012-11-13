@@ -39,7 +39,7 @@ public class SingleSelectionTable<T> extends AbstractTable<T> {
             //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
             getSelectionModel().setSelected(this.selectedItem, false);
             //this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-            getKeyboardSelectedElement().blur();
+            //getKeyboardSelectedElement().blur(); // !!this is causing exceptions and needs to be investigated!!
         }
     }
 
