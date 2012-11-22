@@ -4,8 +4,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
-import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
@@ -13,8 +13,8 @@ import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 public class PeptideBase implements Drawable, Clickable {
     public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,0,175, 1)");
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)");
 
     public static final int PEPTIDE_HEIGHT = 5;
 
@@ -24,6 +24,7 @@ public class PeptideBase implements Drawable, Clickable {
     private String tooltipMessage;
     private CssColor peptideColor;
     private boolean selected = false;
+    private boolean fireEvent = false;
     private boolean mouseOver = false;
     private double xMin, xMax, width;
     private int yMin, yMax;
@@ -101,14 +102,7 @@ public class PeptideBase implements Drawable, Clickable {
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
         setMousePosition(mouseX, mouseY);
-        if(!isMouseOver()){
-            selected = false;
-        }else{
-            if(!selected){
-                handlerManager.fireEvent(new PeptideSelectedEvent(this.peptide));
-            }
-            selected = true;
-        }
+        this.selected = this.fireEvent = isMouseOver();
     }
 
     @Override
@@ -141,4 +135,11 @@ public class PeptideBase implements Drawable, Clickable {
         return sb.toString();
     }
 
+    @Override
+    public void fireSelectionEvent() {
+        if(this.fireEvent){
+            this.fireEvent = false;
+            handlerManager.fireEvent(new PeptideSelectedEvent(this.peptide));
+        }
+    }
 }

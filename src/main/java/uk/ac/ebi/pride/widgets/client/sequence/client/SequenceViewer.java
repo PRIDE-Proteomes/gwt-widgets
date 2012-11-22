@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.sequence.client;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -31,6 +32,8 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class SequenceViewer extends Composite implements HasHandlers {
+    public static final CssColor NONE_SELECTED_COLOR = CssColor.make("rgba(255,255,255, 0.5)");
+
     private HandlerManager handlerManager;
 
     private boolean peptidesVisible = true;
@@ -93,9 +96,10 @@ public class SequenceViewer extends Composite implements HasHandlers {
     private void initCanvas(){
         AbsolutePanel canvasHolder = new AbsolutePanel();
         canvasHolder.add(this.peptidesCanvas);
-        canvasHolder.add(this.selectionCanvas, 0, 0);
+        //canvasHolder.add(this.selectionCanvas, 0, 0);
         canvasHolder.add(this.mainCanvas, 0, 0);
         canvasHolder.add(this.modificationCanvas, 0, 0);
+        canvasHolder.add(this.selectionCanvas, 0, 0);
         canvasHolder.add(this.positionCanvas, 0, 0);
         initWidget(canvasHolder);
     }
@@ -240,6 +244,11 @@ public class SequenceViewer extends Composite implements HasHandlers {
         Context2d ctx = this.selectionCanvas.getContext2d();
         //Clean the canvas
         ctx.clearRect(0, 0, this.width, this.height);
+        if(sequence.isSelected()){
+            ctx.setFillStyle(NONE_SELECTED_COLOR);
+            ctx.fillRect(0, 0, this.width, this.height);
+        }
+
         //Draw all the selection
         sequence.drawSelection(ctx);
     }

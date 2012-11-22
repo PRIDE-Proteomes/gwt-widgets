@@ -1,5 +1,7 @@
 /** Add css rules here for your application. */
-
+canvas{
+    outline: none;
+}
 body{
     font-size: x-small;
 }

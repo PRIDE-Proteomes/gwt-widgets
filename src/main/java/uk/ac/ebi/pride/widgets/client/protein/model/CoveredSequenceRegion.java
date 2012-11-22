@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
@@ -11,6 +11,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     public static final int BOXES_HEIGHT = 50;
     public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
+    private boolean fireEvent = false;
     private double xMin, xMax, width;
     private int yMin, yMax, height;
     private CssColor regionColor;
@@ -31,17 +32,14 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     }
 
     private void setBounds(){
-        xMin = getPixelFromValue(getStart());
-        xMax = getPixelFromValue(getStart() + getLength());
-        width = Math.ceil(xMax - xMin);
+        xMin = Math.floor(this.canvasProperties.getPixelFromPosition(getStart()));
+        xMax = Math.floor(this.canvasProperties.getPixelFromPosition(getStart() + getLength()));
+        width = xMax - xMin;
     }
 
     @Override
     public boolean isMouseOver(){
-        //Only for "mouse over" detection, xMin and xMax do no take into account the border :)
-        double xMinAux = xMin;// + CoveredSequenceBorder.BORDER;
-        double xMaxAux = xMax;// - CoveredSequenceBorder.BORDER;
-        return (xMinAux<mouseX && xMaxAux>mouseX) && (mouseY<=yMax && mouseY>=yMin);
+        return (xMin<=mouseX && mouseX<xMax) && (yMax>=mouseY && mouseY>=yMin);
     }
 
     @Override
@@ -62,14 +60,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
         setMousePosition(mouseX, mouseY);
-        if(!isMouseOver()){
-            selected = false;
-        }else{
-            if(!selected){
-                handlerManager.fireEvent(new ProteinRegionSelectionEvent(getStart(), getLength(), getPeptides()));
-            }
-            selected = true;
-        }
+        this.selected = this.fireEvent = isMouseOver();
     }
 
     @Override
@@ -119,5 +110,13 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
         ctx.fill();
         ctx.setStrokeStyle("#000000");
         ctx.stroke();
+    }
+
+    @Override
+    public void fireSelectionEvent() {
+        if(this.fireEvent){
+            this.fireEvent = false;
+            handlerManager.fireEvent(new ProteinRegionSelectionEvent(getStart(), getLength(), getPeptides()));
+        }
     }
 }

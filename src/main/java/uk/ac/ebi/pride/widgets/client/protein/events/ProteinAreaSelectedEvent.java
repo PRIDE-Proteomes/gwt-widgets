@@ -1,27 +1,27 @@
 package uk.ac.ebi.pride.widgets.client.protein.events;
 
 import com.google.gwt.event.shared.GwtEvent;
-import uk.ac.ebi.pride.widgets.client.protein.handlers.BackgroundSelectedHandler;
-import uk.ac.ebi.pride.widgets.client.protein.model.Background;
+import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinAreaSelectedHandler;
+import uk.ac.ebi.pride.widgets.client.protein.model.ProteinAreaSelection;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class BackgroundSelectedEvent extends GwtEvent<BackgroundSelectedHandler> {
+public class ProteinAreaSelectedEvent extends GwtEvent<ProteinAreaSelectedHandler> {
     @SuppressWarnings("Convert2Diamond")
-    public static Type<BackgroundSelectedHandler> TYPE = new Type<BackgroundSelectedHandler>();
+    public static Type<ProteinAreaSelectedHandler> TYPE = new Type<ProteinAreaSelectedHandler>();
 
     private boolean resetObjectSelection;
     private boolean selectedAreaClicked;
     private int start;
     private int end;
 
-    public BackgroundSelectedEvent(boolean resetObjectSelection, Background background) {
+    public ProteinAreaSelectedEvent(boolean resetObjectSelection, ProteinAreaSelection proteinSelection) {
         this.resetObjectSelection = resetObjectSelection;
-        this.selectedAreaClicked = background.isSelected();
-        this.start = background.getStart();
-        this.end = background.getEnd();
+        this.selectedAreaClicked = proteinSelection.isSelected();
+        this.start = proteinSelection.getStart();
+        this.end = proteinSelection.getEnd();
     }
 
     public boolean isResetObjectSelection() {
@@ -41,18 +41,18 @@ public class BackgroundSelectedEvent extends GwtEvent<BackgroundSelectedHandler>
     }
 
     @Override
-    public Type<BackgroundSelectedHandler> getAssociatedType() {
+    public Type<ProteinAreaSelectedHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected void dispatch(BackgroundSelectedHandler handler) {
-        handler.onBackgroundSelected(this);
+    protected void dispatch(ProteinAreaSelectedHandler handler) {
+        handler.onProteinAreaSelected(this);
     }
 
     @Override
     public String toString() {
-        return "BackgroundSelectedEvent{" +
+        return "ProteinAreaSelectedEvent{" +
                 "resetObjectSelection=" + resetObjectSelection +
                 ", selectedAreaClicked=" + selectedAreaClicked +
                 ", start=" + start +

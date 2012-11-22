@@ -4,6 +4,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
+@Deprecated
 public class CoveredSequenceBorder extends SequenceRegion {
     public static final CssColor BORDER_COLOR = CssColor.make("rgba(0,0,0, 1)");
     public static final CssColor BORDER_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
@@ -26,8 +27,8 @@ public class CoveredSequenceBorder extends SequenceRegion {
     }
 
     private void setBounds(){
-        xMin = getPixelFromValue(getStart());
-        xMax = getPixelFromValue(getStart() + getLength());
+        xMin = this.canvasProperties.getPixelFromPosition(getStart());
+        xMax = this.canvasProperties.getPixelFromPosition(getStart() + getLength() + 1);
     }
 
     @Override

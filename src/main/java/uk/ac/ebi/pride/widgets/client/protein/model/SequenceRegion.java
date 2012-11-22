@@ -14,7 +14,7 @@ public abstract class SequenceRegion implements Drawable {
     private int start;
     private int peptides;
     protected int length;
-    private CanvasProperties canvasProperties;
+    protected CanvasProperties canvasProperties;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
@@ -48,8 +48,8 @@ public abstract class SequenceRegion implements Drawable {
         return peptides;
     }
 
-    public void resetSelection(){
-        this.selected = false;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public void setHandlerManager(HandlerManager handlerManager) {
@@ -57,10 +57,6 @@ public abstract class SequenceRegion implements Drawable {
     }
 
     public abstract boolean isMouseOver();
-
-    public double getPixelFromValue(double value){
-        return this.canvasProperties.getPixelFromPosition(value);
-    }
 
     @Override
     public void setMousePosition(int mouseX, int mouseY) {

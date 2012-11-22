@@ -5,8 +5,8 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
-import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
@@ -32,6 +32,7 @@ public class ModificationBase implements Clickable, Drawable {
     private Tooltip tooltip = new Tooltip();
     private String tooltipMessage;
     private boolean selected = false;
+    private boolean fireEvent = false;
     private boolean highlighted = false;
     private boolean mouseOver = false;
     private double ax, ay, bx, by, cx, cy;
@@ -84,14 +85,7 @@ public class ModificationBase implements Clickable, Drawable {
     @Override
     public void onMouseUp(int mouseX, int mouseY) {
         setMousePosition(mouseX, mouseY);
-        if(!isMouseOver()){
-            selected = false;
-        }else{
-            if(!selected){
-                handlerManager.fireEvent(new ModificationSelectedEvent(this.position, this.modifications));
-            }
-            selected = true;
-        }
+        this.selected = this.fireEvent = isMouseOver();
     }
 
     @Override
@@ -179,5 +173,13 @@ public class ModificationBase implements Clickable, Drawable {
             if(c>1) sb.append("s");
         }
         return sb.toString();
+    }
+
+    @Override
+    public void fireSelectionEvent() {
+        if(this.fireEvent){
+            this.fireEvent = false;
+            handlerManager.fireEvent(new ModificationSelectedEvent(this.position, this.modifications));
+        }
     }
 }

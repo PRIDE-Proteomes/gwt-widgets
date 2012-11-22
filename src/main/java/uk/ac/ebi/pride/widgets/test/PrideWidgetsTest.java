@@ -102,7 +102,7 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
             ProteinProxy proteinProxy = new ProteinProxy(protein);
 
             ProteinViewer proteinViewer = new ProteinViewer(proteinProxy);
-            proteinViewer.setSelectedArea(100, 400);
+            proteinViewer.setSelectedArea(187, 198);
             vp.add(proteinViewer);
 
             SequenceType sequenceType = new Pride();

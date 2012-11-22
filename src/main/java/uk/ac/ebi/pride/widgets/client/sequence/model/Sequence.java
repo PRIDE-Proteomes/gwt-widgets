@@ -116,6 +116,9 @@ public class Sequence implements DrawableLayers, Clickable {
         ctx.setFillStyle(Position.HIGHLIGHT_COLOR);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawSelection(ctx);
+            for (PositionIdentification positionIdentification : sequenceLine.getPositionIdentificationList()) {
+                positionIdentification.drawSelection(ctx);
+            }
         }
     }
 

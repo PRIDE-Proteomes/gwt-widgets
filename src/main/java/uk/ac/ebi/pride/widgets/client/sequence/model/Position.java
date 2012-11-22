@@ -26,8 +26,10 @@ public class Position implements DrawableLayers, Clickable {
     public static final CssColor AMINO_ACID_MODIFIED_SELECTED_COLOR = CssColor.make("rgba(255,0,255, 1)");
     public static final CssColor AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,0,175, .5)");
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, .65)");
+    /*public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(110,110,255, .5)");*/
 
     public static final CssColor HIGHLIGHT_COLOR = CssColor.make("rgba(255,255,0, 0.5)");
 
@@ -133,7 +135,8 @@ public class Position implements DrawableLayers, Clickable {
     @Override
     public void drawSelection(Context2d ctx) {
         if(this.isSelected()){
-            ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
+            ctx.clearRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
+            //ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
         }
     }
 

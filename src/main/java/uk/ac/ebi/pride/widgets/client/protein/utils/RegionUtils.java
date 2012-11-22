@@ -7,6 +7,7 @@ import uk.ac.ebi.pride.widgets.client.protein.model.SequenceRegion;
 
 import java.util.*;
 
+@SuppressWarnings({"deprecation", "UnusedDeclaration", "Convert2Diamond"})
 public abstract class RegionUtils {
 
     public static List<SequenceRegion> getSequenceRegions(CanvasProperties canvasProperties){
@@ -43,6 +44,7 @@ public abstract class RegionUtils {
         return regions;
     }
 
+    @Deprecated
     public static List<CoveredSequenceBorder> getCoveredSequenceBorder(List<SequenceRegion> regions, CanvasProperties canvasProperties){
         List<CoveredSequenceBorder> borders = new ArrayList<CoveredSequenceBorder>();
 
