@@ -7,20 +7,23 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Redrawable;
 import uk.ac.ebi.pride.widgets.client.disclosure.images.DisclosureImages;
-import uk.ac.ebi.pride.widgets.client.table.client.AbstractTable;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ModuleContainer extends Composite implements OpenHandler<DisclosurePanel> {
     DisclosureHeader dh;
     DisclosurePanel dp;
 
-    private ModuleContainer(String text) {
+    private ModuleContainer(String text, Widget iconOpen, Widget iconClose) {
         dp = new DisclosurePanel();
         //noinspection GWTStyleCheck
         dp.addStyleName("pq-module-body");
         dp.setAnimationEnabled(true);
 
-        dh = new DisclosureHeader(dp, text);
+        if(iconOpen==null || iconClose==null){
+            dh = new DisclosureHeader(dp, text);
+        }else{
+            dh = new DisclosureHeader(dp, text, iconOpen, iconClose);
+        }
         dp.setHeader(dh);
 
         HorizontalPanel hp = new HorizontalPanel();
@@ -35,7 +38,11 @@ public class ModuleContainer extends Composite implements OpenHandler<Disclosure
     }
 
     public static ModuleContainer getAdvancedDisclosurePanel(String text){
-        return new ModuleContainer(text);
+        return new ModuleContainer(text, null, null);
+    }
+
+    public static ModuleContainer getAdvancedDisclosurePanel(String text, Widget iconOpen, Widget iconClose){
+        return new ModuleContainer(text, iconOpen, iconClose);
     }
 
     public static DisclosurePanel getDisclosurePanel(String text){

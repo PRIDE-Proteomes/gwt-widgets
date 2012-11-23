@@ -12,7 +12,10 @@ public class ProteinAxis implements Drawable {
 
     private boolean proteinBorder;
     private double segmentY;
-    private double xMin, xMax, width;
+    private double xMin, xMax;
+
+    //related to the white area under the protein coverage
+    private double areaXMin, areaWidth;
 
     public ProteinAxis(CanvasProperties canvasProperties, boolean proteinBorder) {
         this.proteinBorder = proteinBorder;
@@ -20,7 +23,9 @@ public class ProteinAxis implements Drawable {
         this.segmentY = SEGMENT_Y + CanvasProperties.Y_OFFSET ;
         this.xMin = canvasProperties.getPixelFromPosition(1);
         this.xMax = canvasProperties.getPixelFromPosition(length);
-        this.width = xMax - xMin;
+        this.areaXMin = canvasProperties.getPixelFromPosition(0);
+        double borderXMax = canvasProperties.getPixelFromPosition(length+1);
+        this.areaWidth = borderXMax - this.areaXMin;
     }
 
     @Override
@@ -31,7 +36,7 @@ public class ProteinAxis implements Drawable {
     @Override
     public void draw(Context2d ctx) {
         ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
-        ctx.fillRect(xMin, CanvasProperties.Y_OFFSET, width, CoveredSequenceRegion.BOXES_HEIGHT);
+        ctx.fillRect(this.areaXMin, CanvasProperties.Y_OFFSET, this.areaWidth, CoveredSequenceRegion.BOXES_HEIGHT);
 
         ctx.setStrokeStyle(CssColor.make("rgba(89,89,89, 1)"));
         ctx.setLineWidth(SEGMENT_WIDTH);

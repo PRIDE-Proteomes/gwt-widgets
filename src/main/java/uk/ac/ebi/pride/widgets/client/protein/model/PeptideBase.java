@@ -37,7 +37,7 @@ public class PeptideBase implements Drawable, Clickable {
         this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
         this.xMin = canvasProperties.getPixelFromPosition(peptide.getSite());
         this.xMax = canvasProperties.getPixelFromPosition(peptide.getSite() + peptide.getSequence().length());
-        this.width = Math.ceil(xMax - xMin);
+        this.width = xMax - xMin;
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
 
@@ -62,8 +62,6 @@ public class PeptideBase implements Drawable, Clickable {
 
     public boolean isMouseOver(){
         //Only for "mouse over" detection, xMin and xMax do no take into account the border :)
-        //double xMinAux = xMin;// + CoveredSequenceBorder.BORDER;
-        //double xMaxAux = xMax;// - CoveredSequenceBorder.BORDER;
         return (xMin<=mouseX && xMax>=mouseX) && (mouseY<=yMax && mouseY>=yMin);
     }
 

@@ -22,7 +22,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
         this.yMin = CanvasProperties.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
         this.yMax = CanvasProperties.Y_OFFSET + BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
         this.height = yMax - yMin;
-        this.regionColor = ColorFactory.getRedBasedColor(getPeptides() * 7);
+        this.regionColor = ColorFactory.getBlueBasedColor(getPeptides() * 7);
     }
 
     @Override

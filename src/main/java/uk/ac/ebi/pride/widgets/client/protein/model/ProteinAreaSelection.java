@@ -80,6 +80,8 @@ public class ProteinAreaSelection implements Drawable, Clickable {
     }
 
     public boolean isMouseOver(){
+        if(!hasSelection()) return false;
+
         double xMax = this.xMin + this.width;
         return this.xMin<this.mouseX && this.mouseX<xMax;
     }
@@ -115,13 +117,23 @@ public class ProteinAreaSelection implements Drawable, Clickable {
         this.mouseX = mouseX;
         this.selecting = !hasSelection() || !isMouseOver();
         if(this.selecting){
+            //IMPORTANT We use this.xMin because is double and there are two setSelectedArea, one for int one for double
             this.xMin = mouseX;
-            this.width = 0;
+            this.setSelectedArea(this.xMin, this.xMin);
         }else if(isMouseOver()){
             this.movingSelectedRegion = true;
             this.selectedRegionMoved = false;
             this.xRelative = this.mouseX - this.xMin;
         }
+
+        /*this.selecting = !hasSelection() || !isMouseOver();
+        if(isMouseOver()){
+            this.movingSelectedRegion = true;
+            this.selectedRegionMoved = false;
+            this.xRelative = this.mouseX - this.xMin;
+        }else{
+            this.setSelectedArea(this.xMin, this.xMin);
+        }*/
     }
 
     @Override

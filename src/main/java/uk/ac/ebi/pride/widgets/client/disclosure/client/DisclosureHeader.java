@@ -19,13 +19,19 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
 
     private Panel iconContainer = new HTMLPanel("");
 
-    private final Image openedIcon = new Image(DisclosureImages.INSTANCE.getCollapseImage());
-    private final Image closedIcon = new Image(DisclosureImages.INSTANCE.getExpandImage());
+    private final Widget openedIcon;
+    private final Widget closedIcon;
 
     private Label message = new Label();
 
     public DisclosureHeader(DisclosurePanel dp, String text) {
+        this(dp, text, new Image(DisclosureImages.INSTANCE.getCollapseImage()), new Image(DisclosureImages.INSTANCE.getExpandImage()));
+    }
+    public DisclosureHeader(DisclosurePanel dp, String text, Widget openIcon, Widget closeIcon) {
+        this.openedIcon = openIcon;
+        this.closedIcon = closeIcon;
         iconContainer.add(closedIcon);
+
         setIconVisibility(iconAlwaysVisible);
         final FlexTable flexTable = new FlexTable();
         FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
@@ -55,7 +61,7 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
         flexTable.setWidget(0, 1, iconContainer);
         cellFormatter.setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
         cellFormatter.setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT);
-        cellFormatter.setWidth(0,1, closedIcon.getWidth() + "px");
+        cellFormatter.setWidth(0,1, "20px");
 
         dp.addOpenHandler(this);
         dp.addCloseHandler(this);

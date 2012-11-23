@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.widgets.client.protein.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.GwtEvent;
@@ -337,6 +338,81 @@ public class ProteinViewer extends Composite implements HasHandlers {
         handlerManager.fireEvent(event);
     }
 
+    private void mouseLeftButtonDown(MouseDownEvent event){
+        boolean objectSelected = false;
+        if(!this.proteinSelection.isSelectionInProgress()){
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    c.onMouseDown(this.mouseX, this.mouseY);
+                    objectSelected = objectSelected || c.isMouseOver();
+                }
+            }
+        }
+        if(!objectSelected){
+            this.proteinSelection.onMouseDown(this.mouseX, this.mouseY);
+        }
+
+        doUpdate(true);
+
+        event.stopPropagation();
+    }
+
+    private void mouseRightButtonDown(MouseDownEvent event){
+        //Nothing here
+    }
+
+    private void mouseLeftButtonUp(MouseUpEvent event){
+        //IMPORTANT: After adding the moving the selected area, it is important to take into account that now
+        boolean afterMoving = this.proteinSelection.isSelectedRegionMoved();
+        //IMPORTANT: for the proteinSelection, after onMouseUp, isSelectionInProgress will be always false!
+        boolean allowSelection = !this.proteinSelection.isSelectionInProgress() && !afterMoving;
+        this.proteinSelection.onMouseUp(this.mouseX, this.mouseY);
+
+        //resetObjectSelection is gonna be used in case of fire the ProteinAreaSelectedEvent
+        boolean resetObjectSelection;
+        if(afterMoving){
+            //By default, the widget will never reset any existing selected object when moving the selected area
+            resetObjectSelection = false;
+        }else{ //Only if the user has not moved the selected area
+            int mouseXAux = allowSelection ? this.mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
+            int mouseYAux = allowSelection ? this.mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    c.onMouseUp(mouseXAux, mouseYAux);
+                }
+            }
+            //NOTE: IMPORTANT! doUpdate will change the value of objectSelected
+            resetObjectSelection = this.objectSelected;
+        }
+
+        doUpdate(true);
+
+        //If there is an object selected after doUpdate in "mouseUpHandler" means new selection
+        if(this.objectSelected && !afterMoving){
+            //Iterating is necessary in order to fire the event when all the objects has been already redrawn
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    //fireSelectionEvent only fires object selected event for a new object selected
+                    c.fireSelectionEvent();
+                }
+            }
+            //If there is NOT object selected the proteinSelection has been clicked
+        }else{
+            //we notify if there has been a "deselection" and if the proteinSelection properties
+            //System.out.println(new ProteinAreaSelectedEvent(resetObjectSelection, proteinSelection).toString());
+            this.handlerManager.fireEvent(new ProteinAreaSelectedEvent(resetObjectSelection, this.proteinSelection));
+        }
+
+        event.stopPropagation();
+    }
+
+    private void mouseRightButtonUp(MouseUpEvent event){
+        //Nothing here
+    }
+
     void initHandlers() {
         canvas.addMouseMoveHandler(new MouseMoveHandler() {
             public void onMouseMove(MouseMoveEvent event) {
@@ -358,23 +434,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
                 mouseX = event.getRelativeX(canvas.getElement());
                 mouseY = event.getRelativeY(canvas.getElement());
 
-                boolean objectSelected = false;
-                if(!proteinSelection.isSelectionInProgress()){
-                    for (Drawable component : components) {
-                        if(component instanceof Clickable){
-                            Clickable c = (Clickable) component;
-                            c.onMouseDown(mouseX, mouseY);
-                            objectSelected = objectSelected || c.isMouseOver();
-                        }
-                    }
+                switch (event.getNativeEvent().getButton()){
+                    case NativeEvent.BUTTON_LEFT:
+                        mouseLeftButtonDown(event);
+                        break;
+                    case NativeEvent.BUTTON_MIDDLE:
+                        break;
+                    case NativeEvent.BUTTON_RIGHT:
+                        mouseRightButtonDown(event);
+                        break;
                 }
-                if(!objectSelected){
-                    proteinSelection.onMouseDown(mouseX, mouseY);
-                }
-
-                doUpdate(true);
-
-                event.stopPropagation();
             }
         });
 
@@ -384,50 +453,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
                 mouseX = event.getRelativeX(canvas.getElement());
                 mouseY = event.getRelativeY(canvas.getElement());
 
-                //IMPORTANT: After adding the moving the selected area, it is important to take into account that now
-                boolean afterMoving = proteinSelection.isSelectedRegionMoved();
-                //IMPORTANT: for the proteinSelection, after onMouseUp, isSelectionInProgress will be always false!
-                boolean allowSelection = !proteinSelection.isSelectionInProgress() && !afterMoving;
-                proteinSelection.onMouseUp(mouseX, mouseY);
-
-                //resetObjectSelection is gonna be used in case of fire the ProteinAreaSelectedEvent
-                boolean resetObjectSelection;
-                if(afterMoving){
-                    //By default, the widget will never reset any existing selected object when moving the selected area
-                    resetObjectSelection = false;
-                }else{ //Only if the user has not moved the selected area
-                    int mouseXAux = allowSelection ? mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
-                    int mouseYAux = allowSelection ? mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
-                    for (Drawable component : components) {
-                        if(component instanceof Clickable){
-                            Clickable c = (Clickable) component;
-                            c.onMouseUp(mouseXAux, mouseYAux);
-                        }
-                    }
-                    //NOTE: IMPORTANT! doUpdate will change the value of objectSelected
-                    resetObjectSelection = objectSelected;
+                switch (event.getNativeEvent().getButton()){
+                    case NativeEvent.BUTTON_LEFT:
+                        mouseLeftButtonUp(event);
+                        break;
+                    case NativeEvent.BUTTON_MIDDLE:
+                        break;
+                    case NativeEvent.BUTTON_RIGHT:
+                        mouseRightButtonUp(event);
+                        break;
                 }
-
-                doUpdate(true);
-
-                //If there is an object selected after doUpdate in "mouseUpHandler" means new selection
-                if(objectSelected && !afterMoving){
-                    //Iterating is necessary in order to fire the event when all the objects has been already redrawn
-                    for (Drawable component : components) {
-                        if(component instanceof Clickable){
-                            Clickable c = (Clickable) component;
-                            //fireSelectionEvent only fires object selected event for a new object selected
-                            c.fireSelectionEvent();
-                        }
-                    }
-                //If there is NOT object selected the proteinSelection has been clicked
-                }else{
-                    //we notify if there has been a "deselection" and if the proteinSelection properties
-                    //System.out.println(new ProteinAreaSelectedEvent(selectedAux, proteinSelection).toString());
-                    handlerManager.fireEvent(new ProteinAreaSelectedEvent(resetObjectSelection, proteinSelection));
-                }
-
-                event.stopPropagation();
             }
         });
     }
