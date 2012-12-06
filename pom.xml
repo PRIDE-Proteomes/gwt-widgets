@@ -16,8 +16,8 @@
         <gwtVersion>2.5.0</gwtVersion>
         <!--<gwtVersion>2.5.0-rc2</gwtVersion>-->
         <!-- This GWT  app needs at least java 1.6 -->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     </properties>
 
@@ -137,7 +137,21 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
         </plugins>
+
+        <!-- scp support for deployment (MVN 3) -->
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.3</version>
+            </extension>
+        </extensions>
     </build>
 
     <reporting>
@@ -158,7 +172,7 @@
     </reporting>
 
     <repositories>
-         <repository>
+        <repository>
             <id>ebi-repo</id>
             <name>The EBI internal repository</name>
             <url>http://www.ebi.ac.uk/~maven/m2repo</url>
@@ -193,23 +207,13 @@
         </repository>
 
         <repository>
-            <id>central</id>
-            <name>Maven Repository Switchboard</name>
-            <url>http://repo1.maven.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
             <id>smartclient</id>
             <name>smartclient.com</name>
             <url>http://www.smartclient.com/maven2</url>
         </repository>
     </repositories>
 
-     <distributionManagement>
+    <distributionManagement>
         <repository>
             <id>ebi-repo</id>
             <name>EBI Repository</name>
@@ -228,19 +232,6 @@
             <id>central</id>
             <name>Central Repository</name>
             <url>http://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>central</id>
-            <name>Maven Plugin Repository</name>
-            <url>http://repo1.maven.org/maven2</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>

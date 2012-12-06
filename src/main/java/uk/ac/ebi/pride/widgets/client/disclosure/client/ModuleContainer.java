@@ -1,22 +1,72 @@
 package uk.ac.ebi.pride.widgets.client.disclosure.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Redrawable;
-import uk.ac.ebi.pride.widgets.client.disclosure.images.DisclosureImages;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ModuleContainer extends Composite implements OpenHandler<DisclosurePanel> {
+
+    /**
+     * A ClientBundle of resources used by this widget.
+     */
+    public interface Resources extends ClientBundle {
+        /**
+         * The styles used in this widget.
+         */
+        @Source(Style.DEFAULT_CSS)
+        Style moduleContainerStyle();
+    }
+
+    /**
+     * Styles used by this widget.
+     */
+    @CssResource.ImportedWithPrefix("pride-ModuleContainer")
+    public interface Style extends CssResource {
+        /**
+         * The path to the default CSS styles used by this resource.
+         */
+        String DEFAULT_CSS = "uk/ac/ebi/pride/widgets/client/disclosure/css/ModuleContainer.css";
+
+        /**
+         * Applied to the widget.
+         */
+        String moduleContainer();
+    }
+
+    private static Resources DEFAULT_RESOURCES;
+
     DisclosureHeader dh;
     DisclosurePanel dp;
 
-    private ModuleContainer(String text, Widget iconOpen, Widget iconClose) {
+
+    /**
+     * Get the default {@link Resources} for this widget.
+     */
+    private static Resources getDefaultResources() {
+        if (DEFAULT_RESOURCES == null) {
+            DEFAULT_RESOURCES = GWT.create(Resources.class);
+        }
+        return DEFAULT_RESOURCES;
+    }
+
+    public ModuleContainer(String text, Widget iconOpen, Widget iconClose) {
+        this(getDefaultResources(), text, iconOpen, iconClose);
+    }
+
+    private ModuleContainer(Resources resources, String text, Widget iconOpen, Widget iconClose) {
         dp = new DisclosurePanel();
-        //noinspection GWTStyleCheck
-        dp.addStyleName("pq-module-body");
+
+        // Inject the styles used by this widget.
+        Style style = resources.moduleContainerStyle();
+        style.ensureInjected();
+        dp.setStyleName(style.moduleContainer());
         dp.setAnimationEnabled(true);
 
         if(iconOpen==null || iconClose==null){
@@ -26,12 +76,7 @@ public class ModuleContainer extends Composite implements OpenHandler<Disclosure
         }
         dp.setHeader(dh);
 
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(new Image(DisclosureImages.INSTANCE.getLoadingImage()));
-        hp.add(new HTMLPanel("Loading..."));
-        hp.setSpacing(5);
-
-        dp.setContent(hp);
+        dp.setContent(ModuleContainer.getLoadingPanel());
         dp.addOpenHandler(this);
 
         initWidget(dp);
@@ -45,16 +90,15 @@ public class ModuleContainer extends Composite implements OpenHandler<Disclosure
         return new ModuleContainer(text, iconOpen, iconClose);
     }
 
+    public static Widget getLoadingPanel(){
+        return new LoadingPanel();
+    }
+
     public static DisclosurePanel getDisclosurePanel(String text){
         DisclosurePanel dp = new DisclosurePanel(text);
         dp.setAnimationEnabled(true);
 
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(new Image(DisclosureImages.INSTANCE.getLoadingImage()));
-        hp.add(new HTMLPanel("Loading..."));
-        hp.setSpacing(5);
-
-        dp.setContent(hp);
+        dp.setContent(ModuleContainer.getLoadingPanel());
 
         return dp;
     }

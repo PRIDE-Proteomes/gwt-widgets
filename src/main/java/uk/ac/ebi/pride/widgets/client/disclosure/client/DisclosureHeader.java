@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.disclosure.client;
 
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -9,80 +9,141 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.*;
 import uk.ac.ebi.pride.widgets.client.disclosure.images.DisclosureImages;
 
-public class DisclosureHeader extends Composite implements OpenHandler<DisclosurePanel>,
+public class DisclosureHeader extends HTMLPanel implements OpenHandler<DisclosurePanel>,
         CloseHandler<DisclosurePanel>, MouseOverHandler, MouseOutHandler {
+
+    /**
+     * A ClientBundle of resources used by this widget.
+     */
+    public interface Resources extends ClientBundle {
+        /**
+         * The styles used in this widget.
+         */
+        @Source(Style.DEFAULT_CSS)
+        Style disclosureHeaderStyle();
+    }
+
+    /**
+     * Styles used by this widget.
+     */
+    @CssResource.ImportedWithPrefix("pride-DisclosureHeader")
+    public interface Style extends CssResource {
+        /**
+         * The path to the default CSS styles used by this resource.
+         */
+        String DEFAULT_CSS = "uk/ac/ebi/pride/widgets/client/disclosure/css/DisclosureHeader.css";
+
+        /**
+         * Applied to the widget.
+         */
+        String disclosureHeaderContainer();
+
+        /**
+         * Applied to the left icon
+         */
+        String disclosureHeaderIcon();
+
+        /**
+         * Applied to the text label
+         */
+        String disclosureHeaderTitle();
+
+        /**
+         * Applied to the secondary text labels
+         */
+        String disclosureHeaderMessage();
+
+        /**
+         * Applied to the widget button
+         */
+        String disclosureHeaderButton();
+    }
+
+    private static Resources DEFAULT_RESOURCES;
 
     private boolean iconAlwaysVisible = true;
 
-    private Panel iconContainer = new HTMLPanel("");
+    private Panel buttonContainer = new HTMLPanel("");
 
     private final Widget openedIcon;
     private final Widget closedIcon;
 
-    private Label message = new Label();
+    private InlineLabel message = new InlineLabel();
+
+    /**
+     * Get the default {@link Resources} for this widget.
+     */
+    private static Resources getDefaultResources() {
+        if (DEFAULT_RESOURCES == null) {
+            DEFAULT_RESOURCES = GWT.create(Resources.class);
+        }
+        return DEFAULT_RESOURCES;
+    }
 
     public DisclosureHeader(DisclosurePanel dp, String text) {
-        this(dp, text, new Image(DisclosureImages.INSTANCE.getCollapseImage()), new Image(DisclosureImages.INSTANCE.getExpandImage()));
+        this(getDefaultResources(), dp, text);
     }
-    public DisclosureHeader(DisclosurePanel dp, String text, Widget openIcon, Widget closeIcon) {
+
+    public DisclosureHeader(DisclosurePanel dp, String text, Widget openIcon, Widget closeIcon){
+        this(getDefaultResources(), dp, text, openIcon, closeIcon);
+    }
+
+    public DisclosureHeader(Resources resources, DisclosurePanel dp, String text){
+        this(resources, dp, text, new Image(DisclosureImages.INSTANCE.getCollapseImage()), new Image(DisclosureImages.INSTANCE.getExpandImage()));
+    }
+
+    public DisclosureHeader(Resources resources, DisclosurePanel dp, String text, Widget openIcon, Widget closeIcon) {
+        super("");
         this.openedIcon = openIcon;
         this.closedIcon = closeIcon;
-        iconContainer.add(closedIcon);
+        buttonContainer.add(closedIcon);
 
         setIconVisibility(iconAlwaysVisible);
-        final FlexTable flexTable = new FlexTable();
-        FlexTable.FlexCellFormatter cellFormatter = flexTable.getFlexCellFormatter();
-        flexTable.setWidth("100%");
-        flexTable.setCellSpacing(5);
-        flexTable.setCellPadding(0);
 
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-        hp.setSpacing(5);
-
-        Label title = new Label(text);
+        // Inject the styles used by this widget.
+        Style style = resources.disclosureHeaderStyle();
+        style.ensureInjected();
+        setStyleName(style.disclosureHeaderContainer());
         //noinspection GWTStyleCheck
-        title.addStyleName("pq-module-header-title");
-        hp.add(title);
-        hp.setCellHorizontalAlignment(title, HasHorizontalAlignment.ALIGN_LEFT);
-        //noinspection GWTStyleCheck
-        message.addStyleName("pq-module-header-message");
-        hp.add(message);
-        hp.setCellHorizontalAlignment(message, HasHorizontalAlignment.ALIGN_LEFT);
+        addStyleName("clearfix");
 
-        flexTable.setWidget(0, 0, hp);
-        cellFormatter.setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-        cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_LEFT);
+        Image loadingImage = new Image(DisclosureImages.INSTANCE.getIcon());
+        loadingImage.setWidth("10px");
+        loadingImage.setHeight("10px");
+        loadingImage.setStyleName(style.disclosureHeaderIcon());
+        add(loadingImage);
 
-        flexTable.setWidget(0, 1, iconContainer);
-        cellFormatter.setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-        cellFormatter.setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_LEFT);
-        cellFormatter.setWidth(0,1, "20px");
+        InlineLabel title = new InlineLabel(text);
+        title.setStyleName(style.disclosureHeaderTitle());
+        add(title);
+
+        message.setStyleName(style.disclosureHeaderMessage());
+        add(message);
+
+        buttonContainer.setStyleName(style.disclosureHeaderButton());
+        add(buttonContainer);
 
         dp.addOpenHandler(this);
         dp.addCloseHandler(this);
         addDomHandler(this, MouseOverEvent.getType());
         addDomHandler(this, MouseOutEvent.getType());
-
-        initWidget(flexTable);
-        //noinspection GWTStyleCheck
-        addStyleName("pq-module-header");
     }
 
     @Override
     public void onOpen(OpenEvent<DisclosurePanel> event) {
-        iconContainer.clear();
-        iconContainer.add(openedIcon);
+        buttonContainer.clear();
+        buttonContainer.add(openedIcon);
     }
 
     @Override
     public void onClose(CloseEvent<DisclosurePanel> event) {
-        iconContainer.clear();
-        iconContainer.add(closedIcon);
+        buttonContainer.clear();
+        buttonContainer.add(closedIcon);
     }
 
     @Override
@@ -102,9 +163,9 @@ public class DisclosureHeader extends Composite implements OpenHandler<Disclosur
 
     private void setIconVisibility(boolean visibility){
         if(!iconAlwaysVisible && !visibility)
-            iconContainer.getElement().getStyle().setVisibility(Style.Visibility.HIDDEN);
+            buttonContainer.getElement().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.HIDDEN);
         else
-            iconContainer.getElement().getStyle().setVisibility(Style.Visibility.VISIBLE);
+            buttonContainer.getElement().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.VISIBLE);
     }
 
     public void setMessage(String text){

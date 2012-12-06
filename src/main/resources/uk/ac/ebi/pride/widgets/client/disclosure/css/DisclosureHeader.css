@@ -1,0 +1,28 @@
+.disclosureHeaderContainer {
+    height: 20px;
+    vertical-align: middle;
+}
+.disclosureHeaderIcon {
+
+}
+.disclosureHeaderContainer img {
+    margin: 3px 0 0 0;
+}
+
+.disclosureHeaderContainer img.disclosureHeaderIcon {
+    float: left;
+}
+
+.disclosureHeaderTitle, .disclosureHeaderMessage {
+    float: left;
+    margin-left: 10px;
+}
+
+.disclosureHeaderMessage {
+    margin-top: 2px;
+    font-size: smaller;
+}
+
+.disclosureHeaderButton {
+    float: right;
+}

@@ -16,4 +16,7 @@ public interface DisclosureImages extends ClientBundle {
 
     @ClientBundle.Source("disclosure_loading.gif")
     ImageResource getLoadingImage();
+
+    @ClientBundle.Source("icon.png")
+    ImageResource getIcon();
 }
