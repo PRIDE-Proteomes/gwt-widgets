@@ -111,12 +111,20 @@ public class ModuleContainer extends Composite implements OpenHandler<Disclosure
         return dp.addOpenHandler(handler);
     }
 
-    public void setMessage(String text){
-        dh.setMessage(text);
+    public void setPrimaryMessage(String text){
+        dh.setPrimaryMessage(text);
     }
 
-    public void clearMessage(){
-        dh.setMessage("");
+    public void clearPrimaryMessage(){
+        dh.setPrimaryMessage("");
+    }
+
+    public void setSecondaryMessage(String text){
+        dh.setSecondaryMessage(text);
+    }
+
+    public void clearSecondaryMessage(){
+        dh.setSecondaryMessage("");
     }
 
     public Widget getContent(){

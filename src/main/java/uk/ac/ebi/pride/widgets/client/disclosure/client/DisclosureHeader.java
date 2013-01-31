@@ -54,9 +54,14 @@ public class DisclosureHeader extends HTMLPanel implements OpenHandler<Disclosur
         String disclosureHeaderTitle();
 
         /**
-         * Applied to the secondary text labels
+         * Applied to the selection text labels
          */
-        String disclosureHeaderMessage();
+        String disclosureHeaderPrimaryMessage();
+
+        /**
+         * Applied to the number of items labels
+         */
+        String disclosureHeaderSecondaryMessage();
 
         /**
          * Applied to the widget button
@@ -73,7 +78,8 @@ public class DisclosureHeader extends HTMLPanel implements OpenHandler<Disclosur
     private final Widget openedIcon;
     private final Widget closedIcon;
 
-    private InlineLabel message = new InlineLabel();
+    private InlineLabel primaryMessage = new InlineLabel();
+    private InlineLabel numberMessage = new InlineLabel();
 
     /**
      * Get the default {@link Resources} for this widget.
@@ -122,11 +128,15 @@ public class DisclosureHeader extends HTMLPanel implements OpenHandler<Disclosur
         title.setStyleName(style.disclosureHeaderTitle());
         add(title);
 
-        message.setStyleName(style.disclosureHeaderMessage());
-        add(message);
+        primaryMessage.setStyleName(style.disclosureHeaderPrimaryMessage());
+        add(primaryMessage);
 
+        //
         buttonContainer.setStyleName(style.disclosureHeaderButton());
         add(buttonContainer);
+
+        numberMessage.setStyleName(style.disclosureHeaderSecondaryMessage());
+        add(numberMessage);
 
         dp.addOpenHandler(this);
         dp.addCloseHandler(this);
@@ -168,7 +178,11 @@ public class DisclosureHeader extends HTMLPanel implements OpenHandler<Disclosur
             buttonContainer.getElement().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.VISIBLE);
     }
 
-    public void setMessage(String text){
-        message.setText(text);
+    public void setPrimaryMessage(String text){
+        primaryMessage.setText(text);
+    }
+
+    public void setSecondaryMessage(String text){
+        numberMessage.setText(text);
     }
 }

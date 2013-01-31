@@ -13,16 +13,25 @@
     float: left;
 }
 
-.disclosureHeaderTitle, .disclosureHeaderMessage {
+.disclosureHeaderTitle, .disclosureHeaderPrimaryMessage {
     float: left;
-    margin-left: 10px;
+    margin-left: 25px;
 }
 
-.disclosureHeaderMessage {
+.disclosureHeaderPrimaryMessage, .disclosureHeaderSecondaryMessage {
     margin-top: 2px;
     font-size: smaller;
 }
 
+.disclosureHeaderPrimaryMessage {
+    color: blue;
+}
+
+.disclosureHeaderSecondaryMessage {
+    float: right;
+}
+
 .disclosureHeaderButton {
     float: right;
+    margin-left: 25px;
 }
