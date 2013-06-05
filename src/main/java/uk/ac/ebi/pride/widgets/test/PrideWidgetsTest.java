@@ -1,14 +1,12 @@
 package uk.ac.ebi.pride.widgets.test;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import uk.ac.ebi.pride.widgets.client.protein.client.ProteinViewer;
-import uk.ac.ebi.pride.widgets.client.sequence.client.SequenceViewer;
-import uk.ac.ebi.pride.widgets.client.sequence.type.Pride;
-import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
-import uk.ac.ebi.pride.widgets.client.table.client.SingleSelectionTable;
 import uk.ac.ebi.pride.widgets.client.table.events.SingleSelectionChangeEvent;
 import uk.ac.ebi.pride.widgets.client.table.events.TableResetEvent;
 import uk.ac.ebi.pride.widgets.client.table.handlers.SingleSelectionChangeHandler;
@@ -34,25 +32,25 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
 
     @Override
     public void onModuleLoad() {
-        basicExample();
+//        basicExample();
 
-//        final RequestCallback rc = this;
-//
-//        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-//
-//            @Override
-//            public void execute() {
-//                String url = "/prideq-web-service/human_up/protein/P02768"; //A0AVT1";
-//                RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
-//                requestBuilder.setHeader("Accept", "application/json");
-//                try {
-//                    requestBuilder.sendRequest(null, rc);
-//                } catch (RequestException ex) {
-//                    //TODO
-//                }
-//
-//            }
-//        });
+        final RequestCallback rc = this;
+
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                String url = "/pride/ws/prideq/protein/P02768"; //A0AVT1";
+                RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
+                requestBuilder.setHeader("Accept", "application/json");
+                try {
+                    requestBuilder.sendRequest(null, rc);
+                } catch (RequestException ex) {
+                    //TODO
+                }
+
+            }
+        });
     }
 
     @Override
@@ -69,51 +67,51 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
             VerticalPanel vp = new VerticalPanel();
             vp.add(new HTMLPanel("Pride GWT Widgets"));
 
-            @SuppressWarnings("Convert2Diamond")
-            final SingleSelectionTable<Peptide> table = new SingleSelectionTable<Peptide>();
-            table.setList(protein.getPeptides());
-            table.addSingleSelectionChangeHandler(this);
-            table.addTableResetHandler(this);
-            // Create sequence column.
-            table.addColumn(new TextColumn<Peptide>() {
-                @Override
-                public String getValue(Peptide peptide) {
-                    return peptide.getSequence();
-                }
-            });
+//            @SuppressWarnings("Convert2Diamond")
+//            final SingleSelectionTable<Peptide> table = new SingleSelectionTable<Peptide>();
+//            table.setList(protein.getPeptides());
+//            table.addSingleSelectionChangeHandler(this);
+//            table.addTableResetHandler(this);
+//            // Create sequence column.
+//            table.addColumn(new TextColumn<Peptide>() {
+//                @Override
+//                public String getValue(Peptide peptide) {
+//                    return peptide.getSequence();
+//                }
+//            });
+//
+//            // Create site column.
+//            table.addColumn(new TextColumn<Peptide>() {
+//                @Override
+//                public String getValue(Peptide peptide) {
+//                    return peptide.getSite().toString();
+//                }
+//            });
+//
+//            // Create psmHits column.
+//            table.addColumn(new TextColumn<Peptide>() {
+//                @Override
+//                public String getValue(Peptide peptide) {
+//                    return peptide.getPsmHits().toString();
+//                }
+//            });
+//
+//            //ResizeLayoutPanel tableContainer = new ResizeLayoutPanel();
+//            table.setHeight("150px");
+//            //tableContainer.add(table);
+//            table.setPageSize(protein.getPeptides().size());
 
-            // Create site column.
-            table.addColumn(new TextColumn<Peptide>() {
-                @Override
-                public String getValue(Peptide peptide) {
-                    return peptide.getSite().toString();
-                }
-            });
-
-            // Create psmHits column.
-            table.addColumn(new TextColumn<Peptide>() {
-                @Override
-                public String getValue(Peptide peptide) {
-                    return peptide.getPsmHits().toString();
-                }
-            });
-
-            //ResizeLayoutPanel tableContainer = new ResizeLayoutPanel();
-            table.setHeight("150px");
-            //tableContainer.add(table);
-            table.setPageSize(protein.getPeptides().size());
-
-            vp.add(table);
+//            vp.add(table);
 
             ProteinProxy proteinProxy = new ProteinProxy(protein);
 
             ProteinViewer proteinViewer = new ProteinViewer(proteinProxy);
-            proteinViewer.setSelectedArea(187, 198);
+//            proteinViewer.setSelectedArea(187, 198);
             vp.add(proteinViewer);
 
-            SequenceType sequenceType = new Pride();
-            SequenceViewer sequenceViewer = new SequenceViewer(sequenceType, proteinProxy);
-            vp.add(sequenceViewer);
+//            SequenceType sequenceType = new Pride();
+//            SequenceViewer sequenceViewer = new SequenceViewer(sequenceType, proteinProxy);
+//            vp.add(sequenceViewer);
 
 
             RootPanel.get(PLACE_HOLDER).add(vp);

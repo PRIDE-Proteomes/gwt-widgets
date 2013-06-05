@@ -6,9 +6,11 @@ import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
@@ -19,7 +21,7 @@ import java.util.Map;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class ModificationBase implements Clickable, Drawable {
+public class ModificationBase implements Drawable, Clickable, Animated {
     public static final int MODIFICATION_HEIGHT = 6;
     public static final int MODIFICATION_TICK_WIDTH = 8;
     public static final CssColor MODIFICATION_COLOR = CssColor.make("rgba(255,0,0, 1)");
@@ -148,6 +150,19 @@ public class ModificationBase implements Clickable, Drawable {
         }
 
         this.mouseOver = mouseOverAux;
+    }
+
+    @Override
+    public void drawAnimation(Context2d ctx, double progress) {
+        progress = AnimationUtils.getProgress(0.75, 1, progress);
+        if(progress==0) return;
+        ctx.setFillStyle(MODIFICATION_COLOR);
+        ctx.beginPath();
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(bx, by);
+        ctx.lineTo(cx, cy);
+        ctx.closePath();
+        ctx.fill();
     }
 
     private String getModificationTooltip(){

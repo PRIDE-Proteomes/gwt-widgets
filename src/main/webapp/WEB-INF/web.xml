@@ -13,15 +13,15 @@
     <!-- General Servlet Context Parameters -->
     <context-param>
         <param-name>proxyHost</param-name>
-        <param-value>localhost</param-value>
+        <param-value>wwwdev.ebi.ac.uk</param-value>
     </context-param>
     <context-param>
         <param-name>proxyPort</param-name>
-        <param-value>9090</param-value>
+        <param-value>80</param-value>
     </context-param>
     <context-param>
         <param-name>proxyPath</param-name>
-        <param-value>/prideq-web-service</param-value>
+        <param-value>/pride</param-value>
     </context-param>
     <context-param>
         <param-name>maxFileUploadSize</param-name>
@@ -35,7 +35,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ProxyServlet</servlet-name>
-        <url-pattern>/prideq-web-service/*</url-pattern>
+        <url-pattern>/pride/*</url-pattern>
     </servlet-mapping>
 
     <!-- Dynamically generated initial page configuration -->

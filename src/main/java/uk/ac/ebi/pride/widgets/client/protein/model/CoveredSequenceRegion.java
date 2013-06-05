@@ -2,12 +2,14 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
-public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
+public class CoveredSequenceRegion extends SequenceRegion implements Clickable, Animated {
     public static final int BOXES_HEIGHT = 50;
     public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
@@ -55,6 +57,15 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable {
             ctx.setFillStyle(REGION_SELECTED_COLOR);
             ctx.fillRect(xMin, yMin, width, height);
         }
+    }
+
+    @Override
+    public void drawAnimation(Context2d ctx, double progress) {
+        progress = AnimationUtils.getProgress(0.25, 0.50, progress);
+        if(progress==0) return;
+        double aux = yMin + (BOXES_HEIGHT / 2) * (1-progress);
+        ctx.setFillStyle(regionColor);
+        ctx.fillRect(xMin, aux, width, height * progress);
     }
 
     @Override

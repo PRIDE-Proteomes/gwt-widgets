@@ -28,7 +28,7 @@ public class AppWebServlet extends HttpServlet {
     public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
-        URL url = new URL("http://wwwdev.ebi.ac.uk/frontier/template-service/templates/services/web.html");
+        URL url = new URL("http://wwwint.ebi.ac.uk/web/template-service/prod/templates/compliance/services/full");
         //URL url = new URL("http://localhost:9595/frontier-web-service/templates/services/web.html");
         // make post mode connection
         URLConnection urlc = url.openConnection();

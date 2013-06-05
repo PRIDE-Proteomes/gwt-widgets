@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.protein.client;
 
+import com.google.gwt.animation.client.Animation;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
@@ -14,11 +15,12 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.protein.events.*;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.*;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.model.*;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
@@ -34,6 +36,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     private boolean proteinBorder;
 
+    private static final boolean ANIMATED = true;
+    // The duration of the animation.
+    private static final int ANIMATION_DURATION = 3000;
     //timer refresh rate, in milliseconds
     static final int REFRESH_RATE = 25;
     final Timer timer;
@@ -47,6 +52,38 @@ public class ProteinViewer extends Composite implements HasHandlers {
     // mouse positions relative to canvas
     int mouseX = -100; int lastMouseX = -200; //Do not assign the same value at the beginning
     int mouseY = -100; int lastMouseY = -200; //Do not assign the same value at the beginning
+
+    protected boolean isMoving = false;
+    private static ContentAnimation contentAnimation;
+
+    private static class ContentAnimation extends Animation {
+        private ProteinViewer viewer;
+
+        public void startAnimation(ProteinViewer viewer, boolean animate){
+            // Immediately complete previous animation
+            cancel();
+
+            this.viewer = viewer;
+            this.viewer.isMoving = animate;
+            if(animate){
+                run(ANIMATION_DURATION);
+            }else{
+                viewer.draw();
+            }
+        }
+
+        @Override
+        protected void onUpdate(double progress) {
+            this.viewer.drawAnimation(progress);
+        }
+
+        @Override
+        protected void onComplete() {
+            super.onComplete();
+            this.viewer.isMoving = false;
+            this.viewer.doUpdate(true);
+        }
+    }
 
     public ProteinViewer(ProteinHandler proteinHandler) {
         this(proteinHandler, false, false);
@@ -113,6 +150,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
             this.canvas.getCanvasElement().setHeight(heightAux);
             this.canvas.setPixelSize(width, heightAux);
         }
+
+        this.contentAnimation = new ContentAnimation();
+        this.contentAnimation.startAnimation(this, ANIMATED);
 
         // setup timer
         timer = new Timer() {
@@ -306,10 +346,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.getElement().getStyle().setCursor(cursor);
     }
 
-    protected void draw() {
-        Context2d ctx = canvas.getContext2d();
-
-        //Clean the canvas
+    private void cleanCanvas(Context2d ctx){
         if(this.proteinBorder){
             ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
         }else{
@@ -318,6 +355,14 @@ public class ProteinViewer extends Composite implements HasHandlers {
         int width = ctx.getCanvas().getWidth();
         int height = ctx.getCanvas().getHeight();
         ctx.fillRect(0, 0, width, height);
+    }
+
+    protected void draw() {
+        //While the widget is animated, no other drawing action are executed
+        if(this.isMoving) return;
+
+        Context2d ctx = canvas.getContext2d();
+        this.cleanCanvas(ctx);
 
         //Draw all the components
         this.objectSelected = false;
@@ -331,6 +376,17 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
         //ProteinAreaSelection is drawn on top of everything as a new requirement :)
         this.proteinSelection.draw(ctx);
+    }
+
+    protected void drawAnimation(double progress){
+        Context2d ctx = canvas.getContext2d();
+        this.cleanCanvas(ctx);
+        for (Drawable component : this.components) {
+            if(component instanceof Animated){
+                Animated a = (Animated) component;
+                a.drawAnimation(ctx, progress);
+            }
+        }
     }
 
     @Override

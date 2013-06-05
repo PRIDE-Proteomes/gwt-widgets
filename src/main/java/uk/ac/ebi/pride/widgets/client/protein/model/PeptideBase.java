@@ -5,13 +5,16 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
+import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
-public class PeptideBase implements Drawable, Clickable {
+public class PeptideBase implements Drawable, Clickable, Animated {
     public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
     public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
     public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)");
@@ -95,6 +98,15 @@ public class PeptideBase implements Drawable, Clickable {
         }
 
         this.mouseOver = mouseOverAux;
+    }
+
+    @Override
+    public void drawAnimation(Context2d ctx, double progress) {
+        progress = AnimationUtils.getProgress(0.5, 0.75, progress);
+        if(progress==0) return;
+        double auxY = (yMin - PeptideBaseFactory.PEPTIDES_Y) * progress + PeptideBaseFactory.PEPTIDES_Y;
+        ctx.setFillStyle(this.peptideColor);
+        ctx.fillRect(xMin, auxY, this.width, PEPTIDE_HEIGHT);
     }
 
     @Override

@@ -80,6 +80,7 @@
                         <!-- Here we exclude the packages and files that we do NOT want to add to the jar file -->
                         <!-- This excludes are either for deprecated modules or test components -->
                         <exclude>**/biojs/**</exclude>
+                        <exclude>**/examples/**</exclude>
                         <exclude>**/test/**</exclude>
                         <exclude>**/servlets/**</exclude>
                         <exclude>**/PrideWidgetsTest.*</exclude>
