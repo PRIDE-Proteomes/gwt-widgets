@@ -156,7 +156,7 @@ public class ModificationBase implements Drawable, Clickable, Animated {
     public void drawAnimation(Context2d ctx, double progress) {
         progress = AnimationUtils.getProgress(0.75, 1, progress);
         if(progress==0) return;
-        ctx.setFillStyle(MODIFICATION_COLOR);
+        ctx.setFillStyle(CssColor.make("rgba(255,0,0, " + progress + ")"));
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);

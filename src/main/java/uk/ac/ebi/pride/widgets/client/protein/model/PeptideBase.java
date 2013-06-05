@@ -102,7 +102,7 @@ public class PeptideBase implements Drawable, Clickable, Animated {
 
     @Override
     public void drawAnimation(Context2d ctx, double progress) {
-        progress = AnimationUtils.getProgress(0.5, 0.75, progress);
+        progress = AnimationUtils.getProgress(0.5, 0.85, progress);
         if(progress==0) return;
         double auxY = (yMin - PeptideBaseFactory.PEPTIDES_Y) * progress + PeptideBaseFactory.PEPTIDES_Y;
         ctx.setFillStyle(this.peptideColor);
