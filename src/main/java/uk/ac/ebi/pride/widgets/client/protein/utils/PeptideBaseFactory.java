@@ -27,14 +27,7 @@ public abstract class PeptideBaseFactory {
             y += PeptideBase.PEPTIDE_HEIGHT + PEPTIDE_VERTICAL_OFFSET;
             for (PeptideHandler peptideHandler : peptideLevel.getPeptideHandlers()) {
                 if (peptideHandler.getSite() > 0 && peptideHandler.getEnd() <= canvasProperties.getProteinLength()) {
-//                    PeptideBase pepAux = new PeptideBase(canvasProperties, peptideHandler, y);
-                    CssColor color;
-                    if (peptideHandler.getUniqueness() == 1) {
-                        color = UNIQUE_PEPTIDE_COLOR;
-                    } else {
-                        color = NON_UNIQUE_PEPTIDE_COLOR;
-                    }
-                    PeptideBase pepAux = new PeptideBase(canvasProperties, getPeptideTooltip(peptideHandler), y, color, peptideHandler.getSite(), peptideHandler.getSequence().length());
+                    PeptideBase pepAux = new PeptideBase(canvasProperties, peptideHandler, y);
                     list.add(pepAux);
                 } // else: ignore this peptide, as it is outside the protein sequence scope
             }

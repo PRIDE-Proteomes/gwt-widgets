@@ -7,7 +7,7 @@
     <groupId>uk.ac.ebi.pride.widgets</groupId>
     <artifactId>pride-gwt-widgets</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.4-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>PRIDE GWT Widgets</name>
 
     <properties>

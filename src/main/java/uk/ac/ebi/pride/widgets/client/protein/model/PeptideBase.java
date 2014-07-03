@@ -48,15 +48,6 @@ public class PeptideBase implements Drawable, Clickable, Animated {
 
         this.tooltipMessage = this.getPeptideTooltip();
     }
-    public PeptideBase(CanvasProperties canvasProperties, String tooltipMessage, int y, CssColor peptideColor, int site, int peptideLength) {
-        this.peptideColor = peptideColor;
-        this.xMin = canvasProperties.getPixelFromPosition(site);
-        this.xMax = canvasProperties.getPixelFromPosition(site + peptideLength);
-        this.width = xMax - xMin;
-        this.yMin = y;
-        this.yMax = y + PEPTIDE_HEIGHT;
-        this.tooltipMessage = tooltipMessage;
-    }
 
     public void setHandlerManager(HandlerManager handlerManager) {
         this.handlerManager = handlerManager;
