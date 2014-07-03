@@ -1,0 +1,11 @@
+.moduleContainer {
+    border-style:solid;
+    border-color:#ffffff;
+    border-width: 1px;
+}
+.moduleContainer:hover {
+    border-style:solid;
+    border-color: #9acd32;
+    border-width: 1px;
+    border-radius: 15px;
+}

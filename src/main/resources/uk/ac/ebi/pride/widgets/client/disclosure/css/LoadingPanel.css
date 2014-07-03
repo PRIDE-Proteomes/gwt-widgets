@@ -1,0 +1,19 @@
+.loadingPanelContainer{
+    padding-left: 20px;
+}
+
+.loadingImage {
+
+}
+.loadingPanelContainer img {
+    margin: 3px 0 0 0;
+}
+
+.loadingPanelContainer img.loadingImage {
+    float: left;
+}
+
+.loadingMessage {
+    float: left;
+    margin-left: 10px;
+}

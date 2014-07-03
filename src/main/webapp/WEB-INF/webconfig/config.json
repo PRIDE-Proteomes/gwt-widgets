@@ -1,0 +1,70 @@
+{
+    "globalTemplate": {
+        "title": "EMBL-EBI [PRIDE] Test",
+        "javascriptList": [
+            {
+                "url": "PrideWidgetsTest/PrideWidgetsTest.nocache.js"
+            }
+        ],
+        "breadcrumbItems": [{
+            "title": "PRIDE",
+            "href": "../../"
+        },{
+            "title": "PRIDE Q",
+            "href": "../"
+        },{
+            "title": "Viewer"
+        }],
+        "lastInBody": true,
+        "cssList": [
+            {
+                "url": "static/css/prideq.css"
+            }
+        ],
+        "placeHolder": "pridew",
+        "bodyMaxWidth": 1050
+    },
+    "localMasthead": {
+        "title": "TEST",
+        "search": {
+            "btnText": "Search",
+            "action": "../search",
+            "method": "get",
+            "inputName": "q"
+        },
+        "navigationTabs": [
+            {
+                "selected": false,
+                "title": "Home",
+                "href": "../",
+                "tooltip": "Home page"
+            },
+            {
+                "selected": false,
+                "title": "Search",
+                "href": "../search",
+                "tooltip": "Search PRIDE Q data"
+            },
+            {
+                "selected": false,
+                "title": "Documentation",
+                "href": "../documentation",
+                "tooltip": "PRIDE Q documentation"
+            },
+            {
+                "selected": false,
+                "title": "About PRIDE Q",
+                "href": "../about",
+                "tooltip": "About PRIDE Q"
+            }
+        ],
+        "functionalTabs": [
+            {
+                "title": "Feedback",
+                "href": "/support",
+                "iconFontSet": "icon-static",
+                "dataIcon": "\\"
+            }
+        ]
+    }
+}

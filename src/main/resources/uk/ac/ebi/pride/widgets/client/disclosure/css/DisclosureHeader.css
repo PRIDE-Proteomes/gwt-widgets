@@ -1,0 +1,40 @@
+.disclosureHeaderContainer {
+    height: 20px;
+    vertical-align: middle;
+}
+.disclosureHeaderIcon {
+
+}
+.disclosureHeaderContainer img {
+    margin: 3px 0 0 0;
+}
+
+.disclosureHeaderContainer img.disclosureHeaderIcon {
+    float: left;
+}
+
+.disclosureHeaderTitle .disclosureHeaderPrimaryMessage {
+    float: left;
+}
+
+.disclosureHeaderPrimaryMessage {
+    margin-left: 25px;
+}
+
+.disclosureHeaderPrimaryMessage, .disclosureHeaderSecondaryMessage {
+    margin-top: 2px;
+    font-size: smaller;
+}
+
+.disclosureHeaderPrimaryMessage {
+    color: blue;
+}
+
+.disclosureHeaderSecondaryMessage {
+    float: right;
+}
+
+.disclosureHeaderButton {
+    float: right;
+    margin-left: 25px;
+}
