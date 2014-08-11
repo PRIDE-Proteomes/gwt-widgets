@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <!-- POM file generated with GWT webAppCreator -->
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>uk.ac.ebi.pride.widgets</groupId>
     <artifactId>pride-gwt-widgets</artifactId>
     <packaging>jar</packaging>
@@ -12,11 +12,8 @@
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <!-- <gwtVersion>2.4.0</gwtVersion> -->
-        <!--<gwtVersion>2.5.0</gwtVersion>-->
         <gwtVersion>2.6.0</gwtVersion>
-        <!--<gwtVersion>2.5.0-rc2</gwtVersion>-->
-        <!-- This GWT  app needs at least java 1.6 -->
+        <!-- This GWT app needs at least Java 6 -->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
@@ -36,36 +33,36 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.smartgwt</groupId>
-            <artifactId>smartgwt</artifactId>
-            <version>3.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.smartgwt</groupId>-->
+            <!--<artifactId>smartgwt</artifactId>-->
+            <!--<version>3.0</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+            <!--<version>4.7</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>commons-fileupload</groupId>-->
+            <!--<artifactId>commons-fileupload</artifactId>-->
+            <!--<version>1.2</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>commons-httpclient</groupId>-->
+            <!--<artifactId>commons-httpclient</artifactId>-->
+            <!--<version>3.1</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20090211</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.json</groupId>-->
+            <!--<artifactId>json</artifactId>-->
+            <!--<version>20090211</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

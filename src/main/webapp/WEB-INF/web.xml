@@ -10,34 +10,6 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <!-- General Servlet Context Parameters -->
-    <context-param>
-        <param-name>proxyHost</param-name>
-        <param-value>wwwdev.ebi.ac.uk</param-value>
-    </context-param>
-    <context-param>
-        <param-name>proxyPort</param-name>
-        <param-value>80</param-value>
-    </context-param>
-    <context-param>
-        <param-name>proxyPath</param-name>
-        <param-value>/pride</param-value>
-    </context-param>
-    <context-param>
-        <param-name>maxFileUploadSize</param-name>
-        <param-value></param-value>
-    </context-param>
-
-    <!-- RESTfulWS PROXY Configuration -->
-    <servlet>
-        <servlet-name>ProxyServlet</servlet-name>
-        <servlet-class>uk.ac.ebi.pride.widgets.servlets.ProxyServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProxyServlet</servlet-name>
-        <url-pattern>/pride/*</url-pattern>
-    </servlet-mapping>
-
     <!-- Dynamically generated initial page configuration -->
     <servlet>
         <servlet-name>AppWebServlet</servlet-name>
