@@ -13,8 +13,11 @@ public abstract class PeptideBaseFactory {
     public static final int PEPTIDES_Y = CanvasProperties.Y_OFFSET + CoveredSequenceRegion.BOXES_HEIGHT + ModificationBase.MODIFICATION_HEIGHT;
     public static final int PEPTIDE_VERTICAL_OFFSET = 5;
 
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 1)"); // red
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, 1)"); // green
+    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)"); // yellow
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)"); // light grey
+    //    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 1)"); // red
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)"); // dark grey
+    //    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, 1)"); // green
 
 
     public static List<PeptideBase> getPeptideBaseList(CanvasProperties canvasProperties){
@@ -34,7 +37,7 @@ public abstract class PeptideBaseFactory {
                     } else {
                         color = NON_UNIQUE_PEPTIDE_COLOR;
                     }
-                    PeptideBase pepAux = new PeptideBase(canvasProperties, getPeptideTooltip(peptideHandler), y, color, peptideHandler.getSite(), peptideHandler.getSequence().length());
+                    PeptideBase pepAux = new PeptideBase(canvasProperties, peptideHandler, y, getPeptideTooltip(peptideHandler), color, peptideHandler.getSite(), peptideHandler.getSequence().length());
                     list.add(pepAux);
                 } // else: ignore this peptide, as it is outside the protein sequence scope
             }
@@ -43,14 +46,14 @@ public abstract class PeptideBaseFactory {
         return list;
     }
 
-    private static String getPeptideTooltip(PeptideHandler peptide){
+    public static String getPeptideTooltip(PeptideHandler peptide){
         StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
-        if(peptide.getUniqueness()!=1){
-            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">NON MATCHING PEPTIDE</span>");
-        }else{
+        if (peptide.getUniqueness() == 1) {
             sb.append(UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">MATCHING PEPTIDE</span>");
+            sb.append("\">UNIQUE PEPTIDE</span>");
+        } else {
+            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
+            sb.append("\">NON UNIQUE PEPTIDE</span>");
         }
         sb.append("<br/>");
         sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");

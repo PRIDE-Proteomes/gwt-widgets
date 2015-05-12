@@ -11,15 +11,11 @@ import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
-import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
+import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.*;
+
 public class PeptideBase implements Drawable, Clickable, Animated {
-    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)"); // yellow
-//    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)"); // light grey
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 1)"); // red
-//    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)"); // dark grey
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, 1)"); // green
 
     public static final int PEPTIDE_HEIGHT = 5;
 
@@ -46,9 +42,10 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
 
-        this.tooltipMessage = this.getPeptideTooltip();
+        this.tooltipMessage = getPeptideTooltip(peptide);
     }
-    public PeptideBase(CanvasProperties canvasProperties, String tooltipMessage, int y, CssColor peptideColor, int site, int peptideLength) {
+    public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y, String tooltipMessage, CssColor peptideColor, int site, int peptideLength) {
+        this.peptide = peptide;
         this.peptideColor = peptideColor;
         this.xMin = canvasProperties.getPixelFromPosition(site);
         this.xMax = canvasProperties.getPixelFromPosition(site + peptideLength);
@@ -115,7 +112,7 @@ public class PeptideBase implements Drawable, Clickable, Animated {
     public void drawAnimation(Context2d ctx, double progress) {
         progress = AnimationUtils.getProgress(0.5, 0.85, progress);
         if(progress==0) return;
-        double auxY = (yMin - PeptideBaseFactory.PEPTIDES_Y) * progress + PeptideBaseFactory.PEPTIDES_Y;
+        double auxY = (yMin - PEPTIDES_Y) * progress + PEPTIDES_Y;
         ctx.setFillStyle(this.peptideColor);
         ctx.fillRect(xMin, auxY, this.width, PEPTIDE_HEIGHT);
     }
@@ -136,25 +133,25 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         return this.selected;
     }
 
-    private String getPeptideTooltip(){
-        StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
-        if(this.peptide.getUniqueness()!=1){
-            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">NON MATCHING PEPTIDE</span>");
-        }else{
-            sb.append(UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">MATCHING PEPTIDE</span>");
-        }
-        sb.append("<br/>");
-        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");
-        sb.append(this.peptide.getSequence());
-        sb.append("<br/>");
-        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
-        sb.append(this.peptide.getSite());
-        sb.append(";&nbsp;&nbsp;&nbsp;End: ");
-        sb.append(this.peptide.getEnd());
-        return sb.toString();
-    }
+//    private String getPeptideTooltip(){
+//        StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
+//        if(this.peptide.getUniqueness()>1){
+//            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
+//            sb.append("\">NON UNIQUE PEPTIDE</span>");
+//        }else{
+//            sb.append(UNIQUE_PEPTIDE_COLOR.value());
+//            sb.append("\">UNIQUE PEPTIDE</span>");
+//        }
+//        sb.append("<br/>");
+//        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");
+//        sb.append(this.peptide.getSequence());
+//        sb.append("<br/>");
+//        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
+//        sb.append(this.peptide.getSite());
+//        sb.append(";&nbsp;&nbsp;&nbsp;End: ");
+//        sb.append(this.peptide.getEnd());
+//        return sb.toString();
+//    }
 
     @Override
     public void fireSelectionEvent() {

@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.NON_UNIQUE_PEPTIDE_COLOR;
+import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.UNIQUE_PEPTIDE_COLOR;
+
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
@@ -28,8 +31,8 @@ public class Position implements DrawableLayers, Clickable {
 
 //    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
 //    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, .65)");
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 0.5)"); //  should match the colour in the protein widget (ProteinViewer, values set in PeptideBase)
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, .65)");
+//    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 0.5)"); //  should match the colour in the protein widget (ProteinViewer, values set in PeptideBase)
+//    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, .65)");
     /*public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
     public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(110,110,255, .5)");*/
 
