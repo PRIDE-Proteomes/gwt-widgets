@@ -13,8 +13,11 @@
     float: left;
 }
 
-.disclosureHeaderTitle, .disclosureHeaderPrimaryMessage {
+.disclosureHeaderTitle .disclosureHeaderPrimaryMessage {
     float: left;
+}
+
+.disclosureHeaderPrimaryMessage {
     margin-left: 25px;
 }
 

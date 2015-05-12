@@ -36,14 +36,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     private boolean proteinBorder;
 
-    private static final boolean ANIMATED = true;
-    // The duration of the animation.
-    private static final int ANIMATION_DURATION = 3000;
     //timer refresh rate, in milliseconds
     static final int REFRESH_RATE = 25;
+
     final Timer timer;
     private Canvas canvas;
     private boolean objectSelected = false;
+
+    private boolean animated = true;
+    // The duration of the animation.
+    private static int ANIMATION_DURATION = 3000;
 
     private ProteinAreaSelection proteinSelection;
     @SuppressWarnings("Convert2Diamond")
@@ -151,8 +153,8 @@ public class ProteinViewer extends Composite implements HasHandlers {
             this.canvas.setPixelSize(width, heightAux);
         }
 
-        this.contentAnimation = new ContentAnimation();
-        this.contentAnimation.startAnimation(this, ANIMATED);
+        ProteinViewer.contentAnimation = new ContentAnimation();
+        ProteinViewer.contentAnimation.startAnimation(this, animated);
 
         // setup timer
         timer = new Timer() {
@@ -198,6 +200,14 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     public HandlerRegistration addProteinAreaHighlightedHandler(ProteinAreaHighlightedHandler handler){
         return handlerManager.addHandler(ProteinAreaHighlightEvent.TYPE, handler);
+    }
+
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+    }
+
+    public static void setAnimationDuration(int animationDuration) {
+        ProteinViewer.ANIMATION_DURATION = animationDuration;
     }
 
     public void setSelectedArea(int start, int end){

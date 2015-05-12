@@ -11,11 +11,11 @@ import uk.ac.ebi.pride.widgets.client.table.events.SingleSelectionChangeEvent;
 import uk.ac.ebi.pride.widgets.client.table.events.TableResetEvent;
 import uk.ac.ebi.pride.widgets.client.table.handlers.SingleSelectionChangeHandler;
 import uk.ac.ebi.pride.widgets.client.table.handlers.TableResetHandler;
-import uk.ac.ebi.pride.widgets.examples.basic.client.BasicViewer;
-import uk.ac.ebi.pride.widgets.examples.basic.events.BookSelectedEvent;
-import uk.ac.ebi.pride.widgets.examples.basic.events.BoxSelectedEvent;
-import uk.ac.ebi.pride.widgets.examples.basic.handlers.BookSelectedHandler;
-import uk.ac.ebi.pride.widgets.examples.basic.handlers.BoxSelectedHandler;
+//import uk.ac.ebi.pride.widgets.examples.basic.client.BasicViewer;
+//import uk.ac.ebi.pride.widgets.examples.basic.events.BookSelectedEvent;
+//import uk.ac.ebi.pride.widgets.examples.basic.events.BoxSelectedEvent;
+//import uk.ac.ebi.pride.widgets.examples.basic.handlers.BookSelectedHandler;
+//import uk.ac.ebi.pride.widgets.examples.basic.handlers.BoxSelectedHandler;
 import uk.ac.ebi.pride.widgets.test.data.factory.ModelFactory;
 import uk.ac.ebi.pride.widgets.test.data.factory.ModelFactoryException;
 import uk.ac.ebi.pride.widgets.test.data.model.Peptide;
@@ -135,26 +135,26 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
         System.out.println("Table selection reset :)");
     }
 
-    private void basicExample(){
-        VerticalPanel vp = new VerticalPanel();
-        vp.add(new HTMLPanel("Basic example"));
-
-        BasicViewer basicViewer = new BasicViewer(900, 500);
-        basicViewer.addBookSelectedHandler(new BookSelectedHandler() {
-            @Override
-            public void onBookSelected(BookSelectedEvent e) {
-                System.out.println("Book selected: " + e.getBook().getCode());
-            }
-        });
-        basicViewer.addBoxSelectedHandler(new BoxSelectedHandler() {
-            @Override
-            public void onBoxSelected(BoxSelectedEvent e) {
-                System.out.println("Box selected: " + e.getBox().getCode());
-            }
-        });
-
-        vp.add(basicViewer);
-
-        RootPanel.get(PLACE_HOLDER).add(vp);
-    }
+//    private void basicExample(){
+//        VerticalPanel vp = new VerticalPanel();
+//        vp.add(new HTMLPanel("Basic example"));
+//
+//        BasicViewer basicViewer = new BasicViewer(900, 500);
+//        basicViewer.addBookSelectedHandler(new BookSelectedHandler() {
+//            @Override
+//            public void onBookSelected(BookSelectedEvent e) {
+//                System.out.println("Book selected: " + e.getBook().getCode());
+//            }
+//        });
+//        basicViewer.addBoxSelectedHandler(new BoxSelectedHandler() {
+//            @Override
+//            public void onBoxSelected(BoxSelectedEvent e) {
+//                System.out.println("Box selected: " + e.getBox().getCode());
+//            }
+//        });
+//
+//        vp.add(basicViewer);
+//
+//        RootPanel.get(PLACE_HOLDER).add(vp);
+//    }
 }

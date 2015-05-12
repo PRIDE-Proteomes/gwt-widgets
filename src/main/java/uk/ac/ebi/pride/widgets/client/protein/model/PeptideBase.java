@@ -15,9 +15,11 @@ import uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 public class PeptideBase implements Drawable, Clickable, Animated {
-    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
-    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)");
+    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)"); // yellow
+//    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)"); // light grey
+    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 1)"); // red
+//    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, 1)"); // dark grey
+    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, 1)"); // green
 
     public static final int PEPTIDE_HEIGHT = 5;
 
@@ -44,7 +46,16 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         this.yMin = y;
         this.yMax = y + PEPTIDE_HEIGHT;
 
-        this.tooltipMessage = this.getModificationTooltip();
+        this.tooltipMessage = this.getPeptideTooltip();
+    }
+    public PeptideBase(CanvasProperties canvasProperties, String tooltipMessage, int y, CssColor peptideColor, int site, int peptideLength) {
+        this.peptideColor = peptideColor;
+        this.xMin = canvasProperties.getPixelFromPosition(site);
+        this.xMax = canvasProperties.getPixelFromPosition(site + peptideLength);
+        this.width = xMax - xMin;
+        this.yMin = y;
+        this.yMax = y + PEPTIDE_HEIGHT;
+        this.tooltipMessage = tooltipMessage;
     }
 
     public void setHandlerManager(HandlerManager handlerManager) {
@@ -125,14 +136,14 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         return this.selected;
     }
 
-    private String getModificationTooltip(){
+    private String getPeptideTooltip(){
         StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
-        if(this.peptide.getUniqueness()>1){
+        if(this.peptide.getUniqueness()!=1){
             sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">NON UNIQUE PEPTIDE</span>");
+            sb.append("\">NON MATCHING PEPTIDE</span>");
         }else{
             sb.append(UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">UNIQUE PEPTIDE</span>");
+            sb.append("\">MATCHING PEPTIDE</span>");
         }
         sb.append("<br/>");
         sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");

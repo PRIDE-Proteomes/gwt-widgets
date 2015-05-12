@@ -20,11 +20,13 @@ public class PeptideLevelCollection {
     private void initialize(){
         this.currentLevel = 0;
         for (PeptideHandler peptideHandler : canvasProperties.getProteinHandler().getPeptides()) {
-            PeptideLevel peptideLevel = getOrCreatePeptideLevel();
-            while (!peptideLevel.addPeptide(peptideHandler)){
-                peptideLevel = getOrCreatePeptideLevel();
-            }
-            this.currentLevel = 0;
+            if (peptideHandler.getSite() > 0 && peptideHandler.getEnd() <= canvasProperties.getProteinLength()) {
+                PeptideLevel peptideLevel = getOrCreatePeptideLevel();
+                while (!peptideLevel.addPeptide(peptideHandler)){
+                    peptideLevel = getOrCreatePeptideLevel();
+                }
+                this.currentLevel = 0;
+            } // else: ignore this peptide, as it is outside the protein sequence scope
         }
     }
 

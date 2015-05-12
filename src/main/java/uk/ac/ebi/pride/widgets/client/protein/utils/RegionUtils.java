@@ -22,8 +22,10 @@ public abstract class RegionUtils {
         for (PeptideHandler peptideHandler : canvasProperties.getProteinHandler().getPeptides()) {
             String seq = peptideHandler.getSequence();
             int start = peptideHandler.getSite() - 1;
-            int end = start + seq.length();
-            for(int i=start; i<end; ++i){aux.get(i).add(seq);}
+                int end = start + seq.length();
+            if (start >= 0 && end <= canvasProperties.getProteinLength()) {
+                for(int i=start; i<end; ++i){aux.get(i).add(seq);}
+            } // else: ignore this peptide, as it is outside the protein sequence scope
         }
 
         //now regions are created by grouping the different values in the previous array

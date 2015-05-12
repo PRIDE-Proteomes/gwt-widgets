@@ -22,6 +22,7 @@ import java.util.List;
 public class Sequence implements DrawableLayers, Clickable {
     private HandlerManager handlerManager;
 
+    private int sequenceLength;
     private List<SequenceLine> sequenceLineList;
 
     //canvasSelection will be shared between all the Position class instances to keep track of the selection process
@@ -34,6 +35,7 @@ public class Sequence implements DrawableLayers, Clickable {
 
     public Sequence(SequenceType sequenceType, ProteinSummary proteinSummary, HandlerManager handlerManager) {
         this.handlerManager = handlerManager;
+        this.sequenceLength = proteinSummary.getLength();
         //noinspection Convert2Diamond
         this.sequenceLineList = new LinkedList<SequenceLine>();
 
@@ -171,6 +173,11 @@ public class Sequence implements DrawableLayers, Clickable {
         }
         return isSelected;
     }
+
+    public int getSequenceLength() {
+        return sequenceLength;
+    }
+
 
     private void checkHighlighting(){
         if(this.canvasSelection.containsSelection() && !this.canvasSelection.equals(this.canvasHighlight)){

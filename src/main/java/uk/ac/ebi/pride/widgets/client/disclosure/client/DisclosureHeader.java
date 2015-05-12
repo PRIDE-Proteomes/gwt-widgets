@@ -118,11 +118,11 @@ public class DisclosureHeader extends HTMLPanel implements OpenHandler<Disclosur
         //noinspection GWTStyleCheck
         addStyleName("clearfix");
 
-        Image loadingImage = new Image(DisclosureImages.INSTANCE.getIcon());
-        loadingImage.setWidth("10px");
-        loadingImage.setHeight("10px");
-        loadingImage.setStyleName(style.disclosureHeaderIcon());
-        add(loadingImage);
+//        Image loadingImage = new Image(DisclosureImages.INSTANCE.getIcon());
+//        loadingImage.setWidth("10px");
+//        loadingImage.setHeight("10px");
+//        loadingImage.setStyleName(style.disclosureHeaderIcon());
+//        add(loadingImage);
 
         InlineLabel title = new InlineLabel(text);
         title.setStyleName(style.disclosureHeaderTitle());

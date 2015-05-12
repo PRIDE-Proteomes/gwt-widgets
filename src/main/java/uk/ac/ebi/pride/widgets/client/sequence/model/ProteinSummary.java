@@ -28,13 +28,15 @@ public class ProteinSummary {
         this.length = proteinHandler.getLength();
 
         for (PeptideHandler peptideHandler : proteinHandler.getPeptides()) {
-            for(int p= peptideHandler.getSite(); p<= peptideHandler.getEnd(); ++p){
-                if(peptideHandler.getUniqueness()==1){
-                    uniquePeptidesPositions.add(p);
-                }else{
-                    nonUniquePeptidesPositions.add(p);
+            if (peptideHandler.getSite() > 0 && peptideHandler.getEnd() <= proteinHandler.getLength()) {
+                for(int p= peptideHandler.getSite(); p<= peptideHandler.getEnd(); ++p){
+                    if(peptideHandler.getUniqueness()==1){
+                        uniquePeptidesPositions.add(p);
+                    }else{
+                        nonUniquePeptidesPositions.add(p);
+                    }
                 }
-            }
+            } // else: ignore this peptide, as it is outside the protein sequence scope
         }
 
         for (ProteinModificationHandler proteinModificationHandler : proteinHandler.getModifications()) {

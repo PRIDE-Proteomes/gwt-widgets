@@ -149,8 +149,13 @@ public class SequenceViewer extends Composite implements HasHandlers {
     }
 
     public void setVisiblePeptide(PeptideHandler peptide){
-        this.sequence.setVisiblePeptide(peptide);
-        drawPeptides();
+        if (peptide.getSite() > 0 && peptide.getEnd() <= this.sequence.getSequenceLength()) {
+            this.sequence.setVisiblePeptide(peptide);
+            drawPeptides();
+        } // else: ignore this peptide, as it is outside the protein sequence scope
+        else {
+            resetVisiblePeptides();
+        }
     }
 
     public void resetVisiblePeptides(){
