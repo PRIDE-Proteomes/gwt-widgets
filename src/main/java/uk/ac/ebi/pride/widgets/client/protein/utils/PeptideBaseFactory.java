@@ -50,10 +50,10 @@ public abstract class PeptideBaseFactory {
         StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
         if (peptide.getUniqueness() == 1) {
             sb.append(UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">UNIQUE PEPTIDE</span>");
+            sb.append("\">PEPTIDE UNIQUE TO THIS PROTEIN</span>");
         } else {
             sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
-            sb.append("\">NON UNIQUE PEPTIDE</span>");
+            sb.append("\">PEPTIDE NOT UNIQUE TO THIS PROTEIN</span>");
         }
         sb.append("<br/>");
         sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");

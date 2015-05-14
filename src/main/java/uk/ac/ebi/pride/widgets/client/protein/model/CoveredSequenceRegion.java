@@ -86,7 +86,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
 
     private void showRegionTooltip(Context2d ctx){
         int offset = 5;
-        String str = "Peptides: " + getPeptides();
+        String str = getPeptides() + " Peptide Evidences";
         int width = str.length() * 5;
 
         int posX;
