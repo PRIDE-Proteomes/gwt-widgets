@@ -16,6 +16,8 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import java.util.LinkedList;
 import java.util.List;
 
+import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.HIGHLIGHT_COLOR;
+
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
@@ -115,7 +117,7 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void drawSelection(Context2d ctx) {
-        ctx.setFillStyle(Position.HIGHLIGHT_COLOR);
+        ctx.setFillStyle(HIGHLIGHT_COLOR);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawSelection(ctx);
             for (PositionIdentification positionIdentification : sequenceLine.getPositionIdentificationList()) {

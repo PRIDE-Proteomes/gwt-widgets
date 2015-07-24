@@ -1,26 +1,27 @@
-package uk.ac.ebi.pride.widgets.client.protein.model;
+package uk.ac.ebi.pride.widgets.client.feature.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceRegion;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
-public class ProteinAxis implements Drawable, Animated {
+public class FeatureAxis implements Drawable, Animated {
     private static final double SEGMENT_WIDTH = 1;
     public static final double SEGMENT_Y = 25;
     private static final double SEGMENT_TICK_HEIGHT = 5;
 
-    private boolean proteinBorder;
+    private boolean featureBorder;
     private double segmentY;
     private double xMin, xMax;
 
     //related to the white area under the protein coverage
     private double areaXMin, areaWidth;
 
-    public ProteinAxis(CanvasProperties canvasProperties, boolean proteinBorder) {
-        this.proteinBorder = proteinBorder;
+    public FeatureAxis(uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties, boolean featureBorder) {
+        this.featureBorder = featureBorder;
         int length = canvasProperties.getProteinLength();
         this.segmentY = SEGMENT_Y + CanvasProperties.Y_OFFSET ;
         this.xMin = canvasProperties.getPixelFromPosition(1);
@@ -49,7 +50,7 @@ public class ProteinAxis implements Drawable, Animated {
         ctx.closePath();
         ctx.stroke();
 
-        if(!this.proteinBorder){
+        if(!this.featureBorder){
             ctx.beginPath();
             ctx.moveTo(xMin, segmentY - SEGMENT_TICK_HEIGHT);
             ctx.lineTo(xMin, segmentY + SEGMENT_TICK_HEIGHT);
@@ -59,9 +60,9 @@ public class ProteinAxis implements Drawable, Animated {
             ctx.beginPath();
             ctx.moveTo(xMax, segmentY - SEGMENT_TICK_HEIGHT);
             ctx.lineTo(xMax, segmentY + SEGMENT_TICK_HEIGHT);
-            ctx.closePath();
-            ctx.stroke();
-        }
+        ctx.closePath();
+        ctx.stroke();
+    }
     }
 
     @Override

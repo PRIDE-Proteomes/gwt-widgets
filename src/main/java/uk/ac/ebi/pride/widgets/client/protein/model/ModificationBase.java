@@ -5,12 +5,12 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
-import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 

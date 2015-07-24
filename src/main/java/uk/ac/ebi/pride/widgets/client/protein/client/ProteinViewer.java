@@ -17,10 +17,10 @@ import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.protein.events.*;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.*;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.model.*;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
@@ -87,7 +87,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
     }
 
-    public ProteinViewer(ProteinHandler proteinHandler) {
+    public  ProteinViewer(ProteinHandler proteinHandler) {
         this(proteinHandler, false, false);
     }
 

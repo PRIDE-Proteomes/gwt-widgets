@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface Protein {
 
-    public String getId();
-    public void setId(String id);
+    public String getAccession();
+    public void setAccession(String accession);
 
     public Integer getLength();
     public void setLength(Integer length);
@@ -19,10 +19,13 @@ public interface Protein {
     public String getSequence();
     public void setSequence(String sequence);
 
-    public List<ProteinModification> getModifications();
-    public void setModifications(List<ProteinModification> modifications);
+    public List<ProteinModification> getModifiedLocations();
+    public void setModifiedLocations(List<ProteinModification> modifiedLocations);
 
     public List<Peptide> getPeptides();
     public void setPeptides(List<Peptide> peptides);
+
+    public List<Feature> getFeatures();
+    public void setFeatures(List<Feature> features);
 
 }

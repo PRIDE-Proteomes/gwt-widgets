@@ -4,16 +4,17 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
-import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
-import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.*;
+import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.PEPTIDE_SELECTED_COLOR;
+import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.PEPTIDES_Y;
 
 public class PeptideBase implements Drawable, Clickable, Animated {
 
@@ -33,17 +34,7 @@ public class PeptideBase implements Drawable, Clickable, Animated {
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y) {
-        this.peptide = peptide;
-        this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
-        this.xMin = canvasProperties.getPixelFromPosition(peptide.getSite());
-        this.xMax = canvasProperties.getPixelFromPosition(peptide.getSite() + peptide.getSequence().length());
-        this.width = xMax - xMin;
-        this.yMin = y;
-        this.yMax = y + PEPTIDE_HEIGHT;
 
-        this.tooltipMessage = getPeptideTooltip(peptide);
-    }
     public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y, String tooltipMessage, CssColor peptideColor, int site, int peptideLength) {
         this.peptide = peptide;
         this.peptideColor = peptideColor;
@@ -133,25 +124,6 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         return this.selected;
     }
 
-//    private String getPeptideTooltip(){
-//        StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
-//        if(this.peptide.getUniqueness()>1){
-//            sb.append(NON_UNIQUE_PEPTIDE_COLOR.value());
-//            sb.append("\">NON UNIQUE PEPTIDE</span>");
-//        }else{
-//            sb.append(UNIQUE_PEPTIDE_COLOR.value());
-//            sb.append("\">UNIQUE PEPTIDE</span>");
-//        }
-//        sb.append("<br/>");
-//        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Sequence: ");
-//        sb.append(this.peptide.getSequence());
-//        sb.append("<br/>");
-//        sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
-//        sb.append(this.peptide.getSite());
-//        sb.append(";&nbsp;&nbsp;&nbsp;End: ");
-//        sb.append(this.peptide.getEnd());
-//        return sb.toString();
-//    }
 
     @Override
     public void fireSelectionEvent() {

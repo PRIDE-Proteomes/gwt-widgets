@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.protein.utils;
+package uk.ac.ebi.pride.widgets.client.common.utils;
 
 public abstract class AnimationUtils {
 

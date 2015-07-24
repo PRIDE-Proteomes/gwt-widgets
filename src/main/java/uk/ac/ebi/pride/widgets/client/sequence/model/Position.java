@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.NON_UNIQUE_PEPTIDE_COLOR;
-import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.UNIQUE_PEPTIDE_COLOR;
+import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.*;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -29,14 +28,6 @@ public class Position implements DrawableLayers, Clickable {
     public static final CssColor AMINO_ACID_MODIFIED_SELECTED_COLOR = CssColor.make("rgba(255,0,255, 1)");
     public static final CssColor AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
-//    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(189,189,189, 1)");
-//    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(99,99,99, .65)");
-//    public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(255,0,0, 0.5)"); //  should match the colour in the protein widget (ProteinViewer, values set in PeptideBase)
-//    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(0,255,0, .65)");
-    /*public static final CssColor NON_UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(46,228,255, .5)");
-    public static final CssColor UNIQUE_PEPTIDE_COLOR = CssColor.make("rgba(110,110,255, .5)");*/
-
-    public static final CssColor HIGHLIGHT_COLOR = CssColor.make("rgba(255,255,0, 0.5)");
 
     CanvasSelection canvasSelection;
 
@@ -67,7 +58,7 @@ public class Position implements DrawableLayers, Clickable {
         boolean uniquePeptide = proteinSummary.getUniquePeptidesPositions().contains(this.position);
         this.isInPeptide = isNonUniquePeptide || uniquePeptide;
         this.isPeptideVisible = true;
-        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR;
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_TO_PROTEIN_COLOR;
 
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
@@ -106,12 +97,27 @@ public class Position implements DrawableLayers, Clickable {
 
     public void setVisiblePeptide(PeptideHandler peptide){
         this.isPeptideVisible = (this.position>=peptide.getSite() && this.position<=peptide.getEnd());
-        this.peptideColor = peptide.getUniqueness()==1 ? UNIQUE_PEPTIDE_COLOR : NON_UNIQUE_PEPTIDE_COLOR;
+        CssColor color;
+        switch (peptide.getUniqueness()){
+            case 1:
+                color = UNIQUE_TO_PROTEIN_COLOR;
+                break;
+            case 2:
+                color = UNIQUE_TO_UP_ENTRY_COLOR;
+                break;
+            case 3:
+                color = UNIQUE_TO_GENE_COLOR;
+                break;
+            default:
+                color = NON_UNIQUE_PEPTIDE_COLOR;
+        }
+
+        this.peptideColor = color;
     }
 
     public void resetPeptidesFilter(){
         this.isPeptideVisible = true;
-        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_PEPTIDE_COLOR;
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_TO_PROTEIN_COLOR;
     }
 
     public boolean isMouseOver(){

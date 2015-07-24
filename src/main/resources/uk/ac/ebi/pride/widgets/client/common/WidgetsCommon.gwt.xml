@@ -2,4 +2,5 @@
 <module>
   <source path="handler" />
   <source path="interfaces" />
+  <source path="constants" />
 </module>

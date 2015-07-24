@@ -1,30 +1,34 @@
-package uk.ac.ebi.pride.widgets.client.protein.model;
+package uk.ac.ebi.pride.widgets.client.feature.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
-import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
-import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
-public class CoveredSequenceRegion extends SequenceRegion implements Clickable, Animated {
+/**
+ * @author ntoro
+ * @since 21/07/15 16:30
+ */
+public class CoveredFeatureRegion extends FeatureRegion implements Animated {
+
     public static final int BOXES_HEIGHT = 50;
-    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
+    public static final CssColor FEATURE_COLOR = CssColor.make("#8a89a6"); // pink
+//    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
-    private boolean fireEvent = false;
+
+//    private boolean fireEvent = false;
     private double xMin, xMax, width;
     private int yMin, yMax, height;
     private CssColor regionColor;
 
-    public CoveredSequenceRegion(int start, int peptides, CanvasProperties canvasProperties) {
-        super(start, peptides, canvasProperties);
+    public CoveredFeatureRegion(int start, uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties) {
+        super(start, canvasProperties);
         setBounds();
-        this.yMin = CanvasProperties.Y_OFFSET;// + CoveredSequenceBorder.BORDER;
-        this.yMax = CanvasProperties.Y_OFFSET + BOXES_HEIGHT;// - CoveredSequenceBorder.BORDER;
+        this.yMin = CanvasProperties.Y_OFFSET;
+        this.yMax = CanvasProperties.Y_OFFSET + BOXES_HEIGHT;
         this.height = yMax - yMin;
-        this.regionColor = ColorFactory.getBlueBasedColor(getPeptides() * 7);
+        this.regionColor = FEATURE_COLOR;
     }
 
     @Override
@@ -45,18 +49,14 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
     }
 
     @Override
-    public void draw(Context2d ctx) {
-        ctx.setFillStyle(regionColor);
-        ctx.fillRect(xMin, yMin, width, height);
+    public void draw(Context2d context) {
+        context.setFillStyle(regionColor);
+        context.fillRect(xMin, yMin, width, height);
 
         if(isMouseOver()){
-            showRegionTooltip(ctx);
+            showRegionTooltip(context);
         }
 
-        if(isMouseOver() || selected){
-            ctx.setFillStyle(REGION_SELECTED_COLOR);
-            ctx.fillRect(xMin, yMin, width, height);
-        }
     }
 
     @Override
@@ -68,25 +68,10 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
         ctx.fillRect(xMin, aux, width, height * progress);
     }
 
-    @Override
-    public void onMouseUp(int mouseX, int mouseY) {
-        setMousePosition(mouseX, mouseY);
-        this.selected = this.fireEvent = isMouseOver();
-    }
-
-    @Override
-    public void onMouseDown(int mouseX, int mouseY) {
-        setMousePosition(mouseX, mouseY);
-    }
-
-    @Override
-    public boolean isSelected() {
-        return this.selected;
-    }
 
     private void showRegionTooltip(Context2d ctx){
         int offset = 5;
-        String str = getPeptides() + " Peptide Evidences";
+        String str = "Region";
         int width = str.length() * 5;
 
         int posX;
@@ -123,11 +108,5 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
         ctx.stroke();
     }
 
-    @Override
-    public void fireSelectionEvent() {
-        if(this.fireEvent){
-            this.fireEvent = false;
-            handlerManager.fireEvent(new ProteinRegionSelectionEvent(getStart(), getLength(), getPeptides()));
-        }
-    }
+
 }

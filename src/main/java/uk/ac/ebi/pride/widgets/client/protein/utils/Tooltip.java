@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class Tooltip extends PopupPanel {
-    public static final CssColor BACKGROUND_COLOR = CssColor.make("rgba(145, 145, 145, 0.95)");
+    public static final CssColor BACKGROUND_COLOR = CssColor.make("#FFFFFF");
     private HTMLPanel container;
 
     public Tooltip(){
