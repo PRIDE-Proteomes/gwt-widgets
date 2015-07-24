@@ -9,9 +9,9 @@ import java.util.List;
 @SuppressWarnings({"deprecation", "UnusedDeclaration", "Convert2Diamond"})
 public abstract class FeatureUtils {
 
-    public static List<FeatureRegion> getSequenceRegions(CanvasProperties canvasProperties) {
+    public static List<FeatureRegion> getSequenceRegions(FeatureCanvasProperties featureCanvasProperties) {
         List<FeatureRegion> regions = new ArrayList<FeatureRegion>();
-        final int proteinLength = canvasProperties.getProteinLength();
+        final int proteinLength = featureCanvasProperties.getProteinLength();
 
         //initialize an array with an empty peptide set per position
         int aux[] = new int[proteinLength];
@@ -21,7 +21,7 @@ public abstract class FeatureUtils {
 
         //we add a flag in every position of the protein where there is a feature
         //we assume there is no overlap in the features
-        for (FeatureHandler featureHandler : canvasProperties.getProteinHandler().getFeatures()) {
+        for (FeatureHandler featureHandler : featureCanvasProperties.getProteinHandler().getFeatures()) {
             int start = featureHandler.getStart() - 1; //From one base to cero base
             int end = featureHandler.getEnd() - 1;
             if (start >= 0 && end <= proteinLength) {
@@ -41,7 +41,7 @@ public abstract class FeatureUtils {
                 region = regions.get(regions.size() - 1);
                 region.increaseLength();
             } else {
-                region = FeatureRegionFactory.createFeatureRegion(i + 1, numFeature, canvasProperties);
+                region = FeatureRegionFactory.createFeatureRegion(i + 1, numFeature, featureCanvasProperties);
                 regions.add(region);
             }
             lastNumFeature = numFeature;

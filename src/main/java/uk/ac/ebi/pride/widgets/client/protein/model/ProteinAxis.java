@@ -23,10 +23,10 @@ public class ProteinAxis implements Drawable, Animated {
         this.proteinBorder = proteinBorder;
         int length = canvasProperties.getProteinLength();
         this.segmentY = SEGMENT_Y + CanvasProperties.Y_OFFSET ;
-        this.xMin = canvasProperties.getPixelFromPosition(1);
+        this.xMin = canvasProperties.getPixelFromPosition(0);
         this.xMax = canvasProperties.getPixelFromPosition(length);
         this.areaXMin = canvasProperties.getPixelFromPosition(0);
-        double borderXMax = canvasProperties.getPixelFromPosition(length+1);
+        double borderXMax = canvasProperties.getPixelFromPosition(length);
         this.areaWidth = borderXMax - this.areaXMin;
     }
 

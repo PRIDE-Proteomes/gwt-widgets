@@ -1,14 +1,15 @@
 package uk.ac.ebi.pride.widgets.client.feature.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
  * @author ntoro
  * @since 21/07/15 16:31
  */
 public class NonCoveredFeatureRegion extends FeatureRegion {
-    public NonCoveredFeatureRegion(int start, uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties) {
-        super(start, canvasProperties);
+    public NonCoveredFeatureRegion(int start, FeatureCanvasProperties featureCanvasProperties) {
+        super(start, featureCanvasProperties);
     }
 
     @Override

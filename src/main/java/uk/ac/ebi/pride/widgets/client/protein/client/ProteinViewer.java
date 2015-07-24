@@ -45,7 +45,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     private boolean animated = true;
     // The duration of the animation.
-    private static int ANIMATION_DURATION = 3000;
+    private static int ANIMATION_DURATION = 2000;
 
     private ProteinAreaSelection proteinSelection;
     @SuppressWarnings("Convert2Diamond")

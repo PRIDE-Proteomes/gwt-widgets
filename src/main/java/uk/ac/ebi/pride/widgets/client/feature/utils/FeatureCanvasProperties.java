@@ -6,14 +6,14 @@ import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class CanvasProperties {
+public class FeatureCanvasProperties {
     public static final int X_OFFSET = 4;
-    public static final int Y_OFFSET = 20;
+    public static final int Y_OFFSET = 10;
 
     private ProteinHandler proteinHandler;
     private double delta;
 
-    public CanvasProperties(ProteinHandler proteinHandler, Canvas canvas) {
+    public FeatureCanvasProperties(ProteinHandler proteinHandler, Canvas canvas) {
         this.proteinHandler = proteinHandler;
 
         int width = canvas.getCanvasElement().getWidth() - ( 2 * X_OFFSET );

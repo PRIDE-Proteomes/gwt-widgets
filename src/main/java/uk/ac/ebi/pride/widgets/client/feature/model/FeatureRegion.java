@@ -4,6 +4,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
  * @author ntoro
@@ -16,18 +17,18 @@ public abstract class FeatureRegion implements Drawable {
 
     private int start;
     protected int length;
-    protected uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties;
+    protected FeatureCanvasProperties featureCanvasProperties;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    protected FeatureRegion(int start, uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties) {
+    protected FeatureRegion(int start, FeatureCanvasProperties featureCanvasProperties) {
         this.highlighted = false;
         this.selected = false;
 
         this.start = start;
         this.length = 1;
-        this.canvasProperties = canvasProperties;
+        this.featureCanvasProperties = featureCanvasProperties;
     }
 
     public void increaseLength() {

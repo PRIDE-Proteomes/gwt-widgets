@@ -4,7 +4,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
-import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
  * @author ntoro
@@ -12,7 +12,7 @@ import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
  */
 public class CoveredFeatureRegion extends FeatureRegion implements Animated {
 
-    public static final int BOXES_HEIGHT = 50;
+    public static final int BOXES_HEIGHT = 25;
     public static final CssColor FEATURE_COLOR = CssColor.make("#8a89a6"); // pink
 //    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
@@ -22,11 +22,11 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
     private int yMin, yMax, height;
     private CssColor regionColor;
 
-    public CoveredFeatureRegion(int start, uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties) {
-        super(start, canvasProperties);
+    public CoveredFeatureRegion(int start, FeatureCanvasProperties featureCanvasProperties) {
+        super(start, featureCanvasProperties);
         setBounds();
-        this.yMin = CanvasProperties.Y_OFFSET;
-        this.yMax = CanvasProperties.Y_OFFSET + BOXES_HEIGHT;
+        this.yMin = FeatureCanvasProperties.Y_OFFSET;
+        this.yMax = FeatureCanvasProperties.Y_OFFSET + BOXES_HEIGHT;
         this.height = yMax - yMin;
         this.regionColor = FEATURE_COLOR;
     }
@@ -38,8 +38,8 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
     }
 
     private void setBounds(){
-        xMin = Math.floor(this.canvasProperties.getPixelFromPosition(getStart()));
-        xMax = Math.floor(this.canvasProperties.getPixelFromPosition(getStart() + getLength()));
+        xMin = Math.floor(this.featureCanvasProperties.getPixelFromPosition(getStart()));
+        xMax = Math.floor(this.featureCanvasProperties.getPixelFromPosition(getStart() + getLength()));
         width = xMax - xMin;
     }
 
@@ -76,10 +76,10 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
 
         int posX;
         int boxWidth = width + 2 * offset;
-        if(mouseX > (ctx.getCanvas().getWidth() - boxWidth - CanvasProperties.X_OFFSET)){
-            posX = ctx.getCanvas().getWidth() - boxWidth - CanvasProperties.X_OFFSET;
-        }else if(mouseX < boxWidth / 2 + CanvasProperties.X_OFFSET){
-            posX = CanvasProperties.X_OFFSET;
+        if(mouseX > (ctx.getCanvas().getWidth() - boxWidth - FeatureCanvasProperties.X_OFFSET)){
+            posX = ctx.getCanvas().getWidth() - boxWidth - FeatureCanvasProperties.X_OFFSET;
+        }else if(mouseX < boxWidth / 2 + FeatureCanvasProperties.X_OFFSET){
+            posX = FeatureCanvasProperties.X_OFFSET;
         }else{
             posX = mouseX - (width / 2);
         }

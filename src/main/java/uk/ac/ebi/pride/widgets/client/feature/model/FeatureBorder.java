@@ -3,8 +3,7 @@ package uk.ac.ebi.pride.widgets.client.feature.model;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.protein.model.CoveredSequenceRegion;
-import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -18,15 +17,15 @@ public class FeatureBorder implements Drawable {
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    public FeatureBorder(uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties) {
-        int length = canvasProperties.getProteinLength();
-        this.xMin = canvasProperties.getPixelFromPosition(0);
-        this.xMax = canvasProperties.getPixelFromPosition(length+1);
-        this.yMin = CanvasProperties.Y_OFFSET;
-        this.yMax = CanvasProperties.Y_OFFSET + CoveredSequenceRegion.BOXES_HEIGHT;
+    public FeatureBorder(FeatureCanvasProperties featureCanvasProperties) {
+        int length = featureCanvasProperties.getProteinLength();
+        this.xMin = featureCanvasProperties.getPixelFromPosition(0);
+        this.xMax = featureCanvasProperties.getPixelFromPosition(length);
+        this.yMin = FeatureCanvasProperties.Y_OFFSET;
+        this.yMax = FeatureCanvasProperties.Y_OFFSET + CoveredFeatureRegion.BOXES_HEIGHT;
 
-        this.xMinAux = canvasProperties.getPixelFromPosition(1);
-        this.xMaxAux = canvasProperties.getPixelFromPosition(length);
+        this.xMinAux = featureCanvasProperties.getPixelFromPosition(1);
+        this.xMaxAux = featureCanvasProperties.getPixelFromPosition(length);
     }
 
     public boolean isMouseOver(){

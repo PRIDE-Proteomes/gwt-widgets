@@ -20,7 +20,7 @@ import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.feature.model.FeatureAxis;
 import uk.ac.ebi.pride.widgets.client.feature.model.FeatureBorder;
 import uk.ac.ebi.pride.widgets.client.feature.model.FeatureRegion;
-import uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureUtils;
 
 import java.util.LinkedList;
@@ -41,7 +41,7 @@ public class FeatureViewer extends Composite implements HasHandlers {
 
     private boolean animated = true;
     // The duration of the animation.
-    private static int ANIMATION_DURATION = 3000;
+    private static int ANIMATION_DURATION = 2000;
 
 //    private FeatureAreaSelection featureSelection;
     @SuppressWarnings("Convert2Diamond")
@@ -88,7 +88,7 @@ public class FeatureViewer extends Composite implements HasHandlers {
     }
 
     public FeatureViewer(ProteinHandler proteinHandler, boolean featureBorder, boolean naturalSelection) {
-        this(900, 90, proteinHandler, featureBorder, naturalSelection);
+        this(900, 45, proteinHandler, featureBorder, naturalSelection);
     }
 
     public FeatureViewer(int width, int height, ProteinHandler proteinHandler) {
@@ -104,22 +104,22 @@ public class FeatureViewer extends Composite implements HasHandlers {
         this.handlerManager = new HandlerManager(this);
         this.featureBorder = featureBorder;
 
-        CanvasProperties canvasProperties = new CanvasProperties(proteinHandler, this.canvas);
+        FeatureCanvasProperties featureCanvasProperties = new FeatureCanvasProperties(proteinHandler, this.canvas);
 
-//        this.featureSelection = new FeatureAreaSelection(canvasProperties, naturalSelection);
+//        this.featureSelection = new FeatureAreaSelection(featureCanvasProperties, naturalSelection);
 //        this.featureSelection.setHandlerManager(this.handlerManager);
 
-        FeatureAxis pa = new FeatureAxis(canvasProperties, featureBorder);
+        FeatureAxis pa = new FeatureAxis(featureCanvasProperties, featureBorder);
         this.components.add(pa);
 
-        List<FeatureRegion> featureRegions = FeatureUtils.getSequenceRegions(canvasProperties);
+        List<FeatureRegion> featureRegions = FeatureUtils.getSequenceRegions(featureCanvasProperties);
         for (FeatureRegion sr : featureRegions) {
             sr.setHandlerManager(this.handlerManager);
             components.add(sr);
         }
 
         if(featureBorder){
-            components.add(new FeatureBorder(canvasProperties));
+            components.add(new FeatureBorder(featureCanvasProperties));
         }
 
         FeatureViewer.contentAnimation = new ContentAnimation();

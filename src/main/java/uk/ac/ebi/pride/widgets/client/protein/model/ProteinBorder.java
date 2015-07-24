@@ -20,7 +20,7 @@ public class ProteinBorder implements Drawable {
     public ProteinBorder(CanvasProperties canvasProperties) {
         int length = canvasProperties.getProteinLength();
         this.xMin = canvasProperties.getPixelFromPosition(0);
-        this.xMax = canvasProperties.getPixelFromPosition(length+1);
+        this.xMax = canvasProperties.getPixelFromPosition(length);
         this.yMin = CanvasProperties.Y_OFFSET;
         this.yMax = CanvasProperties.Y_OFFSET + CoveredSequenceRegion.BOXES_HEIGHT;
 

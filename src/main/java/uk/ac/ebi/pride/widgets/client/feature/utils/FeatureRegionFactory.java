@@ -6,11 +6,11 @@ import uk.ac.ebi.pride.widgets.client.feature.model.NonCoveredFeatureRegion;
 
 public abstract class FeatureRegionFactory {
 
-    public static FeatureRegion createFeatureRegion(int start, int numFeature, uk.ac.ebi.pride.widgets.client.feature.utils.CanvasProperties canvasProperties){
+    public static FeatureRegion createFeatureRegion(int start, int numFeature, FeatureCanvasProperties featureCanvasProperties){
         if (numFeature != 0) {
-            return new CoveredFeatureRegion(start, canvasProperties);
+            return new CoveredFeatureRegion(start, featureCanvasProperties);
         } else {
-            return new NonCoveredFeatureRegion(start, canvasProperties);
+            return new NonCoveredFeatureRegion(start, featureCanvasProperties);
         }
     }
 }
