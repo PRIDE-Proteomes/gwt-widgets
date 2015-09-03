@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.widgets.client.protein.utils;
+package uk.ac.ebi.pride.widgets.client.common.utils;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.CanvasElement;

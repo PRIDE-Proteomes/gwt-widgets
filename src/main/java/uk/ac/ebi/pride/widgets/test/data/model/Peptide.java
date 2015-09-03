@@ -8,9 +8,9 @@ public interface Peptide {
     String getSequence();
     void setSequence(String sequence);
 
-    //The site where peptide is started into protein.
-    Integer getSite();
-    void setSite(Integer site);
+    //The position where peptide is started into protein.
+    Integer getPosition();
+    void setPosition(Integer site);
 
     //PeptideHandler end is used very often in the webapp, and make sense to keep it calculated
     Integer getEnd();

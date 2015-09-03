@@ -8,11 +8,11 @@ import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.common.utils.Tooltip;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
-import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 import java.util.HashMap;
 import java.util.List;

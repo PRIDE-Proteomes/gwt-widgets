@@ -4,43 +4,62 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.common.utils.Tooltip;
+import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionSelectionEvent;
+import uk.ac.ebi.pride.widgets.client.feature.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
+import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureType;
 
 /**
  * @author ntoro
  * @since 21/07/15 16:30
  */
-public class CoveredFeatureRegion extends FeatureRegion implements Animated {
+public class CoveredFeatureRegion extends FeatureRegion implements Animated, Clickable {
 
-    public static final int BOXES_HEIGHT = 25;
-    public static final CssColor FEATURE_COLOR = CssColor.make("#8a89a6"); // pink
-//    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
+    public static final int BOXES_HEIGHT = 15;
+    public static final int RADIUS = 7;
 
 
-//    private boolean fireEvent = false;
-    private double xMin, xMax, width;
-    private int yMin, yMax, height;
-    private CssColor regionColor;
+    private final CssColor regionColor;
 
-    public CoveredFeatureRegion(int start, FeatureCanvasProperties featureCanvasProperties) {
-        super(start, featureCanvasProperties);
+    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(0,255,0, 0.75)");
+    public static final CssColor MOUSE_OVER_FEATURE_COLOR =  CssColor.make("rgba(0,255,0, 0.75)");
+
+
+
+    private boolean fireEvent = false;
+    private long xMin, xMax, width;
+    private long yMin, yMax, height;
+    private Tooltip tooltip = new Tooltip();
+
+    public CoveredFeatureRegion(int start, int end, String tooltipMessage, String featureType, FeatureCanvasProperties featureCanvasProperties) {
+        super(start, end, tooltipMessage, featureType, featureCanvasProperties);
         setBounds();
         this.yMin = FeatureCanvasProperties.Y_OFFSET;
         this.yMax = FeatureCanvasProperties.Y_OFFSET + BOXES_HEIGHT;
+        this.regionColor = FeatureType.valueOf(featureType).getCssColor();
         this.height = yMax - yMin;
-        this.regionColor = FEATURE_COLOR;
-    }
-
-    @Override
-    public void increaseLength() {
-        super.increaseLength();
-        setBounds();
     }
 
     private void setBounds(){
-        xMin = Math.floor(this.featureCanvasProperties.getPixelFromPosition(getStart()));
-        xMax = Math.floor(this.featureCanvasProperties.getPixelFromPosition(getStart() + getLength()));
+        xMin = Math.round(this.featureCanvasProperties.getPixelFromPosition(getStart()));
+        xMax = Math.round(this.featureCanvasProperties.getPixelFromPosition(getStart() + getLength()));
         width = xMax - xMin;
+    }
+
+    public void onMouseUp(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
+        this.selected = this.fireEvent = isMouseOver();
+    }
+
+    @Override
+    public void onMouseDown(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
     }
 
     @Override
@@ -49,12 +68,25 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
     }
 
     @Override
-    public void draw(Context2d context) {
-        context.setFillStyle(regionColor);
-        context.fillRect(xMin, yMin, width, height);
+    public void draw(Context2d ctx) {
+        roundRect(ctx, xMin, yMin, width, height, RADIUS);
+        ctx.setFillStyle(regionColor);
+        ctx.fill();
 
         if(isMouseOver()){
-            showRegionTooltip(context);
+            this.tooltip.show(ctx.getCanvas(), (int) xMax, (int) yMax, getTooltipMessage());
+            this.tooltip.setAnimationEnabled(false);
+        }else{
+            this.tooltip.hide();
+            this.tooltip.setAnimationEnabled(true);
+        }
+
+        if(isMouseOver() || selected){
+            roundRect(ctx, xMin, yMin, width, height, RADIUS);
+            ctx.setStrokeStyle(REGION_SELECTED_COLOR);
+            ctx.stroke();
+            ctx.setFillStyle(REGION_SELECTED_COLOR);
+            ctx.fill();
         }
 
     }
@@ -64,33 +96,13 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
         progress = AnimationUtils.getProgress(0.25, 0.50, progress);
         if(progress==0) return;
         double aux = yMin + (BOXES_HEIGHT / 2) * (1-progress);
+        roundRect(ctx, xMin, (int)aux, width, (int)(height * progress), RADIUS);
         ctx.setFillStyle(regionColor);
-        ctx.fillRect(xMin, aux, width, height * progress);
+        ctx.fill();
     }
 
 
-    private void showRegionTooltip(Context2d ctx){
-        int offset = 5;
-        String str = "Region";
-        int width = str.length() * 5;
-
-        int posX;
-        int boxWidth = width + 2 * offset;
-        if(mouseX > (ctx.getCanvas().getWidth() - boxWidth - FeatureCanvasProperties.X_OFFSET)){
-            posX = ctx.getCanvas().getWidth() - boxWidth - FeatureCanvasProperties.X_OFFSET;
-        }else if(mouseX < boxWidth / 2 + FeatureCanvasProperties.X_OFFSET){
-            posX = FeatureCanvasProperties.X_OFFSET;
-        }else{
-            posX = mouseX - (width / 2);
-        }
-
-        roundRect(ctx, posX, 0, boxWidth, 15, 5);
-        ctx.setFillStyle("#3F3F3F");
-        ctx.setFont("bold 10px verdana");
-        ctx.fillText(str, posX + offset , 10, width);
-    }
-
-    private void roundRect(Context2d ctx, int x, int y, int width, int height, int radius) {
+    private void roundRect(Context2d ctx, long x, long y, long width, long height, int radius) {
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
         ctx.lineTo(x + width - radius, y);
@@ -102,11 +114,14 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated {
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
-        ctx.setFillStyle("#FFFFFF");
-        ctx.fill();
-        ctx.setStrokeStyle("#000000");
-        ctx.stroke();
     }
 
+    @Override
+    public void fireSelectionEvent() {
+        if(this.fireEvent){
+            this.fireEvent = false;
+            handlerManager.fireEvent(new FeatureRegionSelectionEvent(getStart(), getLength()));
+        }
+    }
 
 }

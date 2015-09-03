@@ -9,7 +9,6 @@ import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 public class FeatureAxis implements Drawable, Animated {
     private static final double SEGMENT_WIDTH = 1;
-    public static final double SEGMENT_Y = 25;
     private static final double SEGMENT_TICK_HEIGHT = 5;
 
     private boolean featureBorder;
@@ -22,7 +21,7 @@ public class FeatureAxis implements Drawable, Animated {
     public FeatureAxis(FeatureCanvasProperties featureCanvasProperties, boolean featureBorder) {
         this.featureBorder = featureBorder;
         int length = featureCanvasProperties.getProteinLength();
-        this.segmentY = SEGMENT_Y + FeatureCanvasProperties.Y_OFFSET ;
+        this.segmentY = CoveredFeatureRegion.BOXES_HEIGHT/2 + FeatureCanvasProperties.Y_OFFSET ;
         this.xMin = featureCanvasProperties.getPixelFromPosition(0);
         this.xMax = featureCanvasProperties.getPixelFromPosition(length);
         this.areaXMin = featureCanvasProperties.getPixelFromPosition(0);

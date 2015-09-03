@@ -77,7 +77,7 @@ public abstract class PeptideBaseFactory {
         sb.append("<br/>");
         sb.append("&nbsp;&nbsp;&nbsp;&nbsp;Start: ");
         sb.append(peptide.getSite());
-        sb.append(";&nbsp;&nbsp;&nbsp;End: ");
+        sb.append("&nbsp;&nbsp;&nbsp;End: ");
         sb.append(peptide.getEnd());
         return sb.toString();
     }

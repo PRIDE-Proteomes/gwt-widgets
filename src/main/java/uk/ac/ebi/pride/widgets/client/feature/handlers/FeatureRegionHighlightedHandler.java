@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.feature.handlers;
 
 import com.google.gwt.event.shared.EventHandler;
-import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightEvent;
 
 /**
  * @author ntoro
@@ -9,6 +9,6 @@ import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightedEve
  */
 public interface FeatureRegionHighlightedHandler extends EventHandler {
 
-    public void onFeatureRegionHighlighted(FeatureRegionHighlightedEvent e);
+    public void onFeatureRegionHighlighted(FeatureRegionHighlightEvent e);
 
 }

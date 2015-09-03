@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
  */
 public class FeatureCanvasProperties {
     public static final int X_OFFSET = 4;
-    public static final int Y_OFFSET = 10;
+    public static final int Y_OFFSET = 5;
 
     private ProteinHandler proteinHandler;
     private double delta;

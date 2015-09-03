@@ -12,8 +12,7 @@ public abstract class ModelFactory {
     interface BeanFactory extends AutoBeanFactory {
         AutoBean<Protein> protein();
         AutoBean<ProteinList> proteinList();
-        AutoBean<ProteinModification> proteinModification();
-        AutoBean<PrideModification> prideModification();
+        AutoBean<ModifiedLocation> modifiedLocation();
 
         AutoBean<PeptideSpectrumMatch> peptideSpectrumMatch();
         AutoBean<PeptideSpectrumMatchList> peptideSpectrumMatchList();

@@ -7,11 +7,11 @@ import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.common.utils.Tooltip;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.PeptideSelectedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
-import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.PEPTIDE_SELECTED_COLOR;
 import static uk.ac.ebi.pride.widgets.client.protein.utils.PeptideBaseFactory.PEPTIDES_Y;

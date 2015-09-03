@@ -18,7 +18,7 @@ public class PeptideProxy implements PeptideHandler {
 
     @Override
     public Integer getSite() {
-        return peptide.getSite();
+        return peptide.getPosition();
     }
 
     @Override

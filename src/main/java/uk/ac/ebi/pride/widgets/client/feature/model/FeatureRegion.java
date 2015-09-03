@@ -3,7 +3,7 @@ package uk.ac.ebi.pride.widgets.client.feature.model;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightedEvent;
+import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightEvent;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
@@ -15,24 +15,26 @@ public abstract class FeatureRegion implements Drawable {
     private boolean highlighted;
     protected boolean selected = false;
 
-    private int start;
-    protected int length;
+    private final int start;
+    private final String featureType;
+    private final int length;
+    private final String tooltipMessage;
+
     protected FeatureCanvasProperties featureCanvasProperties;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
 
-    protected FeatureRegion(int start, FeatureCanvasProperties featureCanvasProperties) {
+    // Start and end are defined in protein coordinates
+
+    protected FeatureRegion(int start, int end, String tooltipMessage, String featureType, FeatureCanvasProperties featureCanvasProperties) {
         this.highlighted = false;
         this.selected = false;
-
+        this.featureType = featureType;
         this.start = start;
-        this.length = 1;
+        this.length = end - start + 1;
+        this.tooltipMessage = tooltipMessage;
         this.featureCanvasProperties = featureCanvasProperties;
-    }
-
-    public void increaseLength() {
-        this.length++;
     }
 
     public int getStart() {
@@ -41,6 +43,14 @@ public abstract class FeatureRegion implements Drawable {
 
     public int getLength() {
         return this.length;
+    }
+
+    public String getTooltipMessage() {
+        return tooltipMessage;
+    }
+
+    public String getFeatureType() {
+        return featureType;
     }
 
     public void setSelected(boolean selected) {
@@ -61,7 +71,7 @@ public abstract class FeatureRegion implements Drawable {
         if(isMouseOver()){
             if(!this.selected && !this.highlighted){
                 if(handlerManager!=null)
-                    handlerManager.fireEvent(new FeatureRegionHighlightedEvent(this.start, this.length));
+                    handlerManager.fireEvent(new FeatureRegionHighlightEvent(this.start, this.length));
                 this.highlighted = true;
             }
         }else{

@@ -5,6 +5,7 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
@@ -13,13 +14,15 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
-import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
-import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightedEvent;
-import uk.ac.ebi.pride.widgets.client.feature.handlers.FeatureRegionHighlightedHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
-import uk.ac.ebi.pride.widgets.client.feature.model.FeatureAxis;
-import uk.ac.ebi.pride.widgets.client.feature.model.FeatureBorder;
-import uk.ac.ebi.pride.widgets.client.feature.model.FeatureRegion;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.feature.events.*;
+import uk.ac.ebi.pride.widgets.client.feature.handlers.FeatureAreaHighlightedHandler;
+import uk.ac.ebi.pride.widgets.client.feature.handlers.FeatureAreaSelectedHandler;
+import uk.ac.ebi.pride.widgets.client.feature.handlers.FeatureRegionHighlightedHandler;
+import uk.ac.ebi.pride.widgets.client.feature.handlers.FeatureRegionSelectedHandler;
+import uk.ac.ebi.pride.widgets.client.feature.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.feature.model.*;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureUtils;
 
@@ -43,7 +46,7 @@ public class FeatureViewer extends Composite implements HasHandlers {
     // The duration of the animation.
     private static int ANIMATION_DURATION = 2000;
 
-//    private FeatureAreaSelection featureSelection;
+    private FeatureAreaSelection featureSelection;
     @SuppressWarnings("Convert2Diamond")
     private List<Drawable> components = new LinkedList<Drawable>();
 
@@ -88,7 +91,7 @@ public class FeatureViewer extends Composite implements HasHandlers {
     }
 
     public FeatureViewer(ProteinHandler proteinHandler, boolean featureBorder, boolean naturalSelection) {
-        this(900, 45, proteinHandler, featureBorder, naturalSelection);
+        this(900, 25, proteinHandler, featureBorder, naturalSelection);
     }
 
     public FeatureViewer(int width, int height, ProteinHandler proteinHandler) {
@@ -106,8 +109,8 @@ public class FeatureViewer extends Composite implements HasHandlers {
 
         FeatureCanvasProperties featureCanvasProperties = new FeatureCanvasProperties(proteinHandler, this.canvas);
 
-//        this.featureSelection = new FeatureAreaSelection(featureCanvasProperties, naturalSelection);
-//        this.featureSelection.setHandlerManager(this.handlerManager);
+        this.featureSelection = new FeatureAreaSelection(featureCanvasProperties, naturalSelection);
+        this.featureSelection.setHandlerManager(this.handlerManager);
 
         FeatureAxis pa = new FeatureAxis(featureCanvasProperties, featureBorder);
         this.components.add(pa);
@@ -140,8 +143,21 @@ public class FeatureViewer extends Composite implements HasHandlers {
     }
 
     public HandlerRegistration addFeatureRegionHighlightedHandler(FeatureRegionHighlightedHandler handler){
-        return handlerManager.addHandler(FeatureRegionHighlightedEvent.TYPE, handler);
+        return handlerManager.addHandler(FeatureRegionHighlightEvent.TYPE, handler);
     }
+
+    public HandlerRegistration addFeatureRegionSelectedHandler(FeatureRegionSelectedHandler handler) {
+        return handlerManager.addHandler(FeatureRegionSelectionEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addFeatureAreaSelectedHandler(FeatureAreaSelectedHandler handler){
+        return handlerManager.addHandler(FeatureAreaSelectionEvent.TYPE, handler);
+    }
+
+    public HandlerRegistration addFeatureAreaHighlightedHandler(FeatureAreaHighlightedHandler handler) {
+        return handlerManager.addHandler(FeatureAreaHighlightEvent.TYPE, handler);
+    }
+
 
     public void setAnimated(boolean animated) {
         this.animated = animated;
@@ -151,25 +167,38 @@ public class FeatureViewer extends Composite implements HasHandlers {
         FeatureViewer.ANIMATION_DURATION = animationDuration;
     }
 
-//    public void setSelectedArea(int start, int end){
-//        this.featureSelection.setSelectedArea(start, end);
-//        //Next lines set selected an covered region that fits with the selected area
-//        int length = end - start + 1;
-//        for (Drawable component : components) {
-//            if(component instanceof CoveredSequenceRegion){
-//                CoveredSequenceRegion csr = (CoveredSequenceRegion) component;
-//                csr.setSelected((csr.getStart() == start && csr.getLength() == length));
-//                /*if (csr.getStart() == start && csr.getLength() == length){
-//                    csr.setSelected(true);
-//                }
-//                //As soon as we reach some region starting after the "start" value, do NOT need to continue ;)
-//                if(csr.getStart()>start) break;*/
-//            }
-//        }
-//        doUpdate(true);
-//    }
+    public void setSelectedArea(int start, int end){
+        this.featureSelection.setSelectedArea(start, end);
+        //Next lines set selected an covered region that fits with the selected area
+        int length = end - start + 1;
+        for (Drawable component : components) {
+            if(component instanceof CoveredFeatureRegion){
+                CoveredFeatureRegion csr = (CoveredFeatureRegion) component;
+                csr.setSelected((csr.getStart() == start && csr.getLength() == length));
+                /*if (csr.getStart() == start && csr.getLength() == length){
+                    csr.setSelected(true);
+                }
+                //As soon as we reach some region starting after the "start" value, do NOT need to continue ;)
+                if(csr.getStart()>start) break;*/
+            }
+        }
+        doUpdate(true);
+    }
 
+    public void resetSelectedArea(){
+        this.featureSelection.resetSelectedArea();
+        doUpdate(true);
+    }
 
+    public void resetRegionSelection(){
+        for (Drawable component : components) {
+            if(component instanceof FeatureRegion){
+                FeatureRegion region = (FeatureRegion) component;
+                region.setSelected(false);
+            }
+        }
+        doUpdate(true);
+    }
     protected void doUpdate(){
         doUpdate(false);
     }
@@ -188,35 +217,35 @@ public class FeatureViewer extends Composite implements HasHandlers {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
 
-//        this.featureSelection.setMousePosition(mouseX, mouseY);
-//        boolean objectHover = this.featureSelection.isMouseOver();
+        this.featureSelection.setMousePosition(mouseX, mouseY);
+        boolean objectHover = this.featureSelection.isMouseOver();
         for (Drawable component : this.components) {
             component.setMousePosition(mouseX, mouseY);
-//            if(component instanceof Clickable){
-//                Clickable c = (Clickable) component;
-//                objectHover = objectHover || c.isMouseOver();
-//            }
+            if(component instanceof Clickable){
+                Clickable c = (Clickable) component;
+                objectHover = objectHover || c.isMouseOver();
+            }
         }
-//        this.setCursorStyle(objectHover);
+        this.setCursorStyle(objectHover);
     }
 
-//    private void setCursorStyle(boolean objectHover){
-//        Style.Cursor cursor = Style.Cursor.AUTO;
-//
-//        if(this.featureSelection.isMovingSelectedRegion()){
-//            cursor = Style.Cursor.MOVE;
-//        }else if(objectHover){
-//            cursor = Style.Cursor.POINTER;
-//        }else if(this.featureSelection.isSelectionInProgress()){
-//            if(this.featureSelection.getSelectionDirection()>0){
-//                cursor = Style.Cursor.E_RESIZE;
-//            }else if(this.featureSelection.getSelectionDirection()<0){
-//                cursor = Style.Cursor.W_RESIZE;
-//            }
-//        }
-//
-//        this.getElement().getStyle().setCursor(cursor);
-//    }
+    private void setCursorStyle(boolean objectHover){
+        Style.Cursor cursor = Style.Cursor.AUTO;
+
+        if(this.featureSelection.isMovingSelectedRegion()){
+            cursor = Style.Cursor.MOVE;
+        }else if(objectHover){
+            cursor = Style.Cursor.POINTER;
+        }else if(this.featureSelection.isSelectionInProgress()){
+            if(this.featureSelection.getSelectionDirection()>0){
+                cursor = Style.Cursor.E_RESIZE;
+            }else if(this.featureSelection.getSelectionDirection()<0){
+                cursor = Style.Cursor.W_RESIZE;
+            }
+        }
+
+        this.getElement().getStyle().setCursor(cursor);
+    }
 
     private void cleanCanvas(Context2d ctx){
         if(this.featureBorder){
@@ -241,11 +270,13 @@ public class FeatureViewer extends Composite implements HasHandlers {
         for (Drawable component : this.components) {
             component.draw(ctx);
             //Is necessary to keep track of any object selected
-//            if(component instanceof Clickable){
-//                boolean selected = ((Clickable) component).isSelected();
-//                this.objectSelected = this.objectSelected || selected;
-//            }
+            if(component instanceof Clickable){
+                boolean selected = ((Clickable) component).isSelected();
+                this.objectSelected = this.objectSelected || selected;
+            }
         }
+        //ProteinAreaSelection is drawn on top of everything as a new requirement :)
+        this.featureSelection.draw(ctx);
     }
 
     protected void drawAnimation(double progress){
@@ -265,23 +296,23 @@ public class FeatureViewer extends Composite implements HasHandlers {
     }
 
     private void mouseLeftButtonDown(MouseDownEvent event){
-//        boolean objectSelected = false;
-//        if(!this.featureSelection.isSelectionInProgress()){
-//            for (Drawable component : this.components) {
-//                if(component instanceof Clickable){
-//                    Clickable c = (Clickable) component;
-//                    c.onMouseDown(this.mouseX, this.mouseY);
-//                    objectSelected = objectSelected || c.isMouseOver();
-//                }
-//            }
-//        }
-//        if(!objectSelected){
-//            this.featureSelection.onMouseDown(this.mouseX, this.mouseY);
-//        }
-//
-//        doUpdate(true);
-//
-//        event.stopPropagation();
+        boolean objectSelected = false;
+        if(!this.featureSelection.isSelectionInProgress()){
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    c.onMouseDown(this.mouseX, this.mouseY);
+                    objectSelected = objectSelected || c.isMouseOver();
+                }
+            }
+        }
+        if(!objectSelected){
+            this.featureSelection.onMouseDown(this.mouseX, this.mouseY);
+        }
+
+        doUpdate(true);
+
+        event.stopPropagation();
     }
 
     private void mouseRightButtonDown(MouseDownEvent event){
@@ -289,50 +320,50 @@ public class FeatureViewer extends Composite implements HasHandlers {
     }
 
     private void mouseLeftButtonUp(MouseUpEvent event){
-//        //IMPORTANT: After adding the moving the selected area, it is important to take into account that now
-//        boolean afterMoving = this.featureSelection.isSelectedRegionMoved();
-//        //IMPORTANT: for the featureSelection, after onMouseUp, isSelectionInProgress will be always false!
-//        boolean allowSelection = !this.featureSelection.isSelectionInProgress() && !afterMoving;
-//        this.featureSelection.onMouseUp(this.mouseX, this.mouseY);
-//
-//        //resetObjectSelection is gonna be used in case of fire the FeatureAreaSelectedEvent
-//        boolean resetObjectSelection;
-//        if(afterMoving){
-//            //By default, the widget will never reset any existing selected object when moving the selected area
-//            resetObjectSelection = false;
-//        }else{ //Only if the user has not moved the selected area
-//            int mouseXAux = allowSelection ? this.mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
-//            int mouseYAux = allowSelection ? this.mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
-//            for (Drawable component : this.components) {
-//                if(component instanceof Clickable){
-//                    Clickable c = (Clickable) component;
-//                    c.onMouseUp(mouseXAux, mouseYAux);
-//                }
-//            }
-//            //NOTE: IMPORTANT! doUpdate will change the value of objectSelected
-//            resetObjectSelection = this.objectSelected;
-//        }
-//
-//        doUpdate(true);
-//
-//        //If there is an object selected after doUpdate in "mouseUpHandler" means new selection
-//        if(this.objectSelected && !afterMoving){
-//            //Iterating is necessary in order to fire the event when all the objects has been already redrawn
-//            for (Drawable component : this.components) {
-//                if(component instanceof Clickable){
-//                    Clickable c = (Clickable) component;
-//                    //fireSelectionEvent only fires object selected event for a new object selected
-//                    c.fireSelectionEvent();
-//                }
-//            }
-//            //If there is NOT object selected the featureSelection has been clicked
-//        }else{
-//            //we notify if there has been a "deselection" and if the featureSelection properties
-//            //System.out.println(new FeatureAreaSelectedEvent(resetObjectSelection, featureSelection).toString());
-//            this.handlerManager.fireEvent(new FeatureAreaSelectedEvent(resetObjectSelection, this.featureSelection));
-//        }
-//
-//        event.stopPropagation();
+        //IMPORTANT: After adding the moving the selected area, it is important to take into account that now
+        boolean afterMoving = this.featureSelection.isSelectedRegionMoved();
+        //IMPORTANT: for the featureSelection, after onMouseUp, isSelectionInProgress will be always false!
+        boolean allowSelection = !this.featureSelection.isSelectionInProgress() && !afterMoving;
+        this.featureSelection.onMouseUp(this.mouseX, this.mouseY);
+
+        //resetObjectSelection is gonna be used in case of fire the FeatureAreaSelectedEvent
+        boolean resetObjectSelection;
+        if(afterMoving){
+            //By default, the widget will never reset any existing selected object when moving the selected area
+            resetObjectSelection = false;
+        }else{ //Only if the user has not moved the selected area
+            int mouseXAux = allowSelection ? this.mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
+            int mouseYAux = allowSelection ? this.mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    c.onMouseUp(mouseXAux, mouseYAux);
+                }
+            }
+            //NOTE: IMPORTANT! doUpdate will change the value of objectSelected
+            resetObjectSelection = this.objectSelected;
+        }
+
+        doUpdate(true);
+
+        //If there is an object selected after doUpdate in "mouseUpHandler" means new selection
+        if(this.objectSelected && !afterMoving){
+            //Iterating is necessary in order to fire the event when all the objects has been already redrawn
+            for (Drawable component : this.components) {
+                if(component instanceof Clickable){
+                    Clickable c = (Clickable) component;
+                    //fireSelectionEvent only fires object selected event for a new object selected
+                    c.fireSelectionEvent();
+                }
+            }
+            //If there is NOT object selected the featureSelection has been clicked
+        }else{
+            //we notify if there has been a "deselection" and if the featureSelection properties
+            //System.out.println(new FeatureAreaSelectedEvent(resetObjectSelection, featureSelection).toString());
+            this.handlerManager.fireEvent(new FeatureAreaSelectionEvent(resetObjectSelection, this.featureSelection));
+        }
+
+        event.stopPropagation();
     }
 
     private void mouseRightButtonUp(MouseUpEvent event){
