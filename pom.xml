@@ -248,16 +248,19 @@
     </scm>
 
     <distributionManagement>
-
+        <!-- EBI repo -->
         <repository>
-            <id>nexus-ebi-release-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+            <id>pst-release</id>
+            <name>EBI Nexus Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
         </repository>
+        <!-- EBI SNAPSHOT repo -->
         <snapshotRepository>
-            <id>nexus-ebi-snapshot-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+            <id>pst-snapshots</id>
+            <name>EBI Nexus Snapshots Repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
         </snapshotRepository>
-
     </distributionManagement>
 
     <pluginRepositories>
