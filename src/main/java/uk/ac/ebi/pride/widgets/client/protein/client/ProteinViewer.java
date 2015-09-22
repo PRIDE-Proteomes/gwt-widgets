@@ -3,7 +3,6 @@ package uk.ac.ebi.pride.widgets.client.protein.client;
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
@@ -19,6 +18,7 @@ import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.protein.events.*;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.*;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
@@ -32,6 +32,7 @@ import java.util.List;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ProteinViewer extends Composite implements HasHandlers {
+
     HandlerManager handlerManager;
 
     private boolean proteinBorder;
@@ -358,9 +359,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     private void cleanCanvas(Context2d ctx){
         if(this.proteinBorder){
-            ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
+            ctx.setFillStyle(Colors.PROTEIN_CANVAS_BORDER_BG_COLOR);
         }else{
-            ctx.setFillStyle(CssColor.make("rgba(240,240,240, 1)"));
+            ctx.setFillStyle(Colors.PROTEIN_CANVAS_NO_BORDER_BG_COLOR);
         }
         int width = ctx.getCanvas().getWidth();
         int height = ctx.getCanvas().getHeight();
@@ -489,8 +490,8 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
         canvas.addMouseOutHandler(new MouseOutHandler() {
             public void onMouseOut(MouseOutEvent event) {
-                mouseX = -200;
-                mouseY = -200;
+                mouseX = event.getRelativeX(canvas.getElement());
+                mouseY = event.getRelativeY(canvas.getElement());
             }
         });
 

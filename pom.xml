@@ -17,8 +17,8 @@
         <gwtVersion>2.7.0</gwtVersion>
         <!--<gwtVersion>2.5.0-rc2</gwtVersion>-->
         <!-- This GWT  app needs at least java 1.6 -->
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     </properties>
 
@@ -161,14 +161,6 @@
             </plugin>
         </plugins>
 
-        <!-- scp support for deployment (MVN 3) -->
-        <!--<extensions>-->
-            <!--<extension>-->
-                <!--<groupId>org.apache.maven.wagon</groupId>-->
-                <!--<artifactId>wagon-ssh</artifactId>-->
-                <!--<version>2.3</version>-->
-            <!--</extension>-->
-        <!--</extensions>-->
     </build>
 
     <reporting>
@@ -231,20 +223,15 @@
         </repository>
     </repositories>
 
+    <!--scm git config-->
+    <scm>
+        <connection>scm:git:github.com/PRIDE-Proteomes/gwt-widgets.git</connection>
+        <developerConnection>scm:git:git@github.com:PRIDE-Proteomes/gwt-widgets.git</developerConnection>
+        <url>https://github.com/PRIDE-Proteomes/gwt-widgets.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <distributionManagement>
-        <!--&lt;!&ndash; EBI repo &ndash;&gt;-->
-        <!--<repository>-->
-        <!--<id>ebi-repo</id>-->
-        <!--<name>EBI Repository</name>-->
-        <!--<url>scp://lobster.ebi.ac.uk/homes/maven/public_html/m2repo</url>-->
-        <!--</repository>-->
-        <!--&lt;!&ndash; EBI SNAPSHOT repo &ndash;&gt;-->
-        <!--<snapshotRepository>-->
-        <!--<uniqueVersion>false</uniqueVersion>-->
-        <!--<id>ebi-repo-snapshots</id>-->
-        <!--<name>EBI Snapshots Repository</name>-->
-        <!--<url>scp://lobster.ebi.ac.uk/homes/maven/public_html/m2repo_snapshots</url>-->
-        <!--</snapshotRepository>-->
         <!-- EBI repo -->
         <repository>
             <id>nexus-ebi-repo</id>

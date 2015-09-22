@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.widgets.test.data.model;
 
+import java.util.Collection;
+
 public interface Peptide {
 
     String getProteinId();
@@ -18,6 +20,16 @@ public interface Peptide {
 
     Integer getUniqueness();
     void setUniqueness(Integer uniqueness);
+
+
+    Collection<String> getSharedProteins();
+    void setSharedProteins(Collection<String> sharedProteins);
+
+    Collection<String> getSharedUpEntries();
+    void setSharedUpEntries(Collection<String> sharedUpEntries);
+
+    Collection<String> getSharedGenes();
+    void setSharedGenes(Collection<String> sharedGenes);
 
     //How many psm this peptide have.
     Integer getPsmHits();

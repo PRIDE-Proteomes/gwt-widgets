@@ -10,4 +10,6 @@
   <source path="model" />
   <source path="type" />
   <source path="utils" />
+  <source path="constants"/>
+
 </module>

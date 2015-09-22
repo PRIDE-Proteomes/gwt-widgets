@@ -1,10 +1,10 @@
 package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinAreaHighlightEvent;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
@@ -12,8 +12,6 @@ import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class ProteinAreaSelection implements Drawable, Clickable {
-    public static final CssColor NONE_SELECTED_COLOR = CssColor.make("rgba(255,255,255, 0.75)");
-    public static final CssColor SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.25)");
 
     protected HandlerManager handlerManager;
     private CanvasProperties canvasProperties;
@@ -188,7 +186,7 @@ public class ProteinAreaSelection implements Drawable, Clickable {
         if(!this.hasSelection()) return;
 
         if(this.naturalSelection){
-            ctx.setFillStyle(SELECTED_COLOR);
+            ctx.setFillStyle(Colors.PROTEIN_AREA_SELECTED_COLOR);
             ctx.fillRect(this.xMin, 0, this.width, ctx.getCanvas().getHeight());
         }else{
             double xMin = this.xMin;
@@ -200,7 +198,7 @@ public class ProteinAreaSelection implements Drawable, Clickable {
                 width = Math.abs(this.width);
             }
 
-            ctx.setFillStyle(NONE_SELECTED_COLOR);
+            ctx.setFillStyle(Colors.PROTEIN_AREA_NON_SELECTED_COLOR);
             double widthAux = xMin - this.proteinStart + CanvasProperties.X_OFFSET;
             ctx.fillRect(0, 0, widthAux, ctx.getCanvas().getHeight());
 

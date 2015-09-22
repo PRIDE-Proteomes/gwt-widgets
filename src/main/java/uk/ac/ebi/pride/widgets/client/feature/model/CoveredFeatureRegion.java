@@ -5,6 +5,7 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.common.utils.Tooltip;
+import uk.ac.ebi.pride.widgets.client.feature.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionSelectionEvent;
 import uk.ac.ebi.pride.widgets.client.feature.interfaces.Clickable;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
@@ -16,16 +17,10 @@ import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureType;
  */
 public class CoveredFeatureRegion extends FeatureRegion implements Animated, Clickable {
 
-    public static final int BOXES_HEIGHT = 15;
-    public static final int RADIUS = 7;
-
+    public static final int BOXES_HEIGHT = 10;
+    public static final int RADIUS = 5;
 
     private final CssColor regionColor;
-
-    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(0,255,0, 0.75)");
-    public static final CssColor MOUSE_OVER_FEATURE_COLOR =  CssColor.make("rgba(0,255,0, 0.75)");
-
-
 
     private boolean fireEvent = false;
     private long xMin, xMax, width;
@@ -83,9 +78,9 @@ public class CoveredFeatureRegion extends FeatureRegion implements Animated, Cli
 
         if(isMouseOver() || selected){
             roundRect(ctx, xMin, yMin, width, height, RADIUS);
-            ctx.setStrokeStyle(REGION_SELECTED_COLOR);
+            ctx.setStrokeStyle(Colors.FEATURE_SELECTED_COLOR);
             ctx.stroke();
-            ctx.setFillStyle(REGION_SELECTED_COLOR);
+            ctx.setFillStyle(Colors.FEATURE_SELECTED_COLOR);
             ctx.fill();
         }
 

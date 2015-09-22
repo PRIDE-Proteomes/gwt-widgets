@@ -3,6 +3,8 @@ package uk.ac.ebi.pride.widgets.test.data.proxy;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.test.data.model.Peptide;
 
+import java.util.Collection;
+
 public class PeptideProxy implements PeptideHandler {
 
     Peptide peptide;
@@ -29,5 +31,20 @@ public class PeptideProxy implements PeptideHandler {
     @Override
     public Integer getUniqueness() {
         return peptide.getUniqueness();
+    }
+
+    @Override
+    public Collection<String> getSharedProteins() {
+        return peptide.getSharedProteins();
+    }
+
+    @Override
+    public Collection<String> getSharedUpEntries() {
+        return peptide.getSharedUpEntries();
+    }
+
+    @Override
+    public Collection<String> getSharedGenes() {
+        return peptide.getSharedGenes();
     }
 }

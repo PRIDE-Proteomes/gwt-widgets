@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.sequence.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinPositionHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionResetEvent;
@@ -16,7 +17,8 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.HIGHLIGHT_COLOR;
+import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.PEPTIDE_HIGHLIGTED_COLOR;
+
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -98,8 +100,8 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(Position.AMINO_ACID_COLOR);
-        ctx.setFont(Position.AMINO_ACID_FONT);
+        ctx.setFillStyle(Colors.AMINO_ACID_COLOR);
+        ctx.setFont(Colors.AMINO_ACID_FONT);
         //TextAlign depends on the part of the sequence line (on level deep)
         //PositionIdentification -> ALIGN.LEFT
         //PositionBlock -> ALIGN.CENTER
@@ -117,7 +119,7 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void drawSelection(Context2d ctx) {
-        ctx.setFillStyle(HIGHLIGHT_COLOR);
+        ctx.setFillStyle(PEPTIDE_HIGHLIGTED_COLOR);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawSelection(ctx);
             for (PositionIdentification positionIdentification : sequenceLine.getPositionIdentificationList()) {
@@ -128,8 +130,8 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
-        ctx.setFillStyle(Position.AMINO_ACID_MODIFIED_COLOR);
-        ctx.setFont(Position.AMINO_ACID_MODIFIED_FONT);
+        ctx.setFillStyle(Colors.AMINO_ACID_MODIFIED_COLOR);
+        ctx.setFont(Colors.AMINO_ACID_MODIFIED_FONT);
         ctx.setTextAlign(Context2d.TextAlign.CENTER);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawModification(ctx, prideModification);

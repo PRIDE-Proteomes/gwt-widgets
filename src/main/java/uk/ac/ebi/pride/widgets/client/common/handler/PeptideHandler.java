@@ -1,5 +1,7 @@
 package uk.ac.ebi.pride.widgets.client.common.handler;
 
+import java.util.Collection;
+
 public interface PeptideHandler {
 
     String getSequence();
@@ -9,6 +11,12 @@ public interface PeptideHandler {
     Integer getEnd();
 
     Integer getUniqueness();
+
+    Collection<String> getSharedProteins();
+
+    Collection<String> getSharedUpEntries();
+
+    Collection<String> getSharedGenes();
 
     /*
     Integer getPsmHits();

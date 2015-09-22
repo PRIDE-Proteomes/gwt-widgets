@@ -3,7 +3,7 @@
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
 
-  <!-- Logging library fir development only                       -->
+  <!-- Logging library for development only                       -->
   <inherits name="com.google.gwt.logging.Logging"/>
 
   <!--<inherits name='com.google.gwt.http.HTTP'/>-->

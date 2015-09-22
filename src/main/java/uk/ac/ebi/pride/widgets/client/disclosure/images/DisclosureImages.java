@@ -8,15 +8,15 @@ public interface DisclosureImages extends ClientBundle {
 
     public DisclosureImages INSTANCE = GWT.create(DisclosureImages.class);
 
-    @ClientBundle.Source("disclosure_minus.png")
+    @Source("disclosure_minus.png")
     ImageResource getCollapseImage();
 
-    @ClientBundle.Source("disclosure_plus.png")
+    @Source("disclosure_plus.png")
     ImageResource getExpandImage();
 
-    @ClientBundle.Source("disclosure_loading.gif")
+    @Source("disclosure_loading.gif")
     ImageResource getLoadingImage();
 
-    @ClientBundle.Source("icon.png")
+    @Source("icon.png")
     ImageResource getIcon();
 }

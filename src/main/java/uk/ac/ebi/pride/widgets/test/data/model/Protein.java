@@ -39,6 +39,9 @@ public interface Protein {
     public List<Feature> getFeatures();
     public void setFeatures(List<Feature> features);
 
-    public int getUniquePeptideCount();
+    public int getUniquePeptideToProteinCount();
+    public int getUniquePeptideToIsoformCount();
+    public int getUniquePeptideToGenePeptideCount();
+    public int getNonUniquePeptidesCount();
 
 }

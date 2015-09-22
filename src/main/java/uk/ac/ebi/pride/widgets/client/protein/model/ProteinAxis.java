@@ -1,13 +1,14 @@
 package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 
 public class ProteinAxis implements Drawable, Animated {
+
     private static final double SEGMENT_WIDTH = 1;
     public static final double SEGMENT_Y = 25;
     private static final double SEGMENT_TICK_HEIGHT = 5;
@@ -37,10 +38,10 @@ public class ProteinAxis implements Drawable, Animated {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
+        ctx.setFillStyle(Colors.PROTEIN_REGION_BACKGROUND_COLOR);
         ctx.fillRect(this.areaXMin, CanvasProperties.Y_OFFSET, this.areaWidth, CoveredSequenceRegion.BOXES_HEIGHT);
 
-        ctx.setStrokeStyle(CssColor.make("rgba(89,89,89, 1)"));
+        ctx.setStrokeStyle(Colors.PROTEIN_LINE_COLOR);
         ctx.setLineWidth(SEGMENT_WIDTH);
 
         ctx.beginPath();
@@ -68,11 +69,11 @@ public class ProteinAxis implements Drawable, Animated {
     public void drawAnimation(Context2d ctx, double progress) {
         progress = AnimationUtils.getProgress(0, 0.25, progress);
 
-        ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
+        ctx.setFillStyle(Colors.PROTEIN_REGION_BACKGROUND_COLOR);
         double aux = CanvasProperties.Y_OFFSET + (CoveredSequenceRegion.BOXES_HEIGHT / 2) * (1-progress);
         ctx.fillRect(this.areaXMin, aux, this.areaWidth, CoveredSequenceRegion.BOXES_HEIGHT * progress);
 
-        ctx.setStrokeStyle(CssColor.make("rgba(89,89,89, 1)"));
+        ctx.setStrokeStyle(Colors.PROTEIN_LINE_COLOR);
         ctx.setLineWidth(SEGMENT_WIDTH);
 
         ctx.beginPath();

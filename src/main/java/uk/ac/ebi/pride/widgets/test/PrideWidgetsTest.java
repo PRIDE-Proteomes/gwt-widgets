@@ -21,12 +21,6 @@ import uk.ac.ebi.pride.widgets.test.data.model.Peptide;
 import uk.ac.ebi.pride.widgets.test.data.model.Protein;
 import uk.ac.ebi.pride.widgets.test.data.proxy.ProteinProxy;
 
-//import uk.ac.ebi.pride.widgets.examples.basic.client.BasicViewer;
-//import uk.ac.ebi.pride.widgets.examples.basic.events.BookSelectedEvent;
-//import uk.ac.ebi.pride.widgets.examples.basic.events.BoxSelectedEvent;
-//import uk.ac.ebi.pride.widgets.examples.basic.handlers.BookSelectedHandler;
-//import uk.ac.ebi.pride.widgets.examples.basic.handlers.BoxSelectedHandler;
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -66,17 +60,40 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
 
     @Override
     public void onResponseReceived(Request request, Response response) {
+        Protein protein = null;
+
         if (200 == response.getStatusCode()) {
             try {
-                final Protein protein = ModelFactory.getModelObject(Protein.class, response.getText());
-                //PeptideHandler end is used very often in the webapp, and make sense to keep it calculated
-                for (Peptide peptide : protein.getPeptides()) {
-                    int end = peptide.getPosition() + peptide.getSequence().length() - 1;
-                    peptide.setEnd(end);
-                }
+                protein = ModelFactory.getModelObject(Protein.class, response.getText());
+            } catch (ModelFactoryException ex) {
+                displayError("Couldn't convert JSON to the model");
+            }
+        } else {
+            displayError("Couldn't retrieve JSON (status code: " + response.getStatusCode() + "). Trying offline example");
+            protein = offLineExample();
+        }
 
+        if (protein != null) {
 
-//            @SuppressWarnings("Convert2Diamond")
+            //PeptideHandler end is used very often in the webapp, and make sense to keep it calculated
+            for (Peptide peptide : protein.getPeptides()) {
+                int end = peptide.getPosition() + peptide.getSequence().length() - 1;
+                peptide.setProteinId(protein.getAccession());
+                peptide.setEnd(end);
+            }
+
+            protein.setLength(protein.getSequence().length());
+            ProteinProxy proteinProxy = new ProteinProxy(protein);
+
+            ProteinViewer proteinViewer = new ProteinViewer(1020, 90, proteinProxy);
+            vp.add(proteinViewer);
+
+            FeatureViewer featureViewer = new FeatureViewer(1020, 20, proteinProxy); //Optimize to 20
+            vp.add(featureViewer);
+
+            SequenceViewer sequenceViewer = new SequenceViewer(new Pride(), proteinProxy);
+            vp.add(sequenceViewer);
+
 //            final SingleSelectionTable<Peptide> table = new SingleSelectionTable<Peptide>();
 //            table.setList(protein.getPeptides());
 //            table.addSingleSelectionChangeHandler(this);
@@ -112,28 +129,11 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
 
 //            vp.add(table);
 
-                ProteinProxy proteinProxy = new ProteinProxy(protein);
-
-                ProteinViewer proteinViewer = new ProteinViewer(proteinProxy);
-//            proteinViewer.setSelectedArea(187, 198);
-                vp.add(proteinViewer);
-
-                FeatureViewer featureViewer = new FeatureViewer(proteinProxy);
-                vp.add(featureViewer);
-
-//            SequenceType sequenceType = new Pride();
-//            SequenceViewer sequenceViewer = new SequenceViewer(sequenceType, proteinProxy);
-//            vp.add(sequenceViewer);
-
-
-                RootPanel.get(PLACE_HOLDER).add(vp);
-            } catch (ModelFactoryException ex) {
-                displayError("Couldn't convert JSON to the model");
-            }
+            RootPanel.get(PLACE_HOLDER).add(vp);
         } else {
-            displayError("Couldn't retrieve JSON (status code: " + response.getStatusCode() + "). Trying offline example");
-            offLineExample();
+            displayError("Couldn't convert JSON to the model");
         }
+
     }
 
     @Override
@@ -152,120 +152,134 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
         System.out.println("Table selection reset :)");
     }
 
-    private void offLineExample() {
+    private Protein offLineExample() {
+
+        Protein protein = null;
 
         try {
             String jsonProtein =
                     "{" +
-                    "\"accession\":\"A0A067XG54\"," +
-                    "\"gene\":\"ENSG00000101974\"," +
-                    "\"taxonID\":9606," +
-                    "\"sequence\":" +
-                        "\"MFRRSLNRFCAGEEKRVGTRTVFVGNHPVSETEAYIAQRFCDNRIVSSKYTLWNFLPKNLFEQFRRIANFYFLIIFLVQVTVDTPTSPVTSGLP" +
-                        "LFFVITVTAIKQGYEDCLRHRADNEVNKSTVYIIENAKRVRKESEKIKVGDVVEVQADETFPCDLILLSSCTTDGTCYVTTASLDGESNCKTHYAV" +
-                        "RDTIALCTAESIDTLRAAIECEQPQPDLYKFVGRINIYSNSLEAVARSLGPENLLLKGATLKNTEKIYGVAVYTGMETKMALNYQGKSQKRSAVEK" +
-                        "SINAFLIVYLFILLTKAAVCTTLKYVWQSTPYNDEPWYNQKTQKERETLKVLKMFTDFLSFMVLFNFIIPVSMYVTVEMQKFLGSFFISWDKDFYD" +
-                        "EEINEGALVNTSDLNEELGQVDYVFTDKTGTLTENSMEFIECCIDGHKYKGVTQEVDGLSQTDGTLTYFDKVDKNREELFLRALCLCHTVEIKTND" +
-                        "AVDGATESAELTYISSSPDEIALVKGAKRYGFTFLGNRNGYMRVENQRKEIEEYELLHTLNFDAVRRRMSVIVKTQEGDILLFCKGADSAVFPRVQ" +
-                        "NHEIELTKVHVERNAMDGYRTLCVAFKEIAPDDYERINRQLIEAKMALQDREEKMEKVFDDIETNMNLIGATAVEDKLQDQAAETIEALHAAGLKV" +
-                        "WVLTGDKMETAKSTCYACRLFQTNTELLELTTKTIEESERKEDRLHELLIEYRKKLLHEFPKSTRSFKKAWTEHQEYGLIIDGSTLSLILNSSQDS" +
-                        "SSNNYKSIFLQICMKCTAVLCCRMAPLQKAQIVRMVKNLKGSPITLSIGDGANDVSMILESHVGIGKEGRQAARNSDYSVPKFKHLKKLLLAHGHL" +
-                        "YYVRIAHLVQYFFYKNLCFILPQFLYQFFCGFSQQPLYDAAYLTMYNICFTSLPILAYSLLEQHINIDTLTSDPRLYMKISGNAMLQLGPFLYWTF" +
-                        "LAAFEGTVFFFGTYFLFQTASLEENGKVYGNWTFGTIVFTVLVFTVTLKLALDTRFWTWINHFVIWGSLAFYVFFSFFWGGIIWPFLKQQRMYFVF" +
-                        "AQMLSSVSTWLAIILLIFISLFPEILLIVLKNVRRRSARNPNLELPMLLSYKHTDSGYS\"," +
-                    "\"description\":\"A0A067XG54_HUMAN Phospholipid-translocating ATPase OS=Homo sapiens GN=ATP11C PE=1 SV=1\"," +
-                    "\"modifiedLocations\":[]," +
-                    "\"tissues\":[\"CELL_CULTURE\",\"COLORECTAL_CANCER_CELL_LINE\",\"LIVER\",\"SW_480_CELL\"]," +
-                    "\"peptides\":[" +
-                        "{" +
-                            "\"id\":\"[KGATLK|9606]\"," +
-                            "\"symbolic\":true," +
-                            "\"sequence\":\"KGATLK\"," +
+                            "\"accession\":\"A0A067XG54\"," +
+                            "\"gene\":\"ENSG00000101974\"," +
                             "\"taxonID\":9606," +
+                            "\"sequence\":" +
+                            "\"MFRRSLNRFCAGEEKRVGTRTVFVGNHPVSETEAYIAQRFCDNRIVSSKYTLWNFLPKNLFEQFRRIANFYFLIIFLVQVTVDTPTSPVTSGLP" +
+                            "LFFVITVTAIKQGYEDCLRHRADNEVNKSTVYIIENAKRVRKESEKIKVGDVVEVQADETFPCDLILLSSCTTDGTCYVTTASLDGESNCKTHYAV" +
+                            "RDTIALCTAESIDTLRAAIECEQPQPDLYKFVGRINIYSNSLEAVARSLGPENLLLKGATLKNTEKIYGVAVYTGMETKMALNYQGKSQKRSAVEK" +
+                            "SINAFLIVYLFILLTKAAVCTTLKYVWQSTPYNDEPWYNQKTQKERETLKVLKMFTDFLSFMVLFNFIIPVSMYVTVEMQKFLGSFFISWDKDFYD" +
+                            "EEINEGALVNTSDLNEELGQVDYVFTDKTGTLTENSMEFIECCIDGHKYKGVTQEVDGLSQTDGTLTYFDKVDKNREELFLRALCLCHTVEIKTND" +
+                            "AVDGATESAELTYISSSPDEIALVKGAKRYGFTFLGNRNGYMRVENQRKEIEEYELLHTLNFDAVRRRMSVIVKTQEGDILLFCKGADSAVFPRVQ" +
+                            "NHEIELTKVHVERNAMDGYRTLCVAFKEIAPDDYERINRQLIEAKMALQDREEKMEKVFDDIETNMNLIGATAVEDKLQDQAAETIEALHAAGLKV" +
+                            "WVLTGDKMETAKSTCYACRLFQTNTELLELTTKTIEESERKEDRLHELLIEYRKKLLHEFPKSTRSFKKAWTEHQEYGLIIDGSTLSLILNSSQDS" +
+                            "SSNNYKSIFLQICMKCTAVLCCRMAPLQKAQIVRMVKNLKGSPITLSIGDGANDVSMILESHVGIGKEGRQAARNSDYSVPKFKHLKKLLLAHGHL" +
+                            "YYVRIAHLVQYFFYKNLCFILPQFLYQFFCGFSQQPLYDAAYLTMYNICFTSLPILAYSLLEQHINIDTLTSDPRLYMKISGNAMLQLGPFLYWTF" +
+                            "LAAFEGTVFFFGTYFLFQTASLEENGKVYGNWTFGTIVFTVLVFTVTLKLALDTRFWTWINHFVIWGSLAFYVFFSFFWGGIIWPFLKQQRMYFVF" +
+                            "AQMLSSVSTWLAIILLIFISLFPEILLIVLKNVRRRSARNPNLELPMLLSYKHTDSGYS\"," +
+                            "\"description\":\"A0A067XG54_HUMAN Phospholipid-translocating ATPase OS=Homo sapiens GN=ATP11C PE=1 SV=1\"," +
                             "\"modifiedLocations\":[]," +
-                            "\"tissues\":[\"LIVER\"]," +
-                            "\"assays\":[\"17685\",\"31515\",\"31516\",\"31517\",\"31518\",\"31563\",\"31564\",\"31567\",\"31605\",\"31606\"]," +
-                            "\"clusters\":[],\"" +
-                            "position\":247," +
-                            "\"uniqueness\":17" +
-                        "}," +
-                        "{" +
+                            "\"tissues\":[\"CELL_CULTURE\",\"COLORECTAL_CANCER_CELL_LINE\",\"LIVER\",\"SW_480_CELL\"]," +
+                            "\"peptides\":[" +
+                            "{" +
+                            "\"id\":\"[AAIECEQPQPDLYK|9606]\"," +
+                            "\"symbolic\":true," +
+                            "\"sequence\":\"AAIECEQPQPDLYK\"," +
+                            "\"taxonID\":9606," +
+                            "\"modifiedLocations\":[{\"position\":5,\"modification\":\"CARBAMIDOMETHYL\"}]," +
+                            "\"tissues\":[\"JURKAT_CELL\",\"LIVER\"]," +
+                            "\"assays\":[\"31019\",\"31725\",\"31726\"]," +
+                            "\"clusters\":[\"5374848\"]," +
+                            "\"position\":207," +
+                            "\"uniqueness\":3," +
+                            "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
+                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
+                            "\"sharedGenes\":[\"ENSG00000101974\"]" +
+                            "}," +
+                            "{" +
                             "\"id\":\"[LFQTNTELLELTTK|9606]\"," +
                             "\"symbolic\":true," +
                             "\"sequence\":\"LFQTNTELLELTTK\"," +
                             "\"taxonID\":9606," +
                             "\"modifiedLocations\":[]," +
-                            "\"tissues\":[\"CELL_CULTURE\",\"COLORECTAL_CANCER_CELL_LINE\",\"LIVER\",\"SW_480_CELL\"]," +
-                            "\"assays\":[\"21768\",\"31527\",\"31575\",\"31576\",\"31711\",\"31712\",\"33078\"]," +
-                            "\"clusters\":[]," +
+                            "\"tissues\":[\"CELL_CULTURE\",\"LIVER\"]," +
+                            "\"assays\":[\"31527\",\"31575\",\"31576\",\"31711\",\"31712\",\"33078\"]," +
+                            "\"clusters\":[\"5423750\",\"5425311\"]," +
                             "\"position\":690," +
-                            "\"uniqueness\":5" +
-                        "}," +
-                        "{" +
+                            "\"uniqueness\":3," +
+                            "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49\",\"Q8NB49-3\",\"Q8NB49-4\",\"A0A067XG54\"]," +
+                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
+                            "\"sharedGenes\":[\"ENSG00000101974\"]" +
+                            "}," +
+                            "{" +
+                            "\"id\":\"[LQDQAAETIEALHAAGLK|9606]\"," +
+                            "\"symbolic\":true," +
+                            "\"sequence\":\"LQDQAAETIEALHAAGLK\"," +
+                            "\"taxonID\":9606," +
+                            "\"modifiedLocations\":[]," +
+                            "\"tissues\":[\"LIVER\"]," +
+                            "\"assays\":[\"31535\",\"31536\",\"31583\",\"31584\",\"31749\",\"31750\"]," +
+                            "\"clusters\":[\"6121352\"]," +
+                            "\"position\":652," +
+                            "\"uniqueness\":3," +
+                            "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
+                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
+                            "\"sharedGenes\":[\"ENSG00000101974\"]" +
+                            "}," +
+                            "{" +
                             "\"id\":\"[SLGPENLLLK|9606]\"," +
                             "\"symbolic\":true," +
                             "\"sequence\":\"SLGPENLLLK\"," +
                             "\"taxonID\":9606," +
                             "\"modifiedLocations\":[]," +
-                            "\"tissues\":[\"CELL_CULTURE\",\"LIVER\"]," +
-                            "\"assays\":[\"9039\",\"31882\",\"33074\"]," +
-                            "\"clusters\":[]," +
+                            "\"tissues\":[\"LIVER\"]," +
+                            "\"assays\":[\"9039\",\"31881\",\"31882\"]," +
+                            "\"clusters\":[\"1789046\",\"1798829\"]," +
                             "\"position\":238," +
-                            "\"uniqueness\":5" +
-                        "}," +
-                        "{" +
+                            "\"uniqueness\":3," +
+                            "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
+                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
+                            "\"sharedGenes\":[\"ENSG00000101974\"]" +
+                            "}," +
+                            "{" +
                             "\"id\":\"[YTLWNFLPK|9606]\"," +
                             "\"symbolic\":true," +
-                            "\"sequence\":\"YTLWNFLPK\"," +
+                            "\"sequence\":" +
+                            "\"YTLWNFLPK\"," +
                             "\"taxonID\":9606," +
                             "\"modifiedLocations\":[]," +
-                            "\"tissues\":[\"COLORECTAL_CANCER_CELL_LINE\",\"SW_480_CELL\"]," +
-                            "\"assays\":[\"21768\"],\"clusters\":[]," +
+                            "\"tissues\":[\"COLORECTAL_CANCER_CELL_LINE\",\"LIVER\",\"SW_480_CELL\"]," +
+                            "\"assays\":[\"21768\",\"31731\",\"31732\",\"31862\"]," +
+                            "\"clusters\":[\"2442144\",\"2442504\"]," +
                             "\"position\":50," +
-                            "\"uniqueness\":5" +
-                        "}" +
-                    "]," +
-                    "\"features\":[" +
-                        "{\"id\":662,\"type\":\"SIGNAL\",\"start\":1,\"end\":100}," +
-                        "{\"id\":663,\"type\":\"TRANSMEM\",\"start\":110,\"end\":130}," +
-                        "{\"id\":664,\"type\":\"TOPO_DOM\",\"start\":131,\"end\":166}," +
-                        "{\"id\":665,\"type\":\"TRANSMEM\",\"start\":166,\"end\":186}," +
-                        "{\"id\":666,\"type\":\"INTRAMEM\",\"start\":187,\"end\":200}," +
-                        "{\"id\":667,\"type\":\"TRANSMEM\",\"start\":201,\"end\":221}," +
-                        "{\"id\":668,\"type\":\"SITE\",\"start\":222,\"end\":264}," +
-                        "{\"id\":669,\"type\":\"TRANSMEM\",\"start\":265,\"end\":285}" +
-                    "]," +
-                    "\"uniquePeptideCount\":0," +
-                    "\"coverage\":null," +
-                    "\"regions\":null" +
-                    "}";
+                            "\"uniqueness\":3," +
+                            "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
+                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
+                            "\"sharedGenes\":[\"ENSG00000101974\"]}" +
+                            "]," +
+                            "\"features\":[" +
+                            "{\"id\":662,\"type\":\"SIGNAL\",\"start\":1,\"end\":100}," +
+                            "{\"id\":663,\"type\":\"TRANSMEM\",\"start\":110,\"end\":130}," +
+                            "{\"id\":664,\"type\":\"TOPO_DOM\",\"start\":131,\"end\":166}," +
+                            "{\"id\":665,\"type\":\"TRANSMEM\",\"start\":166,\"end\":186}," +
+                            "{\"id\":666,\"type\":\"INTRAMEM\",\"start\":187,\"end\":200}," +
+                            "{\"id\":667,\"type\":\"TRANSMEM\",\"start\":201,\"end\":221}," +
+                            "{\"id\":668,\"type\":\"SITE\",\"start\":222,\"end\":264}," +
+                            "{\"id\":669,\"type\":\"TRANSMEM\",\"start\":265,\"end\":285}" +
+                            "]," +
+                            "\"uniquePeptideToProteinCount\":0," +
+                            "\"uniquePeptideToIsoformCount\":0," +
+                            "\"uniquePeptideToGeneCount\":0," +
+                            "\"nonUniquePeptidesCount\":0," +
+                            "\"coverage\":null," +
+                            "\"regions\":null" +
+                            "}";
 
-            final Protein protein = ModelFactory.getModelObject(Protein.class, jsonProtein);
-
-            //PeptideHandler end is used very often in the webapp, and make sense to keep it calculated
-            for (Peptide peptide : protein.getPeptides()) {
-                int end = peptide.getPosition() + peptide.getSequence().length() - 1;
-                peptide.setProteinId(protein.getAccession());
-                peptide.setEnd(end);
-            }
-
-            protein.setLength(protein.getSequence().length());
-            ProteinProxy proteinProxy = new ProteinProxy(protein);
-
-            ProteinViewer proteinViewer = new ProteinViewer(proteinProxy);
-            proteinViewer.setSelectedArea(187, 198);
-            vp.add(proteinViewer);
-
-            FeatureViewer featureViewer = new FeatureViewer(proteinProxy);
-            featureViewer.setSelectedArea(187, 198);
-            vp.add(featureViewer);
-
-            SequenceViewer sequenceViewer = new SequenceViewer(new Pride(), proteinProxy);
-            vp.add(sequenceViewer);
+            protein = ModelFactory.getModelObject(Protein.class, jsonProtein);
 
         } catch (ModelFactoryException e) {
             displayError("Coudn't convert the JSON");
         }
+
+        return protein;
     }
 
     /**

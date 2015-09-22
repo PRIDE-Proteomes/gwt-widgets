@@ -8,4 +8,6 @@
   <source path="interfaces" />
   <source path="model" />
   <source path="utils" />
+  <source path="constants"/>
+
 </module>

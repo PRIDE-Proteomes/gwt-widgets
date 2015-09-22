@@ -1,13 +1,14 @@
 package uk.ac.ebi.pride.widgets.client.feature.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.feature.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 public class FeatureAxis implements Drawable, Animated {
+
     private static final double SEGMENT_WIDTH = 1;
     private static final double SEGMENT_TICK_HEIGHT = 5;
 
@@ -36,10 +37,10 @@ public class FeatureAxis implements Drawable, Animated {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
+        ctx.setFillStyle(Colors.FEATURE_REGION_BACKGROUND_COLOR);
         ctx.fillRect(this.areaXMin, FeatureCanvasProperties.Y_OFFSET, this.areaWidth, CoveredFeatureRegion.BOXES_HEIGHT);
 
-        ctx.setStrokeStyle(CssColor.make("rgba(89,89,89, 1)"));
+        ctx.setStrokeStyle(Colors.FEATURE_LINE_COLOR);
         ctx.setLineWidth(SEGMENT_WIDTH);
 
         ctx.beginPath();
@@ -67,11 +68,11 @@ public class FeatureAxis implements Drawable, Animated {
     public void drawAnimation(Context2d ctx, double progress) {
         progress = AnimationUtils.getProgress(0, 0.25, progress);
 
-        ctx.setFillStyle(CssColor.make("rgba(255,255,255, 1)"));
+        ctx.setFillStyle(Colors.FEATURE_REGION_BACKGROUND_COLOR);
         double aux = FeatureCanvasProperties.Y_OFFSET + (CoveredFeatureRegion.BOXES_HEIGHT / 2) * (1-progress);
         ctx.fillRect(this.areaXMin, aux, this.areaWidth, CoveredFeatureRegion.BOXES_HEIGHT * progress);
 
-        ctx.setStrokeStyle(CssColor.make("rgba(89,89,89, 1)"));
+        ctx.setStrokeStyle(Colors.FEATURE_LINE_COLOR);
         ctx.setLineWidth(SEGMENT_WIDTH);
 
         ctx.beginPath();

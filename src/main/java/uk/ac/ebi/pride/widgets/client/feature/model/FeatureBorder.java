@@ -1,16 +1,14 @@
 package uk.ac.ebi.pride.widgets.client.feature.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.feature.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.feature.utils.FeatureCanvasProperties;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class FeatureBorder implements Drawable {
-    public static final CssColor BORDER_COLOR = CssColor.make("rgba(0,0,0, 1)");
-    public static final CssColor BORDER_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
 
     private double xMin, xMax, yMin, yMax;
     private double xMinAux, xMaxAux;
@@ -41,9 +39,9 @@ public class FeatureBorder implements Drawable {
     @Override
     public void draw(Context2d ctx) {
         if(isMouseOver())
-            ctx.setStrokeStyle(BORDER_SELECTED_COLOR);
+            ctx.setStrokeStyle(Colors.FEATURE_BORDER_SELECTED_COLOR);
         else
-            ctx.setStrokeStyle(BORDER_COLOR);
+            ctx.setStrokeStyle(Colors.FEATURE_BORDER_COLOR);
 
         ctx.beginPath();
         ctx.moveTo(xMin, yMin);

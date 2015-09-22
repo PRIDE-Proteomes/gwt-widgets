@@ -5,6 +5,7 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
@@ -13,21 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static uk.ac.ebi.pride.widgets.client.common.constants.Colors.*;
+import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.*;
+import static uk.ac.ebi.pride.widgets.client.sequence.constants.Colors.*;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class Position implements DrawableLayers, Clickable {
-    public static final String AMINO_ACID_FONT = "normal 11px sans-serif";
-    public static final CssColor AMINO_ACID_COLOR = CssColor.make("rgba(0,0,0, 1)");
-    public static final CssColor AMINO_ACID_SELECTED_COLOR = CssColor.make("rgba(255,0,0, 1)");
-
-    public static final String AMINO_ACID_MODIFIED_FONT = "bold 11px sans-serif";
-    public static final CssColor AMINO_ACID_MODIFIED_COLOR = CssColor.make("rgba(204,51,0, 1)"); //#CC3300
-    public static final CssColor AMINO_ACID_MODIFIED_SELECTED_COLOR = CssColor.make("rgba(255,0,255, 1)");
-    public static final CssColor AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
-
 
     CanvasSelection canvasSelection;
 
@@ -58,7 +51,7 @@ public class Position implements DrawableLayers, Clickable {
         boolean uniquePeptide = proteinSummary.getUniquePeptidesPositions().contains(this.position);
         this.isInPeptide = isNonUniquePeptide || uniquePeptide;
         this.isPeptideVisible = true;
-        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_TO_PROTEIN_COLOR;
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
 
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
@@ -100,16 +93,16 @@ public class Position implements DrawableLayers, Clickable {
         CssColor color;
         switch (peptide.getUniqueness()){
             case 1:
-                color = UNIQUE_TO_PROTEIN_COLOR;
+                color = UNIQUE_TO_PROTEIN_CSS_COLOR;
                 break;
             case 2:
-                color = UNIQUE_TO_UP_ENTRY_COLOR;
+                color = UNIQUE_TO_UP_ENTRY_CSS_COLOR;
                 break;
             case 3:
-                color = UNIQUE_TO_GENE_COLOR;
+                color = UNIQUE_TO_GENE_CSS_COLOR;
                 break;
             default:
-                color = NON_UNIQUE_PEPTIDE_COLOR;
+                color = NON_UNIQUE_PEPTIDE_CSS_COLOR;
         }
 
         this.peptideColor = color;
@@ -117,7 +110,8 @@ public class Position implements DrawableLayers, Clickable {
 
     public void resetPeptidesFilter(){
         this.isPeptideVisible = true;
-        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_COLOR : UNIQUE_TO_PROTEIN_COLOR;
+        //TODO: This can be improved to show different colors
+        this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
     }
 
     public boolean isMouseOver(){
@@ -181,7 +175,7 @@ public class Position implements DrawableLayers, Clickable {
         if(isMouseOver()){
             Tooltip.getTooltip().show(ctx.getCanvas(), xMax, y, tooltip);
 
-            ctx.setFillStyle(HIGHLIGHT_COLOR);
+            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGTED_COLOR);
             ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
 
             ctx.setFillStyle(isModified? AMINO_ACID_MODIFIED_SELECTED_COLOR : AMINO_ACID_SELECTED_COLOR);
