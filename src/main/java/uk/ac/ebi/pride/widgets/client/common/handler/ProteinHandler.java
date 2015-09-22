@@ -11,4 +11,7 @@ public interface ProteinHandler {
     public List<ProteinModificationHandler> getModifications();
 
     public List<PeptideHandler> getPeptides();
+
+    public List<FeatureHandler> getFeatures();
+
 }

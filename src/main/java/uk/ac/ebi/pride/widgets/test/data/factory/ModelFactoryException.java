@@ -6,4 +6,7 @@ public class ModelFactoryException extends Exception {
         super(message, cause);
     }
 
+    public ModelFactoryException() {
+        super();
+    }
 }

@@ -1,35 +1,34 @@
 package uk.ac.ebi.pride.widgets.test.data.proxy;
 
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
-import uk.ac.ebi.pride.widgets.test.data.model.PrideModification;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class PrideModificationProxy implements PrideModificationHandler {
-    private PrideModification prideModification;
+    private final String type;
 
-    public PrideModificationProxy(PrideModification prideModification) {
-        this.prideModification = prideModification;
+    public PrideModificationProxy(String modificationType) {
+        type = modificationType;
     }
 
     @Override
     public int getId() {
-        return prideModification.getId();
+        return type.hashCode();
     }
 
     @Override
     public String getName() {
-        return prideModification.getName();
+        return type;
     }
 
     @Override
     public Double getDiffMono() {
-        return prideModification.getDiffMono();
+        return 0.0;
     }
 
     @Override
     public boolean isBioSignificance() {
-        return prideModification.isBioSignificance();
+        return false;
     }
 }

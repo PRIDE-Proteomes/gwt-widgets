@@ -1,0 +1,49 @@
+@provide "colors";
+
+/* These constants defines the color of the peptides in the canvas. Are extracted using the ClientBundle of GWT */
+/* Please be careful changing the names */
+
+/*Green*/
+/*@def UNIQUE_TO_PROTEIN  #238b45;*/
+/*@def UNIQUE_TO_UP_ENTRY #66c2a4;*/
+/*@def UNIQUE_TO_GENE #b2e2e2;*/
+/*@def NON_UNIQUE_PEPTIDE #ced8db;*/
+
+/*@def UNIQUE_TO_PROTEIN_DARKER  #0b2b15;*/
+/*@def UNIQUE_TO_UP_ENTRY_DARKER #417b68;*/
+/*@def UNIQUE_TO_GENE_DARKER #84a8a8;*/
+/*@def NON_UNIQUE_PEPTIDE_DARKER #a8b1b3;*/
+
+
+/*Purple*/
+/*@def UNIQUE_TO_PROTEIN  #88419d;*/
+/*@def UNIQUE_TO_UP_ENTRY #8c96c6;*/
+/*@def UNIQUE_TO_GENE #b3cde3;*/
+/*@def NON_UNIQUE_PEPTIDE #ced8db;*/
+
+/*@def UNIQUE_TO_PROTEIN_DARKER  #5b187c;*/
+/*@def UNIQUE_TO_UP_ENTRY_DARKER #4a4e63;*/
+/*@def UNIQUE_TO_GENE_DARKER #8699ae;*/
+/*@def NON_UNIQUE_PEPTIDE_DARKER #9ba4a7;*/
+
+/*Mixed*/
+/*@def UNIQUE_TO_PROTEIN  #5e3c99;*/
+/*@def UNIQUE_TO_UP_ENTRY #b2abd2;*/
+/*@def UNIQUE_TO_GENE #fdb863;*/
+/*@def NON_UNIQUE_PEPTIDE #ced8db;*/
+
+/*@def UNIQUE_TO_PROTEIN_DARKER  #5b187c;*/
+/*@def UNIQUE_TO_UP_ENTRY_DARKER #958eaa;*/
+/*@def UNIQUE_TO_GENE_DARKER #805323;*/
+/*@def NON_UNIQUE_PEPTIDE_DARKER #6a7071;*/
+
+
+@def UNIQUE_TO_PROTEIN  #a779ab;
+@def UNIQUE_TO_UP_ENTRY #e8a9db;
+@def UNIQUE_TO_GENE #bfe5ff;
+@def NON_UNIQUE_PEPTIDE #b3c4c8;
+
+@def UNIQUE_TO_PROTEIN_DARKER  #3c1c35;
+@def UNIQUE_TO_UP_ENTRY_DARKER  #865c7a;
+@def UNIQUE_TO_GENE_DARKER #225ea8;
+@def NON_UNIQUE_PEPTIDE_DARKER #53535d;

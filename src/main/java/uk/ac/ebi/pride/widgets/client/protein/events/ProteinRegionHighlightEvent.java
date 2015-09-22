@@ -3,7 +3,13 @@ package uk.ac.ebi.pride.widgets.client.protein.events;
 import com.google.gwt.event.shared.GwtEvent;
 import uk.ac.ebi.pride.widgets.client.protein.handlers.ProteinRegionHighlightedHandler;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ProteinRegionHighlightEvent extends GwtEvent<ProteinRegionHighlightedHandler> {
+
+    Logger logger = Logger.getLogger(ProteinRegionHighlightEvent.class.getName());
+
     public static Type<ProteinRegionHighlightedHandler> TYPE = new Type<ProteinRegionHighlightedHandler>();
 
     private Integer start;
@@ -35,6 +41,7 @@ public class ProteinRegionHighlightEvent extends GwtEvent<ProteinRegionHighlight
 
     @Override
     protected void dispatch(ProteinRegionHighlightedHandler handler) {
+        logger.log(Level.INFO, "ProteinRegionHighlighted has been dispatch");
         handler.onProteinRegionHighlighted(this);
     }
 

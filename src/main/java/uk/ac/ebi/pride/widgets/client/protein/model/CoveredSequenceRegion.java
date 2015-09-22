@@ -2,16 +2,16 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
+import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.protein.events.ProteinRegionSelectionEvent;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
-import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.protein.utils.ColorFactory;
 
 public class CoveredSequenceRegion extends SequenceRegion implements Clickable, Animated {
     public static final int BOXES_HEIGHT = 50;
-    public static final CssColor REGION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, .5)");
 
     private boolean fireEvent = false;
     private double xMin, xMax, width;
@@ -54,7 +54,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
         }
 
         if(isMouseOver() || selected){
-            ctx.setFillStyle(REGION_SELECTED_COLOR);
+            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGTED_COLOR);
             ctx.fillRect(xMin, yMin, width, height);
         }
     }

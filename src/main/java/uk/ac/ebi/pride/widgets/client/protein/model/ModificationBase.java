@@ -5,14 +5,15 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
+import uk.ac.ebi.pride.widgets.client.common.utils.AnimationUtils;
+import uk.ac.ebi.pride.widgets.client.common.utils.Tooltip;
+import uk.ac.ebi.pride.widgets.client.protein.constants.Colors;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEvent;
 import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
-import uk.ac.ebi.pride.widgets.client.protein.interfaces.Animated;
 import uk.ac.ebi.pride.widgets.client.protein.interfaces.Clickable;
-import uk.ac.ebi.pride.widgets.client.protein.utils.AnimationUtils;
 import uk.ac.ebi.pride.widgets.client.protein.utils.CanvasProperties;
-import uk.ac.ebi.pride.widgets.client.protein.utils.Tooltip;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +25,6 @@ import java.util.Map;
 public class ModificationBase implements Drawable, Clickable, Animated {
     public static final int MODIFICATION_HEIGHT = 6;
     public static final int MODIFICATION_TICK_WIDTH = 8;
-    public static final CssColor MODIFICATION_COLOR = CssColor.make("rgba(255,0,0, 1)");
-    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
-    public static final CssColor MODIFICATION_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
     protected HandlerManager handlerManager;
     private int position;
@@ -108,7 +106,7 @@ public class ModificationBase implements Drawable, Clickable, Animated {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(MODIFICATION_COLOR);
+        ctx.setFillStyle(Colors.MODIFICATION_COLOR);
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
@@ -117,7 +115,7 @@ public class ModificationBase implements Drawable, Clickable, Animated {
         ctx.fill();
 
         if(highlighted){
-            ctx.setFillStyle(MODIFICATION_HIGHLIGHTED_COLOR);
+            ctx.setFillStyle(Colors.MODIFICATION_HIGHLIGHTED_COLOR);
             ctx.beginPath();
             ctx.moveTo(ax, ay);
             ctx.lineTo(bx, by);
@@ -128,7 +126,7 @@ public class ModificationBase implements Drawable, Clickable, Animated {
 
         boolean mouseOverAux = isMouseOver();
         if(mouseOverAux || selected){
-            ctx.setFillStyle(MODIFICATION_SELECTED_COLOR);
+            ctx.setFillStyle(Colors.MODIFICATION_SELECTED_COLOR);
             ctx.beginPath();
             ctx.moveTo(ax, ay);
             ctx.lineTo(bx, by);
@@ -174,7 +172,7 @@ public class ModificationBase implements Drawable, Clickable, Animated {
             count.put(aux.getName(), n + 1);
         }
         StringBuilder sb = new StringBuilder("<span style=\"font-weight:bold;color:");
-        sb.append(MODIFICATION_COLOR.value());
+        sb.append(Colors.MODIFICATION_COLOR.value());
         sb.append("\">MODIFICATION</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;Position: ");
         sb.append(String.valueOf(this.position));
         //sb.append("<br/>&nbsp;&nbsp;&nbsp;&nbsp;Composed of:");

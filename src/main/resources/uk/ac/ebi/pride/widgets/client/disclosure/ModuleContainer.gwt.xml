@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
   <inherits name="com.google.gwt.resources.Resources" />
-  <inherits name="uk.ac.ebi.pride.widgets.client.common.WidgetsCommon" />
   <inherits name="uk.ac.ebi.pride.widgets.client.table.Table" />
+  <inherits name="uk.ac.ebi.pride.widgets.client.common.WidgetsCommon" />
 
   <source path="client" />
   <source path="css" />

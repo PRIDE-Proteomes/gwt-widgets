@@ -9,8 +9,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.Properties;
 
 public class AppWebServlet extends HttpServlet {
+    private static final String templateUrl;
+    private static final String propertiesLocation =
+            "properties/template.properties";
+
+    static {
+        Properties props = new Properties();
+        InputStream propStream = AppWebServlet.class.getClassLoader()
+                .getResourceAsStream(propertiesLocation);
+        try {
+            props.load(propStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        templateUrl = props.getProperty("template.service.url");
+    }
 
     /**
      * Initialize the <code>AppWebServlet</code>
@@ -27,9 +44,8 @@ public class AppWebServlet extends HttpServlet {
      */
     public void doGet (HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
+        URL url = new URL(templateUrl);
 
-        URL url = new URL("http://wwwint.ebi.ac.uk/web/template-service/prod/templates/compliance/services/full");
-        //URL url = new URL("http://localhost:9595/frontier-web-service/templates/services/web.html");
         // make post mode connection
         URLConnection urlc = url.openConnection();
         urlc.setDoOutput(true);
@@ -39,21 +55,23 @@ public class AppWebServlet extends HttpServlet {
         wr.flush();
 
         // retrieve result
-        BufferedReader br1 = new BufferedReader(new InputStreamReader(urlc.getInputStream(), "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+                urlc.getInputStream(), "UTF-8"));
         StringBuilder sb = new StringBuilder();
         String line;
-        while ((line = br1.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
             sb.append(line);
             sb.append("\n");
         }
-        br1.close();
+        br.close();
         String html = sb.toString();
-        //html = html.replace("##contentHTML##", "<h1>Hello static contenct</h1>");
-        html = html.replace("##optionalBottomStuff##", getOptionalBottomStuff());
+        html = html.replace("##lastInBody##", getLastInBody());
+        response.setContentLength(html.length());
+
         response.getWriter().write(html);
     }
 
-    private String getOptionalBottomStuff(){
+    private String getLastInBody(){
         return "<!-- OPTIONAL: include this if you want history support -->\n" +
                 "    <iframe src=\"javascript:''\" id=\"__gwt_historyFrame\" tabIndex='-1'\n" +
                 "            style=\"position:absolute;width:0;height:0;border:0\"></iframe>\n" +
@@ -76,10 +94,10 @@ public class AppWebServlet extends HttpServlet {
         DataInputStream in = new DataInputStream(fstream);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String strLine;
-        //Read File Line By Line
+
         while ((strLine = br.readLine()) != null)   {
             sb.append(strLine);
         }
-        return sb.toString();
+        return URLEncoder.encode(sb.toString(), "ASCII");
     }
 }
