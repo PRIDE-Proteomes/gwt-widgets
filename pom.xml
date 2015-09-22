@@ -6,7 +6,7 @@
     <groupId>uk.ac.ebi.pride.widgets</groupId>
     <artifactId>gwt-widgets</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.5-SNAPSHOT</version>
+    <version>0.2.5</version>
     <name>PRIDE GWT Widgets</name>
 
     <properties>
@@ -244,7 +244,7 @@
         <connection>scm:git:github.com/PRIDE-Proteomes/gwt-widgets.git</connection>
         <developerConnection>scm:git:git@github.com:PRIDE-Proteomes/gwt-widgets.git</developerConnection>
         <url>https://github.com/PRIDE-Proteomes/gwt-widgets.git</url>
-        <tag>HEAD</tag>
+        <tag>gwt-widgets-0.2.5</tag>
     </scm>
 
     <distributionManagement>
