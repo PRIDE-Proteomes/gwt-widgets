@@ -16,7 +16,7 @@ public interface Protein {
     public Integer getNonUniqueCoverage();
     public void setNonUniqueCoverage(Integer nonUniqueCoverage);
 
-    public String getGene();
+    public List<String> getGenes();
     public int getTaxonID();
 
     public String getSequence();
@@ -40,7 +40,6 @@ public interface Protein {
     public void setFeatures(List<Feature> features);
 
     public int getUniquePeptideToProteinCount();
-    public int getUniquePeptideToIsoformCount();
     public int getUniquePeptideToGenePeptideCount();
     public int getNonUniquePeptidesCount();
 

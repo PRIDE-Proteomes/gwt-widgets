@@ -39,11 +39,6 @@ public class PeptideProxy implements PeptideHandler {
     }
 
     @Override
-    public Collection<String> getSharedUpEntries() {
-        return peptide.getSharedUpEntries();
-    }
-
-    @Override
     public Collection<String> getSharedGenes() {
         return peptide.getSharedGenes();
     }

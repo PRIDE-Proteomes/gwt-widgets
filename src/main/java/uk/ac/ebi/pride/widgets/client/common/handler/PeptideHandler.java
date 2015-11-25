@@ -14,8 +14,6 @@ public interface PeptideHandler {
 
     Collection<String> getSharedProteins();
 
-    Collection<String> getSharedUpEntries();
-
     Collection<String> getSharedGenes();
 
     /*

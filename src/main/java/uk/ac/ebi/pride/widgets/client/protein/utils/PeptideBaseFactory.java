@@ -28,13 +28,10 @@ public abstract class PeptideBaseFactory {
                     //TODO Try with enum
                     CssColor color;
                     switch (peptideHandler.getUniqueness()) {
-                        case 1:
+                        case 1: //UNIQUE_TO_PROTEIN
                             color = UNIQUE_TO_PROTEIN_CSS_COLOR;
                             break;
-                        case 2:
-                            color = UNIQUE_TO_UP_ENTRY_CSS_COLOR;
-                            break;
-                        case 3:
+                        case 2: //UNIQUE_TO_GENE
                             color = UNIQUE_TO_GENE_CSS_COLOR;
                             break;
                         default:
@@ -65,21 +62,11 @@ public abstract class PeptideBaseFactory {
 
         sb.append("<span style=\"color:");
         switch (peptide.getUniqueness()) {
-            case 1:
+            case 1: //UNIQUE_TO_PROTEIN
                 sb.append(UNIQUE_TO_PROTEIN_CSS_DARKER_COLOR.value());
                 sb.append("\">UNIQUE PEPTIDE TO THIS PROTEIN</span>");
                 break;
-            case 2:
-                sb.append(UNIQUE_TO_UP_ENTRY_CSS_DARKER_COLOR.value());
-                sb.append("\">UNIQUE PEPTIDE TO PROTEIN ISOFORM GROUP</span>");
-                sb.append("<br/>");
-                for (String upEntry : peptide.getSharedUpEntries()) {
-                    sb.append("&nbsp;&nbsp;&nbsp;&nbsp;<a href =\"#group=").append(upEntry).append("\">").append(upEntry).append("</a>");
-                }
-                sb.append("<br/>");
-                appendLinks(peptide, sb);
-                break;
-            case 3:
+            case 2: //UNIQUE_TO_GENE
                 sb.append(UNIQUE_TO_GENE_CSS_DARKER_COLOR.value());
                 sb.append("\">UNIQUE PEPTIDE TO PRODUCTS OF THE GENE</span>");
                 sb.append("<br/>");
@@ -108,17 +95,6 @@ public abstract class PeptideBaseFactory {
                 sb.append("<br/>");
                 for (String sharedProtein : peptide.getSharedProteins()) {
                     sb.append("&nbsp;&nbsp;&nbsp;&nbsp;<a href =\"#protein=").append(sharedProtein).append("\">").append(sharedProtein).append("</a>");
-                    sb.append("<br/>");
-                }
-            }
-        }
-
-        if (peptide.getSharedUpEntries() != null && !peptide.getSharedUpEntries().isEmpty()) {
-            if (peptide.getSharedUpEntries().size() > 1) {
-                sb.append("Shared protein isoform groups: ");
-                sb.append("<br/>");
-                for (String upEntry : peptide.getSharedUpEntries()) {
-                    sb.append("&nbsp;&nbsp;&nbsp;&nbsp;<a href =\"#group=").append(upEntry).append("\">").append(upEntry).append("</a>");
                     sb.append("<br/>");
                 }
             }

@@ -12,24 +12,20 @@ public class Colors {
     // In this way is easier to modified the colors and shared them in other GWT apps.
 
     public static final String UNIQUE_TO_PROTEIN_COLOR = Resources.INSTANCE.color().UNIQUE_TO_PROTEIN();
-    public static final String UNIQUE_TO_UP_ENTRY_COLOR = Resources.INSTANCE.color().UNIQUE_TO_UP_ENTRY();
     public static final String UNIQUE_TO_GENE_COLOR = Resources.INSTANCE.color().UNIQUE_TO_GENE();
     public static final String NON_UNIQUE_PEPTIDE_COLOR = Resources.INSTANCE.color().NON_UNIQUE_PEPTIDE();
 
     //Darker colors. They can be used for gradients (e. g. PRIDE proteomes webapp) those need to match the peptide colors.
     public static final String UNIQUE_TO_PROTEIN_DARKER_COLOR = Resources.INSTANCE.color().UNIQUE_TO_PROTEIN_DARKER();
-    public static final String UNIQUE_TO_UP_ENTRY_DARKER_COLOR  = Resources.INSTANCE.color().UNIQUE_TO_UP_ENTRY_DARKER();
     public static final String UNIQUE_TO_GENE_DARKER_COLOR  = Resources.INSTANCE.color().UNIQUE_TO_GENE_DARKER();
     public static final String NON_UNIQUE_PEPTIDE_DARKER_COLOR  = Resources.INSTANCE.color().NON_UNIQUE_PEPTIDE_DARKER();
 
     //Css colors used in the canvas
     public static final CssColor UNIQUE_TO_PROTEIN_CSS_COLOR = CssColor.make(UNIQUE_TO_PROTEIN_COLOR);
-    public static final CssColor UNIQUE_TO_UP_ENTRY_CSS_COLOR = CssColor.make(UNIQUE_TO_UP_ENTRY_COLOR);
     public static final CssColor UNIQUE_TO_GENE_CSS_COLOR = CssColor.make(UNIQUE_TO_GENE_COLOR);
     public static final CssColor NON_UNIQUE_PEPTIDE_CSS_COLOR = CssColor.make(NON_UNIQUE_PEPTIDE_COLOR);
 
     public static final CssColor UNIQUE_TO_PROTEIN_CSS_DARKER_COLOR = CssColor.make(UNIQUE_TO_PROTEIN_DARKER_COLOR);
-    public static final CssColor UNIQUE_TO_UP_ENTRY_CSS_DARKER_COLOR = CssColor.make(UNIQUE_TO_UP_ENTRY_DARKER_COLOR);
     public static final CssColor UNIQUE_TO_GENE_CSS_DARKER_COLOR = CssColor.make(UNIQUE_TO_GENE_DARKER_COLOR);
     public static final CssColor NON_UNIQUE_PEPTIDE_DARKER_CSS_COLOR = CssColor.make(NON_UNIQUE_PEPTIDE_DARKER_COLOR);
 

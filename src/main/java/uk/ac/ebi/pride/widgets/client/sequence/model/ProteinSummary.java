@@ -1,9 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
-import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
-import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
-import uk.ac.ebi.pride.widgets.client.common.handler.ProteinHandler;
-import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
+import uk.ac.ebi.pride.widgets.client.common.handler.*;
 
 import java.util.*;
 
@@ -30,7 +27,7 @@ public class ProteinSummary {
         for (PeptideHandler peptideHandler : proteinHandler.getPeptides()) {
             if (peptideHandler.getSite() > 0 && peptideHandler.getEnd() <= proteinHandler.getLength()) {
                 for(int p= peptideHandler.getSite(); p<= peptideHandler.getEnd(); ++p){
-                    if(peptideHandler.getUniqueness()==1){
+                    if(peptideHandler.getUniqueness()==1){ //Uniqueness.UNIQUE_TO_PROTEIN
                         uniquePeptidesPositions.add(p);
                     }else{
                         nonUniquePeptidesPositions.add(p);

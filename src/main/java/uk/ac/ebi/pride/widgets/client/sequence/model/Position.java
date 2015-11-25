@@ -92,13 +92,10 @@ public class Position implements DrawableLayers, Clickable {
         this.isPeptideVisible = (this.position>=peptide.getSite() && this.position<=peptide.getEnd());
         CssColor color;
         switch (peptide.getUniqueness()){
-            case 1:
+            case 1: //UNIQUE_TO_PROTEIN
                 color = UNIQUE_TO_PROTEIN_CSS_COLOR;
                 break;
-            case 2:
-                color = UNIQUE_TO_UP_ENTRY_CSS_COLOR;
-                break;
-            case 3:
+            case 2: //UNIQUE_TO_GENE
                 color = UNIQUE_TO_GENE_CSS_COLOR;
                 break;
             default:

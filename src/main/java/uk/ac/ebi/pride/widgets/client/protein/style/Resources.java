@@ -18,12 +18,10 @@ public interface Resources extends ClientBundle {
     interface PeptideColors extends CssResource {
 
         String UNIQUE_TO_PROTEIN();
-        String UNIQUE_TO_UP_ENTRY();
         String UNIQUE_TO_GENE ();
         String NON_UNIQUE_PEPTIDE();
 
         String UNIQUE_TO_PROTEIN_DARKER();
-        String UNIQUE_TO_UP_ENTRY_DARKER();
         String UNIQUE_TO_GENE_DARKER();
         String NON_UNIQUE_PEPTIDE_DARKER();
     }

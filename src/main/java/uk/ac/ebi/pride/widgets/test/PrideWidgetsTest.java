@@ -160,7 +160,7 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
             String jsonProtein =
                     "{" +
                             "\"accession\":\"A0A067XG54\"," +
-                            "\"gene\":\"ENSG00000101974\"," +
+                            "\"genes\":[\"ENSG00000101974\"]," +
                             "\"taxonID\":9606," +
                             "\"sequence\":" +
                             "\"MFRRSLNRFCAGEEKRVGTRTVFVGNHPVSETEAYIAQRFCDNRIVSSKYTLWNFLPKNLFEQFRRIANFYFLIIFLVQVTVDTPTSPVTSGLP" +
@@ -189,9 +189,8 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
                             "\"assays\":[\"31019\",\"31725\",\"31726\"]," +
                             "\"clusters\":[\"5374848\"]," +
                             "\"position\":207," +
-                            "\"uniqueness\":3," +
+                            "\"uniqueness\":2," +
                             "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
-                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
                             "\"sharedGenes\":[\"ENSG00000101974\"]" +
                             "}," +
                             "{" +
@@ -204,9 +203,8 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
                             "\"assays\":[\"31527\",\"31575\",\"31576\",\"31711\",\"31712\",\"33078\"]," +
                             "\"clusters\":[\"5423750\",\"5425311\"]," +
                             "\"position\":690," +
-                            "\"uniqueness\":3," +
+                            "\"uniqueness\":2," +
                             "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49\",\"Q8NB49-3\",\"Q8NB49-4\",\"A0A067XG54\"]," +
-                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
                             "\"sharedGenes\":[\"ENSG00000101974\"]" +
                             "}," +
                             "{" +
@@ -219,9 +217,8 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
                             "\"assays\":[\"31535\",\"31536\",\"31583\",\"31584\",\"31749\",\"31750\"]," +
                             "\"clusters\":[\"6121352\"]," +
                             "\"position\":652," +
-                            "\"uniqueness\":3," +
+                            "\"uniqueness\":2," +
                             "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
-                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
                             "\"sharedGenes\":[\"ENSG00000101974\"]" +
                             "}," +
                             "{" +
@@ -234,9 +231,8 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
                             "\"assays\":[\"9039\",\"31881\",\"31882\"]," +
                             "\"clusters\":[\"1789046\",\"1798829\"]," +
                             "\"position\":238," +
-                            "\"uniqueness\":3," +
+                            "\"uniqueness\":2," +
                             "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
-                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
                             "\"sharedGenes\":[\"ENSG00000101974\"]" +
                             "}," +
                             "{" +
@@ -250,9 +246,8 @@ public class PrideWidgetsTest implements EntryPoint, RequestCallback, SingleSele
                             "\"assays\":[\"21768\",\"31731\",\"31732\",\"31862\"]," +
                             "\"clusters\":[\"2442144\",\"2442504\"]," +
                             "\"position\":50," +
-                            "\"uniqueness\":3," +
+                            "\"uniqueness\":2," +
                             "\"sharedProteins\":[\"Q8NB49-2\",\"Q8NB49-3\",\"Q8NB49\",\"Q8NB49-4\",\"A0A067XG54\"]," +
-                            "\"sharedUpEntries\":[\"Q8NB49\",\"A0A067XG54\"]," +
                             "\"sharedGenes\":[\"ENSG00000101974\"]}" +
                             "]," +
                             "\"features\":[" +
