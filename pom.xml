@@ -9,6 +9,14 @@
     <version>0.2.6-SNAPSHOT</version>
     <name>PRIDE GWT Widgets</name>
 
+    <!--scm git config-->
+    <scm>
+        <connection>scm:git:github.com/PRIDE-Proteomes/gwt-widgets.git</connection>
+        <developerConnection>scm:git:git@github.com:PRIDE-Proteomes/gwt-widgets.git</developerConnection>
+        <url>https://github.com/PRIDE-Proteomes/gwt-widgets.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <!-- Convenience property to set the GWT version -->
         <!-- <gwtVersion>2.4.0</gwtVersion> -->
@@ -239,13 +247,6 @@
         </repository>
     </repositories>
 
-    <!--scm git config-->
-    <scm>
-        <connection>scm:git:github.com/PRIDE-Proteomes/gwt-widgets.git</connection>
-        <developerConnection>scm:git:git@github.com:PRIDE-Proteomes/gwt-widgets.git</developerConnection>
-        <url>https://github.com/PRIDE-Proteomes/gwt-widgets.git</url>
-        <tag>HEAD</tag>
-    </scm>
 
     <distributionManagement>
         <!-- EBI repo -->

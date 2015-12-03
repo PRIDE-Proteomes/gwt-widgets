@@ -4,43 +4,43 @@ import java.util.List;
 
 public interface Protein {
 
-    public String getAccession();
-    public void setAccession(String accession);
+    String getAccession();
+    void setAccession(String accession);
 
-    public Integer getLength();
-    public void setLength(Integer length);
+    Integer getLength();
+    void setLength(Integer length);
 
-    public Integer getUniqueCoverage();
-    public void setUniqueCoverage(Integer uniqueCoverage);
+    Integer getUniqueCoverage();
+    void setUniqueCoverage(Integer uniqueCoverage);
 
-    public Integer getNonUniqueCoverage();
-    public void setNonUniqueCoverage(Integer nonUniqueCoverage);
+    Integer getNonUniqueCoverage();
+    void setNonUniqueCoverage(Integer nonUniqueCoverage);
 
-    public List<String> getGenes();
-    public int getTaxonID();
+    List<String> getGenes();
+    int getTaxonID();
 
-    public String getSequence();
-    public void setSequence(String sequence);
+    String getSequence();
+    void setSequence(String sequence);
 
-    public String getDescription();
+    String getDescription();
 
-    public List<ModifiedLocation> getModifiedLocations();
-    public void setModifiedLocations(List<ModifiedLocation> modifiedLocations);
+    List<ModifiedLocation> getModifiedLocations();
+    void setModifiedLocations(List<ModifiedLocation> modifiedLocations);
 
-    public List<String> getTissues();
+    List<String> getTissues();
 
-    public String getCoverage();
+    String getCoverage();
 
-    public List<List<Integer>> getRegions();
+    List<List<Integer>> getRegions();
 
-    public List<PeptideMatch> getPeptides();
-    public void setPeptides(List<Peptide> peptides);
+    List<PeptideMatch> getPeptides();
+    void setPeptides(List<Peptide> peptides);
 
-    public List<Feature> getFeatures();
-    public void setFeatures(List<Feature> features);
+    List<Feature> getFeatures();
+    void setFeatures(List<Feature> features);
 
-    public int getUniquePeptideToProteinCount();
-    public int getUniquePeptideToGenePeptideCount();
-    public int getNonUniquePeptidesCount();
+    int getUniquePeptideToProteinCount();
+    int getUniquePeptideToGenePeptideCount();
+    int getNonUniquePeptidesCount();
 
 }

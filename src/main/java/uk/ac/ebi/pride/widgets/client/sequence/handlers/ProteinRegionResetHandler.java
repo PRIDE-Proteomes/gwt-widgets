@@ -5,6 +5,6 @@ import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionResetEvent;
 
 public interface ProteinRegionResetHandler extends EventHandler {
 
-    public void onProteinRegionReset(ProteinRegionResetEvent e);
+    void onProteinRegionReset(ProteinRegionResetEvent e);
 
 }

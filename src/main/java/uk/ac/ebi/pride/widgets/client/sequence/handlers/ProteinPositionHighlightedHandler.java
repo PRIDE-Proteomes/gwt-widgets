@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinPositionHighlighted
  */
 public interface ProteinPositionHighlightedHandler extends EventHandler {
 
-    public void onProteinPositionHighlighted(ProteinPositionHighlightedEvent e);
+    void onProteinPositionHighlighted(ProteinPositionHighlightedEvent e);
 
 }

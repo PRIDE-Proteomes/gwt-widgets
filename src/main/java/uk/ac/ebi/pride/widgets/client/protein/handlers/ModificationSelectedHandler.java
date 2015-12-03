@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.protein.events.ModificationSelectedEvent;
  */
 public interface ModificationSelectedHandler extends EventHandler {
 
-    public void onModificationSelected(ModificationSelectedEvent e);
+    void onModificationSelected(ModificationSelectedEvent e);
 
 }

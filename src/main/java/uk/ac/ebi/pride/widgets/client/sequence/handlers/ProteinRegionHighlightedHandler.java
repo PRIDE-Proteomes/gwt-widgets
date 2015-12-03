@@ -5,6 +5,6 @@ import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionHighlightedEv
 
 public interface ProteinRegionHighlightedHandler extends EventHandler {
 
-    public void onProteinRegionHighlighted(ProteinRegionHighlightedEvent e);
+    void onProteinRegionHighlighted(ProteinRegionHighlightedEvent e);
 
 }

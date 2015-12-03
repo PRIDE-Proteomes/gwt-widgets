@@ -9,6 +9,6 @@ import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionHighlightEvent
  */
 public interface FeatureRegionHighlightedHandler extends EventHandler {
 
-    public void onFeatureRegionHighlighted(FeatureRegionHighlightEvent e);
+    void onFeatureRegionHighlighted(FeatureRegionHighlightEvent e);
 
 }

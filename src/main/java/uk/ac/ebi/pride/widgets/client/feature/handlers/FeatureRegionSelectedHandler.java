@@ -5,5 +5,5 @@ import uk.ac.ebi.pride.widgets.client.feature.events.FeatureRegionSelectionEvent
 
 public interface FeatureRegionSelectedHandler extends EventHandler {
 
-    public void onFeatureRegionSelectionChanged(FeatureRegionSelectionEvent e);
+    void onFeatureRegionSelectionChanged(FeatureRegionSelectionEvent e);
 }

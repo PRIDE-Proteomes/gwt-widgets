@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PeptideSpectrumMatchList {
 
-    public List<PeptideSpectrumMatch> getPsms();
-    public void setPsms(List<PeptideSpectrumMatch> psms);
+    List<PeptideSpectrumMatch> getPsms();
+    void setPsms(List<PeptideSpectrumMatch> psms);
 
 }

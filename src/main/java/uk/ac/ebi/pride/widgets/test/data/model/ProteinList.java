@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ProteinList {
 
-    public List<Protein> getProteins();
-    public void setProteins(List<Protein> proteins);
+    List<Protein> getProteins();
+    void setProteins(List<Protein> proteins);
 
 }

@@ -5,5 +5,5 @@ package uk.ac.ebi.pride.widgets.client.common.interfaces;
  */
 public interface Redrawable {
 
-    public void redraw();
+    void redraw();
 }

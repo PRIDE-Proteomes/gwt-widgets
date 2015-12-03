@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.protein.events.ModificationHighlightedEven
  */
 public interface ModificationHighlightedHandler extends EventHandler {
 
-    public void onModificationHighlighted(ModificationHighlightedEvent e);
+    void onModificationHighlighted(ModificationHighlightedEvent e);
 
 }

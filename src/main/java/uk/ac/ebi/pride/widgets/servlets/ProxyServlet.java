@@ -177,7 +177,7 @@ public class ProxyServlet extends AbstractProxyServlet {
     @SuppressWarnings("unchecked")
 	private void handleStandardPost(PostMethod postMethodProxyRequest, HttpServletRequest httpServletRequest) {
 		// Get the client POST data as a Map
-		Map<String, String[]> mapPostParameters = (Map<String,String[]>) httpServletRequest.getParameterMap();
+		Map<String, String[]> mapPostParameters = httpServletRequest.getParameterMap();
 		// Create a List to hold the NameValuePairs to be passed to the PostMethod
 		List<NameValuePair> listNameValuePairs = new ArrayList<NameValuePair>();
 		// Iterate the parameter names

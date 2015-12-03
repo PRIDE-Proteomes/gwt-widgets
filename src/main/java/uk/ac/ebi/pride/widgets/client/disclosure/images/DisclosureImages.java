@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface DisclosureImages extends ClientBundle {
 
-    public DisclosureImages INSTANCE = GWT.create(DisclosureImages.class);
+    DisclosureImages INSTANCE = GWT.create(DisclosureImages.class);
 
     @Source("disclosure_minus.png")
     ImageResource getCollapseImage();

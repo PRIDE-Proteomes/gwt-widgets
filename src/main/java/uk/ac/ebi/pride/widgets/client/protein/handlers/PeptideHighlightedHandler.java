@@ -8,5 +8,5 @@ import uk.ac.ebi.pride.widgets.client.protein.events.PeptideHighlightedEvent;
  */
 public interface PeptideHighlightedHandler extends EventHandler {
 
-    public void onPeptideHighlightChanged(PeptideHighlightedEvent e);
+    void onPeptideHighlightChanged(PeptideHighlightedEvent e);
 }

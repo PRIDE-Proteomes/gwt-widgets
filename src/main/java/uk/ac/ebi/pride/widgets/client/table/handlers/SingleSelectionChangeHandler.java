@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.table.events.SingleSelectionChangeEvent;
  */
 public interface SingleSelectionChangeHandler<T> extends EventHandler {
 
-    public void onSelectionChange(SingleSelectionChangeEvent<T> event);
+    void onSelectionChange(SingleSelectionChangeEvent<T> event);
 
 }

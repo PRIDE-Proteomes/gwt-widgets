@@ -5,6 +5,6 @@ package uk.ac.ebi.pride.widgets.client.protein.interfaces;
  */
 public interface Clickable extends uk.ac.ebi.pride.widgets.client.common.interfaces.Clickable {
 
-    public void fireSelectionEvent();
+    void fireSelectionEvent();
 
 }

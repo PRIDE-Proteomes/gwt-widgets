@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface ProteinHandler {
 
-    public Integer getLength();
+    Integer getLength();
 
-    public String getSequence();
+    String getSequence();
 
-    public List<ProteinModificationHandler> getModifications();
+    List<ProteinModificationHandler> getModifications();
 
-    public List<PeptideHandler> getPeptides();
+    List<PeptideHandler> getPeptides();
 
-    public List<FeatureHandler> getFeatures();
+    List<FeatureHandler> getFeatures();
 
 }

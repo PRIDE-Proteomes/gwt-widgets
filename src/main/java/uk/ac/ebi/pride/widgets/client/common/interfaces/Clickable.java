@@ -2,11 +2,11 @@ package uk.ac.ebi.pride.widgets.client.common.interfaces;
 
 public interface Clickable {
 
-    public void onMouseUp(int mouseX, int mouseY);
+    void onMouseUp(int mouseX, int mouseY);
 
-    public void onMouseDown(int mouseX, int mouseY);
+    void onMouseDown(int mouseX, int mouseY);
 
-    public boolean isMouseOver();
+    boolean isMouseOver();
 
-    public boolean isSelected();
+    boolean isSelected();
 }

@@ -55,13 +55,13 @@ public enum FeatureType {
     private String color;
 
 
-    private FeatureType(String description, String displayName, String color) {
+    FeatureType(String description, String displayName, String color) {
         this.description = description;
         this.displayName = displayName;
         this.color = color;
     }
 
-    private FeatureType(String description, String color) {
+    FeatureType(String description, String color) {
         this(description, description, color);
     }
 

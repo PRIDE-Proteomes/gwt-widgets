@@ -7,5 +7,5 @@ import com.google.gwt.canvas.dom.client.Context2d;
  */
 public interface Animated {
 
-    public void drawAnimation(Context2d ctx, double progress);
+    void drawAnimation(Context2d ctx, double progress);
 }

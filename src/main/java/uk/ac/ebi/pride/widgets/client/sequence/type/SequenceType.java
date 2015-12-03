@@ -5,10 +5,10 @@ package uk.ac.ebi.pride.widgets.client.sequence.type;
  */
 public interface SequenceType {
 
-    public String getTypeName();
-    public boolean isPositionShown();
-    public String getFormattedPositionNumber(int number);
-    public int getNumOfBlocks();
-    public int getBlockSize();
+    String getTypeName();
+    boolean isPositionShown();
+    String getFormattedPositionNumber(int number);
+    int getNumOfBlocks();
+    int getBlockSize();
 
 }

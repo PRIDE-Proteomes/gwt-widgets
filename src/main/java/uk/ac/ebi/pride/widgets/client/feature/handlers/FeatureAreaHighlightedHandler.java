@@ -5,6 +5,6 @@ import uk.ac.ebi.pride.widgets.client.feature.events.FeatureAreaHighlightEvent;
 
 public interface FeatureAreaHighlightedHandler extends EventHandler {
 
-    public void onFeatureAreaHighlighted(FeatureAreaHighlightEvent e);
+    void onFeatureAreaHighlighted(FeatureAreaHighlightEvent e);
 
 }

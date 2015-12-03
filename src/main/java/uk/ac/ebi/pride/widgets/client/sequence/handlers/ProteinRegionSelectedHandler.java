@@ -5,5 +5,5 @@ import uk.ac.ebi.pride.widgets.client.sequence.events.ProteinRegionSelectionEven
 
 public interface ProteinRegionSelectedHandler extends EventHandler {
 
-    public void onProteinRegionSelectionChanged(ProteinRegionSelectionEvent e);
+    void onProteinRegionSelectionChanged(ProteinRegionSelectionEvent e);
 }

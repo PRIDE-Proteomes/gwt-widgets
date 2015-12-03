@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.protein.events.ProteinAreaSelectedEvent;
  */
 public interface ProteinAreaSelectedHandler extends EventHandler {
 
-    public void onProteinAreaSelected(ProteinAreaSelectedEvent e);
+    void onProteinAreaSelected(ProteinAreaSelectedEvent e);
 
 }

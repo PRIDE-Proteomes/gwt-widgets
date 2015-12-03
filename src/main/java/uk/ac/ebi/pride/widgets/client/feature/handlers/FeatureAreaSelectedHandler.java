@@ -8,6 +8,6 @@ import uk.ac.ebi.pride.widgets.client.feature.events.FeatureAreaSelectionEvent;
  */
 public interface FeatureAreaSelectedHandler extends EventHandler {
 
-    public void onFeatureAreaSelected(FeatureAreaSelectionEvent e);
+    void onFeatureAreaSelected(FeatureAreaSelectionEvent e);
 
 }
