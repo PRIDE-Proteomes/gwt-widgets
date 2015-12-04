@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
     <!-- POM file generated with GWT webAppCreator -->
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>uk.ac.ebi.pride.widgets</groupId>
     <artifactId>gwt-widgets</artifactId>
     <packaging>jar</packaging>
     <version>0.2.6-SNAPSHOT</version>
+
     <name>PRIDE GWT Widgets</name>
+
+    <developers>
+        <developer>
+            <name>PRIDE Developer</name>
+            <id>pride-support@ebi.ac.uk</id>
+            <email>pride-support@ebi.ac.uk</email>
+            <organization>Proteomics Services Team, EMBL - European Bioinformatics Institute</organization>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>EMBL - European Bioinformatics Institute</name>
+        <url>http://www.ebi.ac.uk</url>
+    </organization>
 
     <!--scm git config-->
     <scm>
@@ -19,10 +42,8 @@
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <!-- <gwtVersion>2.4.0</gwtVersion> -->
-        <!--<gwtVersion>2.5.0</gwtVersion>-->
         <gwtVersion>2.7.0</gwtVersion>
-        <!--<gwtVersion>2.5.0-rc2</gwtVersion>-->
+
         <!-- This GWT  app needs at least java 1.6 -->
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
