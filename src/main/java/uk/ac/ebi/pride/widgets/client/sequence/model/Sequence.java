@@ -17,7 +17,7 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.PEPTIDE_HIGHLIGTED_COLOR;
+import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.PEPTIDE_HIGHLIGHTED_COLOR;
 
 
 /**
@@ -119,7 +119,7 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void drawSelection(Context2d ctx) {
-        ctx.setFillStyle(PEPTIDE_HIGHLIGTED_COLOR);
+        ctx.setFillStyle(PEPTIDE_HIGHLIGHTED_COLOR);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawSelection(ctx);
             for (PositionIdentification positionIdentification : sequenceLine.getPositionIdentificationList()) {

@@ -11,6 +11,7 @@ public class Colors {
     // We load the colors in a String from a css using the ClientBundle.
     // In this way is easier to modified the colors and shared them in other GWT apps.
 
+    //Peptides colors
     public static final String UNIQUE_TO_PROTEIN_COLOR = Resources.INSTANCE.color().UNIQUE_TO_PROTEIN();
     public static final String UNIQUE_TO_GENE_COLOR = Resources.INSTANCE.color().UNIQUE_TO_GENE();
     public static final String NON_UNIQUE_PEPTIDE_COLOR = Resources.INSTANCE.color().NON_UNIQUE_PEPTIDE();
@@ -29,12 +30,19 @@ public class Colors {
     public static final CssColor UNIQUE_TO_GENE_CSS_DARKER_COLOR = CssColor.make(UNIQUE_TO_GENE_DARKER_COLOR);
     public static final CssColor NON_UNIQUE_PEPTIDE_DARKER_CSS_COLOR = CssColor.make(NON_UNIQUE_PEPTIDE_DARKER_COLOR);
 
-    public static final CssColor PEPTIDE_HIGHLIGTED_COLOR = CssColor.make("rgb(255,255,0)");
-    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgb(255,255,0)");
+//    public static final CssColor PEPTIDE_HIGHLIGHTED_COLOR = CssColor.make("rgb(255,255,0)");
+//    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgb(255,255,0)");
+//
+//    public static final CssColor MODIFICATION_COLOR = CssColor.make("rgba(255,0,0, 1)");
+//    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
+//    public static final CssColor MODIFICATION_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
+
+    public static final CssColor PEPTIDE_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
+    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
 
     public static final CssColor MODIFICATION_COLOR = CssColor.make("rgba(255,0,0, 1)");
-    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 0.75)");
     public static final CssColor MODIFICATION_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
+    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
 
     public static final CssColor PROTEIN_AREA_NON_SELECTED_COLOR = CssColor.make("rgba(255,255,255, 0.75)");
     public static final CssColor PROTEIN_AREA_SELECTED_COLOR = CssColor.make("rgb(255,255,0)");

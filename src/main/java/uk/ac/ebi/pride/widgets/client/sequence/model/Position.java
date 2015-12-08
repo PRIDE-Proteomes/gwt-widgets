@@ -172,7 +172,7 @@ public class Position implements DrawableLayers, Clickable {
         if(isMouseOver()){
             Tooltip.getTooltip().show(ctx.getCanvas(), xMax, y, tooltip);
 
-            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGTED_COLOR);
+            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGHTED_COLOR);
             ctx.fillRect(x, yMin, CanvasProperties.POSITION_WIDTH, CanvasProperties.POSITION_HEIGHT);
 
             ctx.setFillStyle(isModified? AMINO_ACID_MODIFIED_SELECTED_COLOR : AMINO_ACID_SELECTED_COLOR);
