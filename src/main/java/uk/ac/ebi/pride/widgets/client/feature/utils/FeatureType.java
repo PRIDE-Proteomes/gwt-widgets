@@ -8,11 +8,11 @@ import com.google.gwt.canvas.dom.client.CssColor;
  */
 public enum FeatureType {
 
-    //TODO Move the color to a css a load them using clientBundle
+    //TODO Move the color to a css an load them using clientBundle
 
     INIT_MET("initiator methionine", "Initiator methionine", "rgba(204,121,67,0.7)"),
     SIGNAL("signal peptide", "Signal peptide", "rgba(4,90,141,0.7)"), //Dark blue
-    PROPEP("propeptide", "Propeptide", "rgba(240,228,66,0.7)"),
+    PROPEP("propeptide", "Propeptide", "rgba(255,60,255,0.7)"),
     TRANSIT("transit peptide", "Transit peptide", "rgba(213,94,0,0.7)"),
     CHAIN("chain", "Chain", "rgba(215,48,39,0.7)"),
     PEPTIDE("peptide", "Peptide", "rgba(244,109,67,0.7)"),

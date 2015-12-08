@@ -38,11 +38,11 @@ public class Colors {
 //    public static final CssColor MODIFICATION_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
     public static final CssColor PEPTIDE_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
-    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
+    public static final CssColor PEPTIDE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 1)");
 
     public static final CssColor MODIFICATION_COLOR = CssColor.make("rgba(255,0,0, 1)");
     public static final CssColor MODIFICATION_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
-    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 1)");
+    public static final CssColor MODIFICATION_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 1)");
 
     public static final CssColor PROTEIN_AREA_NON_SELECTED_COLOR = CssColor.make("rgba(255,255,255, 0.75)");
     public static final CssColor PROTEIN_AREA_SELECTED_COLOR = CssColor.make("rgb(255,255,0)");

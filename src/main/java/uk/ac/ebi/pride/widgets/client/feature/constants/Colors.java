@@ -8,8 +8,8 @@ import com.google.gwt.canvas.dom.client.CssColor;
  */
 public class Colors {
 
-    public static final CssColor FEATURE_SELECTED_COLOR = CssColor.make("rgba(0,0,255, 0.75)");
-    public static final CssColor FEATURE_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,0,255, 0.75)");
+    public static final CssColor FEATURE_SELECTED_COLOR = CssColor.make("rgba(255,255,0, 1)");
+    public static final CssColor FEATURE_HIGHLIGHTED_COLOR = CssColor.make("rgba(0,255,0, 1)");
 
     public static final CssColor FEATURE_AREA_NON_SELECTED_COLOR = CssColor.make("rgba(255,255,255, 0.75)");
     public static final CssColor FEATURE_AREA_SELECTED_COLOR = CssColor.make("rgb(255,255,0)");
@@ -26,6 +26,6 @@ public class Colors {
     public static final CssColor FEATURE_CANVAS_BORDER_BG_COLOR = CssColor.make("rgba(255,255,255, 1)");
     public static final CssColor FEATURE_CANVAS_NO_BORDER_BG_COLOR = CssColor.make("rgba(248,248,248, 1)");
 
-    public static final CssColor MOUSE_OVER_FEATURE_COLOR =  CssColor.make("rgba(0,255,0, 0.75)");
+    public static final CssColor MOUSE_OVER_FEATURE_COLOR = CssColor.make("rgba(0,255,0, 0.75)");
 
 }
