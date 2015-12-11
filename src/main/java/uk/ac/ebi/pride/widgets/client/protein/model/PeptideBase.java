@@ -30,18 +30,19 @@ public class PeptideBase implements Drawable, Clickable, Animated {
 
     protected HandlerManager handlerManager;
     private PeptideHandler peptide;
+
     private Tooltip tooltip;
     private String tooltipMessage;
     private CssColor peptideColor;
     private boolean selected = false;
     private boolean fireEvent = false;
+    private boolean highlighted = false;
     private boolean mouseOver = false;
     private double xMin, xMax, width;
     private int yMin, yMax;
 
     // mouse positions relative to canvas
     int mouseX, mouseY;
-
 
     public PeptideBase(CanvasProperties canvasProperties, PeptideHandler peptide, int y, String tooltipMessage, CssColor peptideColor, int site, int peptideLength) {
         this.peptide = peptide;
@@ -71,6 +72,10 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         this.selected = selected;
     }
 
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
     public boolean isMouseOver() {
         //Only for "mouse over" detection, xMin and xMax do no take into account the border :)
         return (xMin <= mouseX && xMax >= mouseX) && (mouseY <= yMax && mouseY >= yMin);
@@ -93,6 +98,22 @@ public class PeptideBase implements Drawable, Clickable, Animated {
     }
 
     @Override
+    public void onMouseUp(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
+        this.selected = this.fireEvent = isMouseOver();
+    }
+
+    @Override
+    public void onMouseDown(int mouseX, int mouseY) {
+        setMousePosition(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
+    }
+
+    @Override
     public void setMousePosition(int mouseX, int mouseY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
@@ -101,18 +122,24 @@ public class PeptideBase implements Drawable, Clickable, Animated {
     @Override
     public void draw(Context2d ctx) {
         ctx.setFillStyle(this.peptideColor);
-        ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
+
+        if(highlighted){
+            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGHTED_COLOR);
+        }
 
         boolean mouseOverAux = isMouseOver();
         if (mouseOverAux || selected) {
             ctx.setFillStyle(Colors.PEPTIDE_SELECTED_COLOR);
-            ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
 
             //Ensures only fired the first time the mouse enters in a non highlighted peptide
             if (!selected && !this.mouseOver) {
                 handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
             }
         }
+
+        ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
+
+
         if (mouseOverAux) {
             this.tooltip.show(ctx.getCanvas(), (int) xMax, yMax, tooltipMessage);
             this.tooltip.setAnimationEnabled(false);
@@ -136,23 +163,6 @@ public class PeptideBase implements Drawable, Clickable, Animated {
         ctx.setFillStyle(this.peptideColor);
         ctx.fillRect(xMin, auxY, this.width, PEPTIDE_HEIGHT);
     }
-
-    @Override
-    public void onMouseUp(int mouseX, int mouseY) {
-        setMousePosition(mouseX, mouseY);
-        this.selected = this.fireEvent = isMouseOver();
-    }
-
-    @Override
-    public void onMouseDown(int mouseX, int mouseY) {
-        setMousePosition(mouseX, mouseY);
-    }
-
-    @Override
-    public boolean isSelected() {
-        return this.selected;
-    }
-
 
     @Override
     public void fireSelectionEvent() {

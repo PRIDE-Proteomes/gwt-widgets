@@ -107,6 +107,21 @@ public class ModificationBase implements Drawable, Clickable, Animated {
     @Override
     public void draw(Context2d ctx) {
         ctx.setFillStyle(Colors.MODIFICATION_COLOR);
+
+        if(highlighted){
+            ctx.setFillStyle(Colors.MODIFICATION_HIGHLIGHTED_COLOR);
+        }
+
+        boolean mouseOverAux = isMouseOver();
+        if(mouseOverAux || selected){
+            ctx.setFillStyle(Colors.MODIFICATION_SELECTED_COLOR);
+
+            //Ensures only fired the first time the mouse enters in a non highlighted modification
+            if(!this.mouseOver && !selected){
+                handlerManager.fireEvent(new ModificationHighlightedEvent(this.position, this.modifications));
+            }
+        }
+
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
@@ -114,31 +129,6 @@ public class ModificationBase implements Drawable, Clickable, Animated {
         ctx.closePath();
         ctx.fill();
 
-        if(highlighted){
-            ctx.setFillStyle(Colors.MODIFICATION_HIGHLIGHTED_COLOR);
-            ctx.beginPath();
-            ctx.moveTo(ax, ay);
-            ctx.lineTo(bx, by);
-            ctx.lineTo(cx, cy);
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        boolean mouseOverAux = isMouseOver();
-        if(mouseOverAux || selected){
-            ctx.setFillStyle(Colors.MODIFICATION_SELECTED_COLOR);
-            ctx.beginPath();
-            ctx.moveTo(ax, ay);
-            ctx.lineTo(bx, by);
-            ctx.lineTo(cx, cy);
-            ctx.closePath();
-            ctx.fill();
-
-            //Ensures only fired the first time the mouse enters in a non highlighted modification
-            if(!this.mouseOver && !selected){
-                handlerManager.fireEvent(new ModificationHighlightedEvent(this.position, this.modifications));
-            }
-        }
         if(mouseOverAux){
             this.tooltip.show(ctx.getCanvas(), (int) cx, (int) cy, tooltipMessage);
             this.tooltip.setAnimationEnabled(false);

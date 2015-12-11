@@ -33,22 +33,21 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class ProteinViewer extends Composite implements HasHandlers {
 
-    HandlerManager handlerManager;
-
-    private boolean proteinBorder;
-
     //timer refresh rate, in milliseconds
-    static final int REFRESH_RATE = 25;
-
-    final Timer timer;
-    private Canvas canvas;
-    private boolean objectSelected = false;
-
-    private boolean animated = true;
-    // The duration of the animation.
+    private static final int REFRESH_RATE = 25;
     private static int ANIMATION_DURATION = 2000;
 
+    private HandlerManager handlerManager;
+    private Canvas canvas;
+
+    private final Timer timer;
+    private boolean proteinBorder;
+    private boolean objectSelected = false;
+    private boolean animated = true;
+    // The duration of the animation.
+
     private ProteinAreaSelection proteinSelection;
+
     @SuppressWarnings("Convert2Diamond")
     private List<Drawable> components = new LinkedList<Drawable>();
 
@@ -88,7 +87,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         }
     }
 
-    public  ProteinViewer(ProteinHandler proteinHandler) {
+    public ProteinViewer(ProteinHandler proteinHandler) {
         this(proteinHandler, false, false);
     }
 
@@ -124,7 +123,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
             components.add(sr);
         }
 
-        if(proteinBorder){
+        if (proteinBorder) {
             components.add(new ProteinBorder(canvasProperties));
             /*Not gonna be used in a near future, so no longer maintained
             List<CoveredSequenceBorder> borders = RegionUtils.getCoveredSequenceBorder(sequenceRegions, canvasProperties);
@@ -143,12 +142,12 @@ public class ProteinViewer extends Composite implements HasHandlers {
         int heightAux = height;
         for (PeptideBase peptideBase : PeptideBaseFactory.getPeptideBaseList(canvasProperties)) {
             int yMax = peptideBase.getYMax();
-            if(yMax > heightAux) heightAux = yMax;
+            if (yMax > heightAux) heightAux = yMax;
             peptideBase.setHandlerManager(this.handlerManager);
             components.add(peptideBase);
         }
 
-        if(heightAux > height){
+        if (heightAux > height) {
             heightAux += CanvasProperties.Y_OFFSET;
             this.canvas.getCanvasElement().setHeight(heightAux);
             this.canvas.setPixelSize(width, heightAux);
@@ -171,7 +170,11 @@ public class ProteinViewer extends Composite implements HasHandlers {
         initWidget(canvas);
     }
 
-    public HandlerRegistration addProteinRegionHighlightedHandler(ProteinRegionHighlightedHandler handler){
+    public static void setAnimationDuration(int animationDuration) {
+        ProteinViewer.ANIMATION_DURATION = animationDuration;
+    }
+
+    public HandlerRegistration addProteinRegionHighlightedHandler(ProteinRegionHighlightedHandler handler) {
         return handlerManager.addHandler(ProteinRegionHighlightEvent.TYPE, handler);
     }
 
@@ -179,27 +182,27 @@ public class ProteinViewer extends Composite implements HasHandlers {
         return handlerManager.addHandler(ProteinRegionSelectionEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addPeptideHighlightedHandler(PeptideHighlightedHandler handler){
+    public HandlerRegistration addPeptideHighlightedHandler(PeptideHighlightedHandler handler) {
         return handlerManager.addHandler(PeptideHighlightedEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addPeptideSelectedHandler(PeptideSelectedHandler handler){
+    public HandlerRegistration addPeptideSelectedHandler(PeptideSelectedHandler handler) {
         return handlerManager.addHandler(PeptideSelectedEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addModificationHighlightedHandler(ModificationHighlightedHandler handler){
+    public HandlerRegistration addModificationHighlightedHandler(ModificationHighlightedHandler handler) {
         return handlerManager.addHandler(ModificationHighlightedEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addModificationSelectedHandler(ModificationSelectedHandler handler){
+    public HandlerRegistration addModificationSelectedHandler(ModificationSelectedHandler handler) {
         return handlerManager.addHandler(ModificationSelectedEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addProteinAreaSelectedHandler(ProteinAreaSelectedHandler handler){
+    public HandlerRegistration addProteinAreaSelectedHandler(ProteinAreaSelectedHandler handler) {
         return handlerManager.addHandler(ProteinAreaSelectedEvent.TYPE, handler);
     }
 
-    public HandlerRegistration addProteinAreaHighlightedHandler(ProteinAreaHighlightedHandler handler){
+    public HandlerRegistration addProteinAreaHighlightedHandler(ProteinAreaHighlightedHandler handler) {
         return handlerManager.addHandler(ProteinAreaHighlightEvent.TYPE, handler);
     }
 
@@ -207,16 +210,12 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.animated = animated;
     }
 
-    public static void setAnimationDuration(int animationDuration) {
-        ProteinViewer.ANIMATION_DURATION = animationDuration;
-    }
-
-    public void setSelectedArea(int start, int end){
+    public void setSelectedArea(int start, int end) {
         this.proteinSelection.setSelectedArea(start, end);
         //Next lines set selected an covered region that fits with the selected area
         int length = end - start + 1;
         for (Drawable component : components) {
-            if(component instanceof CoveredSequenceRegion){
+            if (component instanceof CoveredSequenceRegion) {
                 CoveredSequenceRegion csr = (CoveredSequenceRegion) component;
                 csr.setSelected((csr.getStart() == start && csr.getLength() == length));
                 /*if (csr.getStart() == start && csr.getLength() == length){
@@ -229,16 +228,16 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void resetSelectedArea(){
+    public void resetSelectedArea() {
         this.proteinSelection.resetSelectedArea();
         doUpdate(true);
     }
 
-    public void setSelectedPeptide(PeptideHandler peptide){
+    public void setSelectedPeptide(PeptideHandler peptide) {
         int site = peptide.getSite();
         String sequence = peptide.getSequence();
         for (Drawable component : components) {
-            if(component instanceof PeptideBase){
+            if (component instanceof PeptideBase) {
                 PeptideBase peptideBase = (PeptideBase) component;
                 PeptideHandler peptideAux = peptideBase.getPeptide();
                 peptideBase.setSelected(peptideAux.getSite().equals(site) && peptideAux.getSequence().equals(sequence));
@@ -247,9 +246,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void resetPeptideSelection(){
+    public void resetPeptideSelection() {
         for (Drawable component : components) {
-            if(component instanceof PeptideBase){
+            if (component instanceof PeptideBase) {
                 PeptideBase peptideBase = (PeptideBase) component;
                 peptideBase.setSelected(false);
             }
@@ -257,21 +256,21 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void selectModificationsBetween(int start, int end){
+    public void selectModificationsBetween(int start, int end) {
         for (Drawable component : components) {
-            if(component instanceof ModificationBase){
+            if (component instanceof ModificationBase) {
                 ModificationBase modificationBase = (ModificationBase) component;
                 int pos = modificationBase.getPosition();
-                boolean inRange = (pos>=start && pos<=end);
+                boolean inRange = (pos >= start && pos <= end);
                 modificationBase.setSelected(inRange);
             }
         }
         doUpdate(true);
     }
 
-    public void resetModificationSelection(){
+    public void resetModificationSelection() {
         for (Drawable component : components) {
-            if(component instanceof ModificationBase){
+            if (component instanceof ModificationBase) {
                 ModificationBase modificationBase = (ModificationBase) component;
                 modificationBase.setSelected(false);
             }
@@ -279,9 +278,9 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void setHighlightedModifications(PrideModificationHandler modification){
+    public void setHighlightedModifications(PrideModificationHandler modification) {
         for (Drawable component : components) {
-            if(component instanceof ModificationBase){
+            if (component instanceof ModificationBase) {
                 ModificationBase modificationBase = (ModificationBase) component;
                 modificationBase.setHighlighted(modificationBase.containModification(modification));
             }
@@ -289,9 +288,21 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void resetModificationHighlight(){
+    public void highlightModificationsBetween(int start, int end) {
         for (Drawable component : components) {
-            if(component instanceof ModificationBase){
+            if (component instanceof ModificationBase) {
+                ModificationBase modificationBase = (ModificationBase) component;
+                int pos = modificationBase.getPosition();
+                boolean inRange = (pos >= start && pos <= end);
+                modificationBase.setHighlighted(inRange);
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetModificationHighlight() {
+        for (Drawable component : components) {
+            if (component instanceof ModificationBase) {
                 ModificationBase modificationBase = (ModificationBase) component;
                 modificationBase.setHighlighted(false);
             }
@@ -299,9 +310,57 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    public void resetRegionSelection(){
+    public void setHighlightedPeptides(List<PeptideHandler> peptides) {
+        PeptideHandler peptideAux;
+        PeptideBase peptideBase;
+        String sequence;
+        int site;
+
         for (Drawable component : components) {
-            if(component instanceof SequenceRegion){
+            if (component instanceof PeptideBase) {
+                for (PeptideHandler peptide : peptides) {
+                    site = peptide.getSite();
+                    sequence = peptide.getSequence();
+                    peptideBase = (PeptideBase) component;
+                    peptideAux = peptideBase.getPeptide();
+                    if (peptideAux.getSite().equals(site) && peptideAux.getSequence().equals(sequence)) {
+                        peptideBase.setHighlighted(true);
+                    }
+                }
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void setHighlightedPeptide(PeptideHandler peptide) {
+        for (Drawable component : components) {
+            if (component instanceof PeptideBase) {
+                PeptideBase peptideBase = (PeptideBase) component;
+                PeptideHandler peptideAux = peptideBase.getPeptide();
+                String sequence = peptide.getSequence();
+                int site = peptide.getSite();
+                if (peptideAux.getSite().equals(site) && peptideAux.getSequence().equals(sequence)) {
+                    peptideBase.setHighlighted(true);
+                }
+
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetPeptideHighlight() {
+        for (Drawable component : components) {
+            if (component instanceof PeptideBase) {
+                PeptideBase peptideBase = (PeptideBase) component;
+                peptideBase.setHighlighted(false);
+            }
+        }
+        doUpdate(true);
+    }
+
+    public void resetRegionSelection() {
+        for (Drawable component : components) {
+            if (component instanceof SequenceRegion) {
                 SequenceRegion region = (SequenceRegion) component;
                 region.setSelected(false);
             }
@@ -309,13 +368,13 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
     }
 
-    protected void doUpdate(){
+    protected void doUpdate() {
         doUpdate(false);
     }
 
-    protected synchronized void doUpdate(boolean forceDraw){
-        if(!forceDraw){
-            if(mouseX==lastMouseX && mouseY==lastMouseY) return;
+    protected synchronized void doUpdate(boolean forceDraw) {
+        if (!forceDraw) {
+            if (mouseX == lastMouseX && mouseY == lastMouseY) return;
         }
         lastMouseX = mouseX;
         lastMouseY = mouseY;
@@ -331,7 +390,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         boolean objectHover = this.proteinSelection.isMouseOver();
         for (Drawable component : this.components) {
             component.setMousePosition(mouseX, mouseY);
-            if(component instanceof Clickable){
+            if (component instanceof Clickable) {
                 Clickable c = (Clickable) component;
                 objectHover = objectHover || c.isMouseOver();
             }
@@ -339,17 +398,17 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.setCursorStyle(objectHover);
     }
 
-    private void setCursorStyle(boolean objectHover){
+    private void setCursorStyle(boolean objectHover) {
         Style.Cursor cursor = Style.Cursor.AUTO;
 
-        if(this.proteinSelection.isMovingSelectedRegion()){
+        if (this.proteinSelection.isMovingSelectedRegion()) {
             cursor = Style.Cursor.MOVE;
-        }else if(objectHover){
+        } else if (objectHover) {
             cursor = Style.Cursor.POINTER;
-        }else if(this.proteinSelection.isSelectionInProgress()){
-            if(this.proteinSelection.getSelectionDirection()>0){
+        } else if (this.proteinSelection.isSelectionInProgress()) {
+            if (this.proteinSelection.getSelectionDirection() > 0) {
                 cursor = Style.Cursor.E_RESIZE;
-            }else if(this.proteinSelection.getSelectionDirection()<0){
+            } else if (this.proteinSelection.getSelectionDirection() < 0) {
                 cursor = Style.Cursor.W_RESIZE;
             }
         }
@@ -357,10 +416,10 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.getElement().getStyle().setCursor(cursor);
     }
 
-    private void cleanCanvas(Context2d ctx){
-        if(this.proteinBorder){
+    private void cleanCanvas(Context2d ctx) {
+        if (this.proteinBorder) {
             ctx.setFillStyle(Colors.PROTEIN_CANVAS_BORDER_BG_COLOR);
-        }else{
+        } else {
             ctx.setFillStyle(Colors.PROTEIN_CANVAS_NO_BORDER_BG_COLOR);
         }
         int width = ctx.getCanvas().getWidth();
@@ -370,7 +429,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
     protected void draw() {
         //While the widget is animated, no other drawing action are executed
-        if(this.isMoving) return;
+        if (this.isMoving) return;
 
         Context2d ctx = canvas.getContext2d();
         this.cleanCanvas(ctx);
@@ -380,7 +439,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         for (Drawable component : this.components) {
             component.draw(ctx);
             //Is necessary to keep track of any object selected
-            if(component instanceof Clickable){
+            if (component instanceof Clickable) {
                 boolean selected = ((Clickable) component).isSelected();
                 this.objectSelected = this.objectSelected || selected;
             }
@@ -389,11 +448,11 @@ public class ProteinViewer extends Composite implements HasHandlers {
         this.proteinSelection.draw(ctx);
     }
 
-    protected void drawAnimation(double progress){
+    protected void drawAnimation(double progress) {
         Context2d ctx = canvas.getContext2d();
         this.cleanCanvas(ctx);
         for (Drawable component : this.components) {
-            if(component instanceof Animated){
+            if (component instanceof Animated) {
                 Animated a = (Animated) component;
                 a.drawAnimation(ctx, progress);
             }
@@ -405,18 +464,18 @@ public class ProteinViewer extends Composite implements HasHandlers {
         handlerManager.fireEvent(event);
     }
 
-    private void mouseLeftButtonDown(MouseDownEvent event){
+    private void mouseLeftButtonDown(MouseDownEvent event) {
         boolean objectSelected = false;
-        if(!this.proteinSelection.isSelectionInProgress()){
+        if (!this.proteinSelection.isSelectionInProgress()) {
             for (Drawable component : this.components) {
-                if(component instanceof Clickable){
+                if (component instanceof Clickable) {
                     Clickable c = (Clickable) component;
                     c.onMouseDown(this.mouseX, this.mouseY);
                     objectSelected = objectSelected || c.isMouseOver();
                 }
             }
         }
-        if(!objectSelected){
+        if (!objectSelected) {
             this.proteinSelection.onMouseDown(this.mouseX, this.mouseY);
         }
 
@@ -425,11 +484,11 @@ public class ProteinViewer extends Composite implements HasHandlers {
         event.stopPropagation();
     }
 
-    private void mouseRightButtonDown(MouseDownEvent event){
+    private void mouseRightButtonDown(MouseDownEvent event) {
         //Nothing here
     }
 
-    private void mouseLeftButtonUp(MouseUpEvent event){
+    private void mouseLeftButtonUp(MouseUpEvent event) {
         //IMPORTANT: After adding the moving the selected area, it is important to take into account that now
         boolean afterMoving = this.proteinSelection.isSelectedRegionMoved();
         //IMPORTANT: for the proteinSelection, after onMouseUp, isSelectionInProgress will be always false!
@@ -438,14 +497,14 @@ public class ProteinViewer extends Composite implements HasHandlers {
 
         //resetObjectSelection is gonna be used in case of fire the ProteinAreaSelectedEvent
         boolean resetObjectSelection;
-        if(afterMoving){
+        if (afterMoving) {
             //By default, the widget will never reset any existing selected object when moving the selected area
             resetObjectSelection = false;
-        }else{ //Only if the user has not moved the selected area
+        } else { //Only if the user has not moved the selected area
             int mouseXAux = allowSelection ? this.mouseX : -100;//Do not assign the same value to mouseXAux and mouseYAux
             int mouseYAux = allowSelection ? this.mouseY : -200;//Do not assign the same value to mouseXAux and mouseYAux
             for (Drawable component : this.components) {
-                if(component instanceof Clickable){
+                if (component instanceof Clickable) {
                     Clickable c = (Clickable) component;
                     c.onMouseUp(mouseXAux, mouseYAux);
                 }
@@ -457,17 +516,17 @@ public class ProteinViewer extends Composite implements HasHandlers {
         doUpdate(true);
 
         //If there is an object selected after doUpdate in "mouseUpHandler" means new selection
-        if(this.objectSelected && !afterMoving){
+        if (this.objectSelected && !afterMoving) {
             //Iterating is necessary in order to fire the event when all the objects has been already redrawn
             for (Drawable component : this.components) {
-                if(component instanceof Clickable){
+                if (component instanceof Clickable) {
                     Clickable c = (Clickable) component;
                     //fireSelectionEvent only fires object selected event for a new object selected
                     c.fireSelectionEvent();
                 }
             }
             //If there is NOT object selected the proteinSelection has been clicked
-        }else{
+        } else {
             //we notify if there has been a "deselection" and if the proteinSelection properties
             //System.out.println(new ProteinAreaSelectedEvent(resetObjectSelection, proteinSelection).toString());
             this.handlerManager.fireEvent(new ProteinAreaSelectedEvent(resetObjectSelection, this.proteinSelection));
@@ -476,7 +535,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
         event.stopPropagation();
     }
 
-    private void mouseRightButtonUp(MouseUpEvent event){
+    private void mouseRightButtonUp(MouseUpEvent event) {
         //Nothing here
     }
 
@@ -501,7 +560,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
                 mouseX = event.getRelativeX(canvas.getElement());
                 mouseY = event.getRelativeY(canvas.getElement());
 
-                switch (event.getNativeEvent().getButton()){
+                switch (event.getNativeEvent().getButton()) {
                     case NativeEvent.BUTTON_LEFT:
                         mouseLeftButtonDown(event);
                         break;
@@ -520,7 +579,7 @@ public class ProteinViewer extends Composite implements HasHandlers {
                 mouseX = event.getRelativeX(canvas.getElement());
                 mouseY = event.getRelativeY(canvas.getElement());
 
-                switch (event.getNativeEvent().getButton()){
+                switch (event.getNativeEvent().getButton()) {
                     case NativeEvent.BUTTON_LEFT:
                         mouseLeftButtonUp(event);
                         break;

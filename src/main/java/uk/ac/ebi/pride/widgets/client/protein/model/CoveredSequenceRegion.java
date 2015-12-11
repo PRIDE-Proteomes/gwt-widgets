@@ -54,7 +54,7 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
         }
 
         if(isMouseOver() || selected){
-            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGTED_COLOR);
+            ctx.setFillStyle(Colors.PEPTIDE_SELECTED_COLOR);
             ctx.fillRect(xMin, yMin, width, height);
         }
     }
