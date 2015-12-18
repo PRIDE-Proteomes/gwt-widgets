@@ -15,5 +15,7 @@ public interface DrawableLayers extends Drawable {
 
     void drawModification(Context2d ctx, PrideModificationHandler prideModification);
 
+    void drawModification(Context2d ctx, int modPosition);
+
     void drawPosition(Context2d ctx);
 }

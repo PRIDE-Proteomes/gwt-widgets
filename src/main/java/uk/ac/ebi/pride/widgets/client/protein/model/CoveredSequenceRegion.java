@@ -49,14 +49,15 @@ public class CoveredSequenceRegion extends SequenceRegion implements Clickable, 
         ctx.setFillStyle(regionColor);
         ctx.fillRect(xMin, yMin, width, height);
 
-        if(isMouseOver()){
+        if(isMouseOver()){ //Highlighted
             showRegionTooltip(ctx);
+            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGHTED_COLOR);
         }
 
-        if(isMouseOver() || selected){
+        if(selected){
             ctx.setFillStyle(Colors.PEPTIDE_SELECTED_COLOR);
-            ctx.fillRect(xMin, yMin, width, height);
         }
+        ctx.fillRect(xMin, yMin, width, height);
     }
 
     @Override

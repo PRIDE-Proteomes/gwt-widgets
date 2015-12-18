@@ -17,7 +17,7 @@ import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasSelection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.PEPTIDE_HIGHLIGHTED_COLOR;
+import static uk.ac.ebi.pride.widgets.client.protein.constants.Colors.PEPTIDE_SELECTED_COLOR;
 
 
 /**
@@ -85,6 +85,12 @@ public class Sequence implements DrawableLayers, Clickable {
         }
     }
 
+    public void setHighlightedPeptide(PeptideHandler peptide){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setHighlightedPeptide(peptide);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.resetPeptidesFilter();
@@ -119,7 +125,7 @@ public class Sequence implements DrawableLayers, Clickable {
 
     @Override
     public void drawSelection(Context2d ctx) {
-        ctx.setFillStyle(PEPTIDE_HIGHLIGHTED_COLOR);
+        ctx.setFillStyle(PEPTIDE_SELECTED_COLOR);
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.drawSelection(ctx);
             for (PositionIdentification positionIdentification : sequenceLine.getPositionIdentificationList()) {
@@ -137,6 +143,17 @@ public class Sequence implements DrawableLayers, Clickable {
             sequenceLine.drawModification(ctx, prideModification);
         }
     }
+
+    @Override
+    public void drawModification(Context2d ctx, int modPosition) {
+        ctx.setFillStyle(Colors.AMINO_ACID_MODIFIED_COLOR);
+        ctx.setFont(Colors.AMINO_ACID_MODIFIED_FONT);
+        ctx.setTextAlign(Context2d.TextAlign.CENTER);
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.drawModification(ctx, modPosition);
+        }
+    }
+
 
     @Override
     public void drawPosition(Context2d ctx) {

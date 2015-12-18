@@ -31,6 +31,8 @@ public class Position implements DrawableLayers, Clickable {
     private CssColor peptideColor;
     private boolean isNonUniquePeptide;
     private boolean isModified;
+    private boolean isPeptideHighlighted;
+
     private List<PrideModificationHandler> prideModifications;
 
     private String tooltip;
@@ -52,7 +54,7 @@ public class Position implements DrawableLayers, Clickable {
         this.isInPeptide = isNonUniquePeptide || uniquePeptide;
         this.isPeptideVisible = true;
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
-
+        this.isPeptideHighlighted = false;
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
 
@@ -105,8 +107,16 @@ public class Position implements DrawableLayers, Clickable {
         this.peptideColor = color;
     }
 
+    public void setHighlightedPeptide(PeptideHandler peptide){
+        this.isPeptideHighlighted = (this.position>=peptide.getSite() && this.position<=peptide.getEnd());
+        if(isPeptideHighlighted){
+            this.peptideColor = PEPTIDE_HIGHLIGHTED_COLOR;
+        }
+    }
+
     public void resetPeptidesFilter(){
         this.isPeptideVisible = true;
+        this.isPeptideHighlighted = false;
         //TODO: This can be improved to show different colors
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
     }
@@ -162,8 +172,21 @@ public class Position implements DrawableLayers, Clickable {
                 }
             }
             ctx.fillText(this.aminoAcid, xText, yText);
+        }
+    }
 
-
+    @Override
+    public void drawModification(Context2d ctx, int position) {
+        if(isModified){
+            if(this.position==position){
+                    ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
+                    ctx.beginPath();
+                    ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
+            }
+            ctx.fillText(this.aminoAcid, xText, yText);
         }
     }
 

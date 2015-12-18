@@ -55,6 +55,11 @@ public class PositionIdentification implements DrawableLayers {
     }
 
     @Override
+    public void drawModification(Context2d ctx, int modPosition) {
+        //Nothing here
+    }
+
+    @Override
     public void drawPosition(Context2d ctx) {
         //Nothing here
     }

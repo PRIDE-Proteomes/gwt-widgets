@@ -27,6 +27,8 @@ import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.Tooltip;
 
+import java.util.List;
+
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
@@ -134,6 +136,10 @@ public class SequenceViewer extends Composite implements HasHandlers {
         this.drawModification(prideModification);
     }
 
+    public void highlightModification(int modPosition) {
+        this.drawModification(modPosition);
+    }
+
     public void resetModification(){
         this.drawModification(null);
     }
@@ -161,6 +167,29 @@ public class SequenceViewer extends Composite implements HasHandlers {
     public void resetVisiblePeptides(){
         this.sequence.resetPeptidesFilter();
         drawPeptides();
+    }
+
+    public void setHighlightedPeptide(PeptideHandler peptide){
+
+        if (peptide.getSite() > 0 && peptide.getEnd() <= this.sequence.getSequenceLength()) {
+            this.sequence.setHighlightedPeptide(peptide);
+            drawPeptides();
+        }
+    }
+
+    public void setHighlightedPeptides(List<PeptideHandler> peptides) {
+
+        this.sequence.resetPeptidesFilter();
+
+        for (PeptideHandler peptide : peptides) {
+            if (peptide.getSite() > 0 && peptide.getEnd() <= this.sequence.getSequenceLength()) {
+                this.sequence.setHighlightedPeptide(peptide);
+            } // else: ignore this peptide, as it is outside the protein sequence scope
+        }
+
+
+        drawPeptides();
+
     }
 
     protected void doUpdate(){
@@ -264,6 +293,14 @@ public class SequenceViewer extends Composite implements HasHandlers {
         ctx.clearRect(0, 0, this.width, this.height);
         //Draw all the modifications
         sequence.drawModification(ctx, prideModification);
+    }
+
+    protected void drawModification(int modPosition){
+        Context2d ctx = this.modificationCanvas.getContext2d();
+        //Clean the canvas
+        ctx.clearRect(0, 0, this.width, this.height);
+        //Draw all the modifications
+        sequence.drawModification(ctx, modPosition);
     }
 
     protected void drawPosition() {
