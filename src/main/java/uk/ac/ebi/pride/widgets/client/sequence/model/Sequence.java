@@ -91,6 +91,24 @@ public class Sequence implements DrawableLayers, Clickable {
         }
     }
 
+    public void setHighlightedModification(PrideModificationHandler modification, int regionStart, int regionEnd){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setHighlightedModification(modification, regionStart, regionEnd);
+        }
+    }
+
+    public void setHighlightedModification(PrideModificationHandler modification){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setHighlightedModification(modification);
+        }
+    }
+
+    public void setHighlightedModification(int modPosition){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setHighlightedModification(modPosition);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.resetPeptidesFilter();
@@ -135,22 +153,12 @@ public class Sequence implements DrawableLayers, Clickable {
     }
 
     @Override
-    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
+    public void drawModifications(Context2d ctx) {
         ctx.setFillStyle(Colors.AMINO_ACID_MODIFIED_COLOR);
         ctx.setFont(Colors.AMINO_ACID_MODIFIED_FONT);
         ctx.setTextAlign(Context2d.TextAlign.CENTER);
         for (SequenceLine sequenceLine : sequenceLineList) {
-            sequenceLine.drawModification(ctx, prideModification);
-        }
-    }
-
-    @Override
-    public void drawModification(Context2d ctx, int modPosition) {
-        ctx.setFillStyle(Colors.AMINO_ACID_MODIFIED_COLOR);
-        ctx.setFont(Colors.AMINO_ACID_MODIFIED_FONT);
-        ctx.setTextAlign(Context2d.TextAlign.CENTER);
-        for (SequenceLine sequenceLine : sequenceLineList) {
-            sequenceLine.drawModification(ctx, modPosition);
+            sequenceLine.drawModifications(ctx);
         }
     }
 

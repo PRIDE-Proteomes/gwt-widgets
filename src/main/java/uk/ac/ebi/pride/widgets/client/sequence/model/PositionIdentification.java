@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.sequence.type.SequenceType;
 import uk.ac.ebi.pride.widgets.client.sequence.utils.CanvasProperties;
 
@@ -50,12 +49,7 @@ public class PositionIdentification implements DrawableLayers {
     }
 
     @Override
-    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
-        //Nothing here
-    }
-
-    @Override
-    public void drawModification(Context2d ctx, int modPosition) {
+    public void drawModifications(Context2d ctx) {
         //Nothing here
     }
 

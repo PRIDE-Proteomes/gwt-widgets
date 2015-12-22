@@ -36,6 +36,23 @@ public class PositionBlock implements DrawableLayers, Clickable {
         }
     }
 
+    public void setHighlightedModification(PrideModificationHandler modification, int regionStart, int regionEnd){
+        for (Position position : positionList) {
+            position.setHighlightedModification(modification, regionStart, regionEnd);
+        }
+    }
+
+    public void setHighlightedModification(PrideModificationHandler modification){
+        for (Position position : positionList) {
+            position.setHighlightedModification(modification);
+        }
+    }
+    public void setHighlightedModification(int modPosition){
+        for (Position position : positionList) {
+            position.setHighlightedModification(modPosition);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (Position position : positionList) {
             position.resetPeptidesFilter();
@@ -71,16 +88,9 @@ public class PositionBlock implements DrawableLayers, Clickable {
     }
 
     @Override
-    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
+    public void drawModifications(Context2d ctx) {
         for (Position position : positionList) {
-            position.drawModification(ctx, prideModification);
-        }
-    }
-
-    @Override
-    public void drawModification(Context2d ctx, int modPosition) {
-        for (Position position : positionList) {
-            position.drawModification(ctx, modPosition);
+            position.drawModifications(ctx);
         }
     }
 

@@ -31,6 +31,7 @@ public class Position implements DrawableLayers, Clickable {
     private CssColor peptideColor;
     private boolean isNonUniquePeptide;
     private boolean isModified;
+    private boolean isModificationHighlighted;
     private boolean isPeptideHighlighted;
 
     private List<PrideModificationHandler> prideModifications;
@@ -55,6 +56,7 @@ public class Position implements DrawableLayers, Clickable {
         this.isPeptideVisible = true;
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
         this.isPeptideHighlighted = false;
+        this.isModificationHighlighted = false;
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
 
@@ -114,9 +116,40 @@ public class Position implements DrawableLayers, Clickable {
         }
     }
 
+    public void setHighlightedModification(PrideModificationHandler prideModification) {
+        if (isModified) {
+            if (prideModification != null) {
+                boolean modificationMatches = false;
+                int i = 0;
+                while (i < prideModifications.size() && !modificationMatches) {
+                    PrideModificationHandler modification = prideModifications.get(i++);
+                    modificationMatches = (modificationMatches | (modification.getId() == prideModification.getId()));
+                }
+                if (modificationMatches) {
+                    isModificationHighlighted = true;
+                }
+            }
+        }
+    }
+
+    public void setHighlightedModification(int position) {
+        if (isModified) {
+            if (this.position == position) {
+                isModificationHighlighted = true;
+            }
+        }
+    }
+
+    public void setHighlightedModification(PrideModificationHandler prideModification, int regionStart, int regionEnd) {
+        if (this.position >= regionStart && this.position <= regionEnd) {
+            setHighlightedModification(prideModification);
+        }
+    }
+
     public void resetPeptidesFilter(){
         this.isPeptideVisible = true;
         this.isPeptideHighlighted = false;
+        this.isModificationHighlighted = false;
         //TODO: This can be improved to show different colors
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
     }
@@ -153,42 +186,37 @@ public class Position implements DrawableLayers, Clickable {
     }
 
     @Override
-    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
+    public void drawModifications(Context2d ctx) {
         if(isModified){
-            if(prideModification!=null){
-                boolean modificationMatches = false;
-                int i=0;
-                while(i<prideModifications.size() && !modificationMatches){
-                    PrideModificationHandler modification = prideModifications.get(i++);
-                    modificationMatches = ( modificationMatches | ( modification.getId() == prideModification.getId() ) );
-                }
-                if(modificationMatches){
-                    ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
-                    ctx.beginPath();
-                    ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
-                }
+            if(isModificationHighlighted){
+                ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
+                ctx.beginPath();
+                ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
+                ctx.closePath();
+                ctx.fill();
+                ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
             }
             ctx.fillText(this.aminoAcid, xText, yText);
         }
     }
 
-    @Override
-    public void drawModification(Context2d ctx, int position) {
-        if(isModified){
-            if(this.position==position){
-                    ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
-                    ctx.beginPath();
-                    ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
-            }
-            ctx.fillText(this.aminoAcid, xText, yText);
-        }
-    }
+//    if(isModified){
+//        if(prideModification!=null){
+//            boolean modificationMatches = false;
+//            int i=0;
+//            while(i<prideModifications.size() && !modificationMatches){
+//                PrideModificationHandler modification = prideModifications.get(i++);
+//                modificationMatches = ( modificationMatches | ( modification.getId() == prideModification.getId() ) );
+//            }
+//            if(modificationMatches){
+//                ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
+//                ctx.beginPath();
+//                ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
+//                ctx.closePath();
+//                ctx.fill();
+//                ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
+//            }
+//        }
 
     @Override
     public void drawPosition(Context2d ctx) {

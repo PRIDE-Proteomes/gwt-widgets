@@ -81,7 +81,7 @@ public class SequenceViewer extends Composite implements HasHandlers {
         this.setMousePosition(mouseX, mouseY);
         this.drawPeptides();
         this.draw();
-        this.drawModification(null);
+        this.drawModifications();
 
         initHandlers();
 
@@ -133,15 +133,41 @@ public class SequenceViewer extends Composite implements HasHandlers {
     }
 
     public void filterModification(PrideModificationHandler prideModification){
-        this.drawModification(prideModification);
+        this.sequence.setHighlightedModification(prideModification);
+        drawModifications();
+    }
+
+    public void highlightModificationBeetween(PrideModificationHandler prideModification, int start, int end) {
+        this.sequence.setHighlightedModification(prideModification, start, end);
+        drawModifications();
     }
 
     public void highlightModification(int modPosition) {
-        this.drawModification(modPosition);
+        this.sequence.setHighlightedModification(modPosition);
+        drawModifications();
+    }
+
+    public void setHighlightedModifications(List<PrideModificationHandler> modifications, List<PeptideHandler> peptides) {
+
+        this.resetModification();
+
+        for (PrideModificationHandler modification : modifications) {
+            for (PeptideHandler peptide : peptides) {
+                int startRegion = peptide.getSite();
+                int endRegion = peptide.getEnd();
+
+                //FIX: Only the last one is highlighted
+                this.sequence.setHighlightedModification(modification, startRegion, endRegion);
+            }
+        }
+
+        drawModifications();
+
     }
 
     public void resetModification(){
-        this.drawModification(null);
+        this.sequence.resetPeptidesFilter();
+        drawModifications();
     }
 
     public void showPeptides(){
@@ -287,20 +313,12 @@ public class SequenceViewer extends Composite implements HasHandlers {
         sequence.drawSelection(ctx);
     }
 
-    protected void drawModification(PrideModificationHandler prideModification){
+    protected void drawModifications(){
         Context2d ctx = this.modificationCanvas.getContext2d();
         //Clean the canvas
         ctx.clearRect(0, 0, this.width, this.height);
         //Draw all the modifications
-        sequence.drawModification(ctx, prideModification);
-    }
-
-    protected void drawModification(int modPosition){
-        Context2d ctx = this.modificationCanvas.getContext2d();
-        //Clean the canvas
-        ctx.clearRect(0, 0, this.width, this.height);
-        //Draw all the modifications
-        sequence.drawModification(ctx, modPosition);
+        sequence.drawModifications(ctx);
     }
 
     protected void drawPosition() {

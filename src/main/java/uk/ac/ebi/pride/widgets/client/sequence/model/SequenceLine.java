@@ -66,6 +66,24 @@ public class SequenceLine implements DrawableLayers, Clickable {
         }
     }
 
+    public void setHighlightedModification(PrideModificationHandler modification, int regionStart, int regionEnd){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.setHighlightedModification(modification, regionStart, regionEnd);
+        }
+    }
+
+    public void setHighlightedModification(PrideModificationHandler modification){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.setHighlightedModification(modification);
+        }
+    }
+
+    public void setHighlightedModification(int modPosition){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.setHighlightedModification(modPosition);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (PositionBlock positionBlock : positionBlockList) {
             positionBlock.resetPeptidesFilter();
@@ -107,16 +125,9 @@ public class SequenceLine implements DrawableLayers, Clickable {
     }
 
     @Override
-    public void drawModification(Context2d ctx, PrideModificationHandler prideModification) {
+    public void drawModifications(Context2d ctx) {
         for (PositionBlock positionBlock : positionBlockList) {
-            positionBlock.drawModification(ctx, prideModification);
-        }
-    }
-
-    @Override
-    public void drawModification(Context2d ctx, int modPosition) {
-        for (PositionBlock positionBlock : positionBlockList) {
-            positionBlock.drawModification(ctx, modPosition);
+            positionBlock.drawModifications(ctx);
         }
     }
 

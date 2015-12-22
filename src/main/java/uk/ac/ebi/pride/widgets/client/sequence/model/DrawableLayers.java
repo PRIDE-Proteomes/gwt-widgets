@@ -1,7 +1,6 @@
 package uk.ac.ebi.pride.widgets.client.sequence.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.interfaces.Drawable;
 
 /**
@@ -13,9 +12,7 @@ public interface DrawableLayers extends Drawable {
 
     void drawSelection(Context2d ctx);
 
-    void drawModification(Context2d ctx, PrideModificationHandler prideModification);
-
-    void drawModification(Context2d ctx, int modPosition);
+    void drawModifications(Context2d ctx);
 
     void drawPosition(Context2d ctx);
 }
