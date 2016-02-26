@@ -109,6 +109,12 @@ public class Sequence implements DrawableLayers, Clickable {
         }
     }
 
+    public void setSelectedModification(int modPosition){
+        for (SequenceLine sequenceLine : sequenceLineList) {
+            sequenceLine.setSelectedModification(modPosition);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (SequenceLine sequenceLine : sequenceLineList) {
             sequenceLine.resetPeptidesFilter();

@@ -147,6 +147,35 @@ public class SequenceViewer extends Composite implements HasHandlers {
         drawModifications();
     }
 
+    public void setHighlightedModifications(List<Integer> modPositions) {
+
+        this.resetModification();
+
+        for (Integer modPosition : modPositions) {
+            //FIX: Only the last one is highlighted
+            this.sequence.setHighlightedModification(modPosition);
+        }
+
+        drawModifications();
+
+    }
+
+    public void setSelectedModifications(List<Integer> modPositions) {
+
+        this.resetModification();
+        this.resetSelection();
+
+        for (Integer modPosition : modPositions) {
+            //FIX: Only the last one is highlighted
+            this.sequence.setSelectedModification(modPosition);
+            this.sequence.selectRegion(modPosition, modPosition);
+        }
+
+        drawModifications();
+        drawSelection();
+
+    }
+
     public void setHighlightedModifications(List<PrideModificationHandler> modifications, List<PeptideHandler> peptides) {
 
         this.resetModification();

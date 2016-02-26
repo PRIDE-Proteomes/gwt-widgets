@@ -32,6 +32,7 @@ public class Position implements DrawableLayers, Clickable {
     private boolean isNonUniquePeptide;
     private boolean isModified;
     private boolean isModificationHighlighted;
+    private boolean isModificationSelected;
     private boolean isPeptideHighlighted;
 
     private List<PrideModificationHandler> prideModifications;
@@ -57,6 +58,7 @@ public class Position implements DrawableLayers, Clickable {
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
         this.isPeptideHighlighted = false;
         this.isModificationHighlighted = false;
+        this.isModificationSelected = false;
         this.isModified = proteinSummary.getModificationPositions().contains(this.position);
         this.prideModifications = proteinSummary.getPrideModifications(this.position);
 
@@ -140,6 +142,14 @@ public class Position implements DrawableLayers, Clickable {
         }
     }
 
+    public void setSelectedModification(int position) {
+        if (isModified) {
+            if (this.position == position) {
+                isModificationSelected = true;
+            }
+        }
+    }
+
     public void setHighlightedModification(PrideModificationHandler prideModification, int regionStart, int regionEnd) {
         if (this.position >= regionStart && this.position <= regionEnd) {
             setHighlightedModification(prideModification);
@@ -150,6 +160,8 @@ public class Position implements DrawableLayers, Clickable {
         this.isPeptideVisible = true;
         this.isPeptideHighlighted = false;
         this.isModificationHighlighted = false;
+        this.isModificationSelected = false;
+
         //TODO: This can be improved to show different colors
         this.peptideColor = isNonUniquePeptide ? NON_UNIQUE_PEPTIDE_CSS_COLOR : UNIQUE_TO_PROTEIN_CSS_COLOR;
     }
@@ -190,6 +202,14 @@ public class Position implements DrawableLayers, Clickable {
         if(isModified){
             if(isModificationHighlighted){
                 ctx.setFillStyle(AMINO_ACID_MODIFIED_HIGHLIGHTED_COLOR);
+                ctx.beginPath();
+                ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
+                ctx.closePath();
+                ctx.fill();
+                ctx.setFillStyle(AMINO_ACID_MODIFIED_COLOR);
+            }
+            if(isModificationSelected){
+                ctx.setFillStyle(AMINO_ACID_MODIFIED_SELECTED_COLOR);
                 ctx.beginPath();
                 ctx.arc(this.xText, this.yC, CanvasProperties.POSITION_HEIGHT / 2, 0, Math.PI * 2.0, true);
                 ctx.closePath();

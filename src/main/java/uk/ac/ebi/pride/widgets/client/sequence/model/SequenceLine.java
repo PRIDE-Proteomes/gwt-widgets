@@ -84,6 +84,13 @@ public class SequenceLine implements DrawableLayers, Clickable {
         }
     }
 
+    public void setSelectedModification(int modPosition){
+        for (PositionBlock positionBlock : positionBlockList) {
+            positionBlock.setSelectedModification(modPosition);
+        }
+    }
+
+
     public void resetPeptidesFilter(){
         for (PositionBlock positionBlock : positionBlockList) {
             positionBlock.resetPeptidesFilter();

@@ -53,6 +53,12 @@ public class PositionBlock implements DrawableLayers, Clickable {
         }
     }
 
+    public void setSelectedModification(int modPosition) {
+        for (Position position : positionList) {
+            position.setSelectedModification(modPosition);
+        }
+    }
+
     public void resetPeptidesFilter(){
         for (Position position : positionList) {
             position.resetPeptidesFilter();
