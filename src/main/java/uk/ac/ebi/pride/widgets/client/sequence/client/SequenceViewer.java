@@ -163,16 +163,13 @@ public class SequenceViewer extends Composite implements HasHandlers {
     public void setSelectedModifications(List<Integer> modPositions) {
 
         this.resetModification();
-        this.resetSelection();
 
         for (Integer modPosition : modPositions) {
             //FIX: Only the last one is highlighted
             this.sequence.setSelectedModification(modPosition);
-            this.sequence.selectRegion(modPosition, modPosition);
         }
 
         drawModifications();
-        drawSelection();
 
     }
 

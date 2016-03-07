@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PeptideHandler;
@@ -121,22 +122,33 @@ public class PeptideBase implements Drawable, Clickable, Animated {
 
     @Override
     public void draw(Context2d ctx) {
-        ctx.setFillStyle(this.peptideColor);
+        CssColor color = this.peptideColor;
 
         if(highlighted){
-            ctx.setFillStyle(Colors.PEPTIDE_HIGHLIGHTED_COLOR);
+            color = Colors.PEPTIDE_HIGHLIGHTED_COLOR;
+        }
+
+        if(selected){
+            color = Colors.PEPTIDE_SELECTED_COLOR;
         }
 
         boolean mouseOverAux = isMouseOver();
-        if (mouseOverAux || selected) {
-            ctx.setFillStyle(Colors.PEPTIDE_SELECTED_COLOR);
+        if (mouseOverAux) {
+            FillStrokeStyle oldstyle = ctx.getStrokeStyle();
+            double oldLineWith = ctx.getLineWidth();
+            ctx.setStrokeStyle(color);
+            ctx.setLineWidth(2);
+            ctx.strokeRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
+            ctx.setStrokeStyle(oldstyle);
+            ctx.setLineWidth(oldLineWith);
 
             //Ensures only fired the first time the mouse enters in a non highlighted peptide
-            if (!selected && !this.mouseOver) {
+            if (!this.mouseOver && !selected) {
                 handlerManager.fireEvent(new PeptideHighlightedEvent(this.peptide));
             }
         }
 
+        ctx.setFillStyle(color);
         ctx.fillRect(xMin, yMin, this.width, PEPTIDE_HEIGHT);
 
 

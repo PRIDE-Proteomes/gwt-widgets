@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.widgets.client.protein.model;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.canvas.dom.client.FillStrokeStyle;
 import com.google.gwt.event.shared.HandlerManager;
 import uk.ac.ebi.pride.widgets.client.common.handler.PrideModificationHandler;
 import uk.ac.ebi.pride.widgets.client.common.handler.ProteinModificationHandler;
@@ -106,22 +107,37 @@ public class ModificationBase implements Drawable, Clickable, Animated {
 
     @Override
     public void draw(Context2d ctx) {
+        CssColor color = Colors.MODIFICATION_COLOR;
         ctx.setFillStyle(Colors.MODIFICATION_COLOR);
 
         if(highlighted){
-            ctx.setFillStyle(Colors.MODIFICATION_HIGHLIGHTED_COLOR);
+            color = Colors.MODIFICATION_HIGHLIGHTED_COLOR;
+        }
+
+        if(selected){
+            color = Colors.MODIFICATION_SELECTED_COLOR;
         }
 
         boolean mouseOverAux = isMouseOver();
-        if(mouseOverAux || selected){
-            ctx.setFillStyle(Colors.MODIFICATION_SELECTED_COLOR);
-
+        if(mouseOverAux){
+            FillStrokeStyle oldstyle = ctx.getStrokeStyle();
+            double oldLineWith = ctx.getLineWidth();
+            ctx.setStrokeStyle(color);
+            ctx.setLineWidth(2);
+            ctx.beginPath();
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.setStrokeStyle(oldstyle);
+            ctx.setLineWidth(oldLineWith);
             //Ensures only fired the first time the mouse enters in a non highlighted modification
             if(!this.mouseOver && !selected){
                 handlerManager.fireEvent(new ModificationHighlightedEvent(this.position, this.modifications));
             }
         }
-
+        ctx.setFillStyle(color);
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
