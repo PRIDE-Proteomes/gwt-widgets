@@ -44,7 +44,7 @@
         <!-- Convenience property to set the GWT version -->
         <gwtVersion>2.7.0</gwtVersion>
 
-        <!-- This GWT  app needs at least java 1.6 -->
+        <!-- This GWT app needs at least java 1.7 -->
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
